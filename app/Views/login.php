@@ -38,7 +38,7 @@
                 <div class="login-form">
                     <div class="form-group form-show-validation <?= session()->getFlashdata() ? "has-error has-feedback" : "" ?>">
                         <label for="username" class="placeholder">Username</label>
-                        <input id="username" name="param[username]" type="text" class="form-control" required="" aria-invalid="true">
+                        <input id="username" name="param[username]" type="text" class="form-control" required="" aria-invalid="true" autofocus>
                     </div>
                     <div class="form-group form-show-validation <?= session()->getFlashdata() ? "has-error has-feedback" : "" ?>">
                         <label for="password" class="placeholder">Password</label>

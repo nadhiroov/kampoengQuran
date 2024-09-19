@@ -19,14 +19,6 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-            <?php
-            if (isset($menu_selling)) {
-                unset($menu_warehouse);
-                unset($submenu_product);
-                unset($menu_member);
-                unset($submenu_members);
-            }
-            ?>
             <ul class="nav nav-primary">
                 <li class="nav-item <?= $menu_dashboard ?? ''; ?>">
                     <a href="<?= base_url() ?>dashboard">
@@ -35,56 +27,41 @@
                     </a>
                 </li>
 
-                <li class="nav-section">
-                    <h4 class="text-section">Feature</h4>
-                </li>
+                <!-- <li class="nav-section">
+                    <h4 class="text-section">Fitur</h4>
+                </li> -->
 
-                <?php if (session()->get('is_admin') == 1) : ?>
-                    <li class="nav-item <?= $menu_warehouse ?? ''; ?>">
-                        <a data-toggle="collapse" href="#warehouse">
-                            <i class="fas fa-warehouse"></i>
-                            <p>Warehouse</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse <?= isset($menu_warehouse) ? 'show' : '' ?>" id="warehouse">
-                            <ul class="nav nav-collapse">
-                                <li class="<?= $submenu_category ?? ''; ?>">
-                                    <a href="<?= base_url() ?>category">
-                                        <span class="sub-item">Categories</span>
-                                    </a>
-                                </li>
-                                <li class="<?= $submenu_brand ?? ''; ?>">
-                                    <a href="<?= base_url() ?>brand">
-                                        <span class="sub-item">Brands</span>
-                                    </a>
-                                </li>
-                                <li class="<?= $submenu_product ?? ''; ?>">
-                                    <a href="<?= base_url() ?>product">
-                                        <span class="sub-item">Products</span>
-                                    </a>
-                                </li>
-                                <li>
-                            </ul>
-                        </div>
-                    </li>
-                <?php endif; ?>
-
-                <li class="nav-item <?= $menu_selling ?? ''; ?>">
+                <li class="nav-item <?= $menu_master ?? ''; ?>">
                     <a data-toggle="collapse" href="#selling">
-                        <i class="fas fa-dollar-sign"></i>
-                        <p>Selling</p>
+                        <i class="fas fa-layer-group"></i>
+                        <p>Master data</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse <?= isset($menu_selling) ? 'show' : '' ?>" id="selling">
+                    <div class="collapse <?= isset($menu_master) ? 'show' : '' ?>" id="selling">
                         <ul class="nav nav-collapse">
-                            <li class="<?= $submenu_transaction ?? ''; ?>">
-                                <a href="<?= base_url() ?>transaction">
-                                    <span class="sub-item">Transaction</span>
+                            <li class="<?= $submenu_admin ?? ''; ?>">
+                                <a href="<?= base_url() ?>admin">
+                                    <span class="sub-item">Admin</span>
                                 </a>
                             </li>
-                            <li class="<?= $submenu_history ?? ''; ?>">
-                                <a href="<?= base_url() ?>transHistory">
-                                    <span class="sub-item">History</span>
+                            <li class="<?= $submenu_ustadz ?? ''; ?>">
+                                <a href="<?= base_url() ?>ustadz">
+                                    <span class="sub-item">Ustadz</span>
+                                </a>
+                            </li>
+                            <li class="<?= $submenu_santri ?? ''; ?>">
+                                <a href="<?= base_url() ?>santri">
+                                    <span class="sub-item">Santri</span>
+                                </a>
+                            </li>
+                            <li class="<?= $submenu_kelas ?? ''; ?>">
+                                <a href="<?= base_url() ?>kelas">
+                                    <span class="sub-item">Kelas</span>
+                                </a>
+                            </li>
+                            <li class="<?= $submenu_mapel ?? ''; ?>">
+                                <a href="<?= base_url() ?>mapel">
+                                    <span class="sub-item">Mapel</span>
                                 </a>
                             </li>
                             <li>

@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
-class Auth extends Core
+use CodeIgniter\RESTful\ResourceController;
+
+class Auth extends ResourceController
 {
-    protected $modelName = 'App\Models\User\Madmin';
+    protected $modelName = 'App\Models\Master\Madmin';
 
     public function index(): string
     {
@@ -45,11 +47,17 @@ class Auth extends Core
             if ($return['status'] == 1) {
                 $data['logged_in'] = true;
                 $this->session->set($data);
-                return redirect()->to('ci');
-            }else{
+                return redirect()->to('dashboard');
+            } else {
                 $this->session->setFlashdata('msg_pass', $return['message']);
                 return redirect()->to('/');
             }
         }
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to('/');
     }
 }

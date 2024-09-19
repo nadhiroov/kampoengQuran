@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Controllers\User;
+namespace App\Controllers\Master;
 
-use App\Models\User\Madmin;
+use App\Models\Master\Madmin;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
 class Admin extends ResourceController
 {
-    protected $modelName = 'App\Models\User\Madmin';
+    protected $modelName = 'App\Models\Master\Madmin';
     protected $format    = 'json';
 
     /**
@@ -16,10 +16,32 @@ class Admin extends ResourceController
      *
      * @return ResponseInterface
      */
-    public function index()
+    public function index(): string
     {
-        $data = $this->model->findAll();
-        return $this->respond(['data' => $data]);
+        $this->view->setData(['menu_master' => 'active', 'submenu_admin' => 'active']);
+        $this->data['menu'] = 'Master data admin';
+        return view('master/admin/index', $this->data);
+    }
+
+    public function getData() {
+        $param = $this->request->getPost();
+        // return $this->respond($this->request->getPost());
+        $data = $this->model->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('username', 'asc');
+        if (!empty($param['search']['value'])) {
+            $data = $this->model->like('username', $param['search']['value']);
+        }
+        if (!empty($param['order'][0]['column'])) {
+            $data = $this->model->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
+        }
+        $filtered = $data->countAllResults(false);
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->model->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['mobile']) ? $this->respond($return) : json_encode($return);
     }
 
     /**
