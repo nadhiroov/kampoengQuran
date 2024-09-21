@@ -8,8 +8,26 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Auth::index');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Dashboard::index');
-$routes->get('admin', 'Master\Admin::index');
 
+// Admin
+$routes->get('admin', 'Master\Admin::index');
+$routes->get('admin/(:num)', 'Master\Admin::detail/$1');
+$routes->get('admin/add', function(){
+    return view('master/admin/add');
+});
+$routes->post('admin/process', 'Master\Admin::process');
+$routes->delete('admin/(:num)', 'Master\Admin::delete/$1');
+
+$routes->get('showImg/(:segment)/(:any)', function ($segment ,$filename) {
+    $path = WRITEPATH . "uploads/$segment/$filename";
+    if (file_exists($path)) {
+        header('Content-Type: ' . mime_content_type($path));
+        readfile($path);
+        exit;
+    } else {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+});
 
 
 // $routes->resource('admin', ['controller' => 'User\Admin']);

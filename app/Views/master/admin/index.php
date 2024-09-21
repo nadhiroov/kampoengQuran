@@ -27,10 +27,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">All data</div>
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addnew">
+                        <div class="card-title">Semua data</div>
+                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fa fa-plus"></i>
-                            Add new
+                            Tambah baru
                         </button>
                     </div>
                 </div>
@@ -40,8 +40,11 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Nama</th>
                                     <th>Username</th>
-                                    <th class="col-xs-1">Action</th>
+                                    <th>Email</th>
+                                    <th>Gambar</th>
+                                    <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,27 +58,21 @@
 </div>
 
 <!-- Modal add new -->
-<div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Add new Category</h5>
+                <h5 class="modal-title" id="addnewLabel">Tambah baru</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>/categorySave" method="POST">
-                <div class="modal-body">
-                    <div class="form-group form-inline">
-                        <label for="inlineinput" class="col-md-3 col-form-label">Category</label>
-                        <div class="col-md-9 p-0">
-                            <input type="text" class="form-control input-full" placeholder="Enter Input" name="form[category]">
-                        </div>
-                    </div>
+            <form class="formAdd" action="<?= base_url() ?>admin/process" method="POST">
+                <div class="modal-body add-body">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
@@ -87,16 +84,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Edit Category</h5>
+                <h5 class="modal-title" id="addnewLabel">Edit data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>/categorySave" method="POST">
+            <form class="formEdit" action="<?= base_url() ?>admin/process" method="POST">
                 <div class="modal-body edited-body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success">Simpan</button>
                 </div>
             </form>
         </div>
@@ -116,19 +113,17 @@
                 url: '<?= base_url('api/master/admin/data') ?>',
                 type: 'POST'
             },
-            // ajax: 'master/admin/data',
-            // method: 'POST',
             pageLength: 10,
             serverSide: true,
             processing: true,
             "columnDefs": [{
-                "width": "10%",
-                "targets": 0
-            }, {
                 "width": "20%",
-                "targets": 2
+                "targets": 5
             }, {
-                "targets": 2,
+                "targets": 5,
+                "orderable": false
+            }, {
+                "targets": 4,
                 "orderable": false
             }],
             columns: [{
@@ -138,18 +133,79 @@
                     }
                 },
                 {
+                    data: 'fullname'
+                },
+                {
                     data: 'username'
                 },
                 {
+                    data: 'email'
+                },
+                {
+                    data: 'image',
+                    render: function(data, type, row) {
+                        return data == 'user.png' ? '<div class="avatar"><img src="<?= base_url() ?>assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded"></div>' : `<div class="avatar"><img src="<?= base_url() ?>showImg/admin/${row.image}" alt="..." class="avatar-img rounded"></div>`
+                    }
+                },
+
+                {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="categoryDetail/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
-                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/categoryDelete/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        // <a href="categoryDetail/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
+                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/admin/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
-        });
-    });
+        })
+    })
+
+    $('#add').on('show.bs.modal', function(e) {
+        $.ajax({
+            type: 'get',
+            url: '<?= base_url() ?>/admin/add',
+            success: function(data) {
+                $('.add-body').html(data)
+                $('#uploadImg').on('change', function(e) {
+                    var input = this;
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $('#imgPreview').attr('src', e.target.result); // Update image preview
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                })
+            }
+        })
+    })
+
+    $('#edit').on('show.bs.modal', function(e) {
+        let rowid = $(e.relatedTarget).data('id');
+        if (typeof rowid != 'undefined') {
+            $.ajax({
+                type: 'get',
+                url: `<?= base_url() ?>/admin/${rowid}`,
+                success: function(data) {
+                    $('.edited-body').html(data)
+                    $('#uploadImg').on('change', function(e) {
+                        var input = this;
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                $('#imgPreview').attr('src', e.target.result); // Update image preview
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    });
+                }
+            });
+        }
+    })
+
+    $('.formAdd, .formEdit').submit(function(e) {
+        e.preventDefault();
+        saveData(this);
+    })
 </script>
 <?= $this->endSection(); ?>

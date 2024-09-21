@@ -12,7 +12,7 @@ class Madmin extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['username', 'password', 'image'];
+    protected $allowedFields    = ['username', 'password', 'image', 'fullname', 'email'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

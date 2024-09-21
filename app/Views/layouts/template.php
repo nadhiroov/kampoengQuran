@@ -84,7 +84,7 @@
     <script src="<?= base_url() ?>assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
     <!-- Page JS -->
-    <script src="<?= base_url() ?>assets/global/process.js"></script>
+    <script src="<?= base_url() ?>assets/js/process.js"></script>
     <?= $this->renderSection('js'); ?>
 
     <!-- Atlantis JS -->
