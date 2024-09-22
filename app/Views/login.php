@@ -41,10 +41,12 @@
                         <input id="username" name="param[username]" type="text" class="form-control" required="" aria-invalid="true" autofocus>
                     </div>
                     <div class="form-group form-show-validation <?= session()->getFlashdata() ? "has-error has-feedback" : "" ?>">
-                        <label for="password" class="placeholder">Password</label>
-                        <input id="password" name="param[password]" type="password" class="form-control" required="" aria-invalid="true">
-                        <div class="show-password">
-                            <i class="icon-eye"></i>
+                        <label for="password" class="placeholder"><b>Password</b></label>
+                        <div class="position-relative">
+                            <input id="password" name="param[password]" type="password" class="form-control" required="">
+                            <div class="show-password">
+                                <i class="icon-eye"></i>
+                            </div>
                         </div>
                     </div>
                     <?php if (session()->getFlashdata()): ?>

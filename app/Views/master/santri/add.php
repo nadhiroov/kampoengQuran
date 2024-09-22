@@ -49,7 +49,6 @@
         </select>
     </div>
 </div>
-
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Email</label>
     <div class="col-md-9 p-0">

@@ -39,10 +39,11 @@
                         <table id="datatable" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>NIS</th>
-                                    <th>Nama</th>
-                                    <th>Angkatan</th>
-                                    <th>Gambar</th>
+                                    <th>No</th>
+                                    <th>Nama Kelas</th>
+                                    <th>Tahun Ajaran - Semester</th>
+                                    <th>Pengajar</th>
+                                    <th>Santri</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -88,7 +89,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>santri/process" method="POST">
+            <form class="formEdit" action="<?= base_url() ?>kelas/process" method="POST">
                 <div class="modal-body edited-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -111,7 +112,7 @@
     $(document).ready(function() {
         $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url('santri/data') ?>',
+                url: '<?= base_url('api/kelas/data') ?>',
                 type: 'POST'
             },
             pageLength: 10,
@@ -123,30 +124,32 @@
             }, {
                 "targets": 4,
                 "orderable": false
-            }, {
-                "targets": 3,
-                "orderable": false
             }],
             columns: [{
-                    data: 'nis'
+                    data: 'id',
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'nama_kelas'
+                },
+                {
+                    data: 'tahun_ajaran',
+                    render : function(data, type, row){
+                        return data + ' - ' +row.semester
+                    }
                 },
                 {
                     data: 'fullname'
                 },
                 {
-                    data: 'angkatan'
+                    data: 'total_santri'
                 },
-                {
-                    data: 'image',
-                    render: function(data, type, row) {
-                        return data == 'user.png' ? '<div class="avatar"><img src="<?= base_url() ?>assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded"></div>' : `<div class="avatar"><img src="<?= base_url() ?>showImg/santri/${row.image}" alt="..." class="avatar-img rounded"></div>`
-                    }
-                },
-
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="santri/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
+                        return `<a href="api/kelas/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
                         <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
                         <a onclick="confirmDelete(this)" target="<?= base_url() ?>/santri/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
@@ -158,24 +161,11 @@
     $('#add').on('show.bs.modal', function(e) {
         $.ajax({
             type: 'get',
-            url: '<?= base_url() ?>/santri/add',
+            url: '<?= base_url() ?>kelas/add',
             success: function(data) {
                 $('.add-body').html(data)
                 $('#basic').select2({
                     width: '100%'
-                })
-                $('#datepicker').datetimepicker({
-                    format: 'MM/DD/YYYY',
-                })
-                $('#uploadImg').on('change', function(e) {
-                    var input = this;
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader()
-                        reader.onload = function(e) {
-                            $('#imgPreview').attr('src', e.target.result); // Update image preview
-                        }
-                        reader.readAsDataURL(input.files[0]);
-                    }
                 })
             }
         })
@@ -186,19 +176,9 @@
         if (typeof rowid != 'undefined') {
             $.ajax({
                 type: 'get',
-                url: `<?= base_url() ?>/admin/${rowid}`,
+                url: `<?= base_url() ?>kelas/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
-                    $('#uploadImg').on('change', function(e) {
-                        var input = this;
-                        if (input.files && input.files[0]) {
-                            var reader = new FileReader()
-                            reader.onload = function(e) {
-                                $('#imgPreview').attr('src', e.target.result); // Update image preview
-                            }
-                            reader.readAsDataURL(input.files[0]);
-                        }
-                    })
                 }
             })
         }

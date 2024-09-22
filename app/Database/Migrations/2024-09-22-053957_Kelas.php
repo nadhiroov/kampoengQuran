@@ -7,7 +7,7 @@ use CodeIgniter\Database\RawSql;
 
 class Kelas extends Migration
 {
-    protected $tableName  = 'master_kelas';
+    protected $tableName  = 'kelas';
     public function up()
     {
         $this->forge->addField([
@@ -17,10 +17,25 @@ class Kelas extends Migration
                 'unsigned'      => true,
                 'auto_increment' => TRUE
             ),
-            'name_kelas' => array(
+            'nama_kelas' => array(
                 'type'          => 'VARCHAR',
-                'constraint'    => 255,
+                'constraint'    => 25,
                 'null'          => true,
+            ),
+            'semester' => array(
+                'type'          => 'tinyint',
+                'constraint'    => 1,
+                'null'          => true,
+            ),
+            'tahun_ajaran' => array(
+                'type'          => 'VARCHAR',
+                'constraint'    => 9,
+                'null'          => true,
+            ),
+            'id_ustadz' => array(
+                'type'          => 'int',
+                'constraint'    => 11,
+                'unsigned'      => true,
             ),
             'created_at' => array(
                 'type'          => 'DATETIME',
@@ -39,6 +54,7 @@ class Kelas extends Migration
             ),
         ]);
         $this->forge->addkey('id', true);
+        $this->forge->addForeignKey('id_ustadz', 'ustadz', 'id', 'restrict', 'restrict', 'fk_ustadz');
         $this->forge->createtable($this->tableName);
     }
 

@@ -39,6 +39,15 @@ $routes->get('santri/add', function () {
 $routes->post('santri/process', 'Master\Santri::process');
 $routes->delete('santri/(:num)', 'Master\Santri::delete/$1');
 
+// kelas
+$routes->get('kelas', 'Master\Kelas::index');
+$routes->get('kelas/add', 'Master\Kelas::add');
+$routes->post('kelas/process', 'Master\Kelas::process');
+$routes->get('kelas/addSantri/(:num)', 'Master\Kelas::addSantri/$1');
+$routes->delete('kelas/(:num)/(:num)', 'Master\Kelas::deleteSantri/$1/$2');
+$routes->post('kelas/processAddSantri', 'Master\Kelas::processAddSantri');
+
+
 // Show image
 $routes->get('showImg/(:segment)/(:any)', function ($segment, $filename) {
     $path = WRITEPATH . "uploads/$segment/$filename";
@@ -57,4 +66,7 @@ $routes->group('api', static function ($routes) {
     $routes->post('auth', 'Auth::login');
 
     $routes->post('master/admin/data', 'Master\Admin::getData');
+    $routes->post('kelas/data', 'Master\Kelas::getData');
+    $routes->get('kelas/(:num)', 'Master\Kelas::detail/$1');
+    $routes->post('kelas/detailData/(:num)', 'Master\Kelas::detailData/$1');
 });

@@ -16,7 +16,7 @@ function notif(status = "", title = "", message = "") {
 content.icon = "fa fa-bell";
 
   $.notify(content, {
-    type: status == 1 ? 'success' : 'error',
+    type: status == 1 ? 'success' : 'danger',
     placement: {
       from: "top",
       align: "right",
