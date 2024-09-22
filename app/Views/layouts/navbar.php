@@ -12,7 +12,7 @@
                     <div class="dropdown-user-scroll scrollbar-outer">
                         <li>
                             <div class="user-box">
-                                <div class="avatar-lg"><img src="<?= base_url() ?>assets/img/<?= session()->get('image') ?>" onerror="this.onerror=null;this.src='<?= base_url() ?>assets/img/profile.jpg'" alt="image profile" class="avatar-img rounded"></div>
+                                <div class="avatar-lg"><img src="<?= base_url() ?>assets/img/<?= session()->get('image') ?>" onerror="this.onerror=null;this.src='<?= base_url() ?>assets/img/profile.jpg'" alt="img profile" class="avatar-img rounded"></div>
                                 <div class="u-text">
                                     <h4><?= session()->get('fullname') ?></h4>
                                     <p class="text-muted"><?= session()->get('email') ?></p>

@@ -41,7 +41,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Username</th>
+                                    <th>Jenis kelamin</th>
                                     <th>Email</th>
                                     <th>Gambar</th>
                                     <th class="col-xs-1">Aksi</th>
@@ -67,7 +67,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formAdd" action="<?= base_url() ?>admin/process" method="POST">
+            <form class="formAdd" action="<?= base_url() ?>ustadz/process" method="POST">
                 <div class="modal-body add-body">
                 </div>
                 <div class="modal-footer">
@@ -106,11 +106,12 @@
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url('admin/data') ?>',
+                url: '<?= base_url('ustadz/data') ?>',
                 type: 'POST'
             },
             pageLength: 10,
@@ -136,7 +137,7 @@
                     data: 'fullname'
                 },
                 {
-                    data: 'username'
+                    data: 'gender'
                 },
                 {
                     data: 'email'
@@ -144,7 +145,7 @@
                 {
                     data: 'image',
                     render: function(data, type, row) {
-                        return data == 'user.png' ? '<div class="avatar"><img src="<?= base_url() ?>assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded"></div>' : `<div class="avatar"><img src="<?= base_url() ?>showImg/admin/${row.image}" alt="..." class="avatar-img rounded"></div>`
+                        return data == 'user.png' ? '<div class="avatar"><img src="<?= base_url() ?>assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded"></div>' : `<div class="avatar"><img src="<?= base_url() ?>showImg/ustadz/${row.image}" alt="..." class="avatar-img rounded"></div>`
                     }
                 },
 
@@ -163,17 +164,18 @@
     $('#add').on('show.bs.modal', function(e) {
         $.ajax({
             type: 'get',
-            url: '<?= base_url() ?>/admin/add',
+            url: '<?= base_url() ?>/ustadz/add',
             success: function(data) {
                 $('.add-body').html(data)
+                // $('#basic').select2()
                 $('#uploadImg').on('change', function(e) {
                     var input = this;
                     if (input.files && input.files[0]) {
                         var reader = new FileReader()
                         reader.onload = function(e) {
-                            $('#imgPreview').attr('src', e.target.result); // Update image preview
+                            $('#imgPreview').attr('src', e.target.result) // Update image preview
                         }
-                        reader.readAsDataURL(input.files[0]);
+                        reader.readAsDataURL(input.files[0])
                     }
                 })
             }
@@ -185,7 +187,7 @@
         if (typeof rowid != 'undefined') {
             $.ajax({
                 type: 'get',
-                url: `<?= base_url() ?>/admin/${rowid}`,
+                url: `<?= base_url() ?>/ustadz/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
                     $('#uploadImg').on('change', function(e) {
@@ -193,7 +195,7 @@
                         if (input.files && input.files[0]) {
                             var reader = new FileReader()
                             reader.onload = function(e) {
-                                $('#imgPreview').attr('src', e.target.result); // Update image preview
+                                $('#imgPreview').attr('src', e.target.result) // Update image preview
                             }
                             reader.readAsDataURL(input.files[0]);
                         }

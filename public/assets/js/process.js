@@ -51,7 +51,7 @@ function saveData(formSelection, successFunc = "") {
         if (val != "") {
           $("#non-reset-val").val(val);
         }
-        $("#addnew").modal("hide");
+        $("#add").modal("hide");
         $("#edit").modal("hide");
         $("#datatable").DataTable().ajax.reload();
       }

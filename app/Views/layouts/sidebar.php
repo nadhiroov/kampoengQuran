@@ -9,11 +9,7 @@
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
                             <?= session()->get('fullname') ?>
-                            <?php if (session()->get('is_admin') == 1) : ?>
-                                <span class="user-level">Administrator</span>
-                            <?php else : ?>
-                                <span class="user-level">User</span>
-                            <?php endif; ?>
+                            <span class="user-level">Administrator</span>
                         </span>
                     </a>
                     <div class="clearfix"></div>

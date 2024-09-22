@@ -20,7 +20,7 @@ class Admin extends BaseController
         return view('master/admin/index', $this->data);
     }
 
-    public function getData()
+    public function getData(): string
     {
         $param = $this->request->getPost();
         // return $this->respond($this->request->getPost());
@@ -44,21 +44,16 @@ class Admin extends BaseController
         return json_encode($return);
     }
 
-    public function add() {
-        return view('master/admin/add', $this->data);
-    }
-
-    public function detail($id = null)
+    public function detail($id = null): string
     {
         $this->data['content'] = $this->model->where(['id' => $id])->first();
         return view('master/admin/edit', $this->data);
     }
 
-    public function process()
+    public function process(): string
     {
         $data = $this->request->getPost('form');
         $image = $this->request->getFile('image');
-        var_dump ($image);die;
         if ($image && $image->isValid() && !$image->hasMoved()) {
             $imageName = $image->getRandomName();
             $image->move(WRITEPATH . 'uploads/admin', $imageName);
@@ -84,7 +79,7 @@ class Admin extends BaseController
         return json_encode($return);
     }
 
-    public function delete($id = null)
+    public function delete($id = null): string
     {
         try {
             $this->model->delete($id);
