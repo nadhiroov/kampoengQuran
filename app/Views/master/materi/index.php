@@ -1,9 +1,5 @@
 <?= $this->extend('layouts/template'); ?>
 
-<?= $this->section('css'); ?>
-
-<?= $this->endSection(); ?>
-
 <?= $this->section('content'); ?>
 <div class="page-inner">
     <div class="page-header">
@@ -23,38 +19,7 @@
         </ul>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Detail kelas</h4>
-                </div>
-                <div class="card-body">
-                    <table class="table table-typo">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p>Nama kelas</p>
-                                </td>
-                                <td><?= $content['nama_kelas'] ?></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Tahun ajaran - semester</p>
-                                </td>
-                                <td><?= $content['tahun_ajaran'] . ' - ' . $content['semester'] ?></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Pengajar</p>
-                                </td>
-                                <td><?= $content['fullname'] ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
@@ -71,8 +36,8 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>NIS</th>
-                                    <th>Nama Santri</th>
+                                    <th>Materi</th>
+                                    <th>Sub materi</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -96,7 +61,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formAdd" action="<?= base_url() ?>kelas/processAddSantri" method="POST">
+            <form class="formAdd" action="<?= base_url() ?>materi/process" method="POST">
                 <div class="modal-body add-body">
                 </div>
                 <div class="modal-footer">
@@ -118,11 +83,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>kelas/process" method="POST">
+            <form class="formEdit" action="<?= base_url() ?>materi/process" method="POST">
                 <div class="modal-body edited-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
@@ -135,12 +100,11 @@
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url() . 'api/kelas/detailData/' . $content['id'] ?>',
+                url: '<?= base_url('materi') ?>',
                 type: 'POST'
             },
             pageLength: 10,
@@ -160,15 +124,17 @@
                     }
                 },
                 {
-                    data: 'nis'
+                    data: 'materi'
                 },
                 {
-                    data: 'nama_santri'
+                    data: 'count_submateri'
                 },
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a onclick="confirmDelete(this)" target="<?= base_url() ?>kelas/${data}/${row.id_santri}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        return `<a href="materi/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>materi/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
@@ -178,12 +144,9 @@
     $('#add').on('show.bs.modal', function(e) {
         $.ajax({
             type: 'get',
-            url: '<?= base_url() . 'kelas/addSantri/' . $content['id'] ?>',
+            url: '<?= base_url() ?>materi/add',
             success: function(data) {
                 $('.add-body').html(data)
-                $('#basic').select2({
-                    width: '100%'
-                })
             }
         })
     })
@@ -193,7 +156,7 @@
         if (typeof rowid != 'undefined') {
             $.ajax({
                 type: 'get',
-                url: `<?= base_url() ?>kelas/${rowid}`,
+                url: `<?= base_url() ?>materi/edit/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
                 }

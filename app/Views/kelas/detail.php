@@ -23,11 +23,42 @@
         </ul>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Detail kelas</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-typo">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Nama kelas</p>
+                                </td>
+                                <td><?= $content['nama_kelas'] ?></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Tahun ajaran - semester</p>
+                                </td>
+                                <td><?= $content['tahun_ajaran'] . ' - ' . $content['semester'] ?></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Pengajar</p>
+                                </td>
+                                <td><?= $content['fullname'] ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Semua data</div>
+                        <div class="card-title">Semua santri</div>
                         <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fa fa-plus"></i>
                             Tambah baru
@@ -40,10 +71,40 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Gambar</th>
+                                    <th>NIS</th>
+                                    <th>Nama Santri</th>
+                                    <th class="col-xs-1">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 ml-auto">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-head-row card-tools-still-right">
+                        <div class="card-title">Semua jadwal</div>
+                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
+                            <i class="fa fa-plus"></i>
+                            Tambah baru
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="datatable2" class="display table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Hari</th>
+                                    <th>Waktu mulai</th>
+                                    <th>Waktu akhir</th>
+                                    <th>Ruang</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -67,7 +128,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formAdd" action="<?= base_url() ?>admin/process" method="POST">
+            <form class="formAdd" action="<?= base_url() ?>kelas/processAddSantri" method="POST">
                 <div class="modal-body add-body">
                 </div>
                 <div class="modal-footer">
@@ -89,11 +150,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>admin/process" method="POST">
+            <form class="formEdit" action="<?= base_url() ?>kelas/process" method="POST">
                 <div class="modal-body edited-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-success">Simpan</button>
                 </div>
             </form>
         </div>
@@ -106,11 +167,12 @@
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url('admin/data') ?>',
+                url: '<?= base_url() . 'api/kelas/detailData/' . $content['id'] ?>',
                 type: 'POST'
             },
             pageLength: 10,
@@ -118,12 +180,9 @@
             processing: true,
             "columnDefs": [{
                 "width": "20%",
-                "targets": 5
+                "targets": 3
             }, {
-                "targets": 5,
-                "orderable": false
-            }, {
-                "targets": 4,
+                "targets": 3,
                 "orderable": false
             }],
             columns: [{
@@ -133,27 +192,54 @@
                     }
                 },
                 {
-                    data: 'fullname'
+                    data: 'nis'
                 },
                 {
-                    data: 'username'
+                    data: 'nama_santri'
                 },
-                {
-                    data: 'email'
-                },
-                {
-                    data: 'image',
-                    render: function(data, type, row) {
-                        return data == 'user.png' ? '<div class="avatar"><img src="<?= base_url() ?>assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded"></div>' : `<div class="avatar"><img src="<?= base_url() ?>showImg/admin/${row.image}" alt="..." class="avatar-img rounded"></div>`
-                    }
-                },
-
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        // <a href="categoryDetail/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
-                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
-                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/admin/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        return `<a onclick="confirmDelete(this)" target="<?= base_url() ?>kelas/${data}/${row.id_santri}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                    }
+                }
+            ]
+        })
+
+        $('#datatable2').DataTable({
+            ajax: {
+                url: '<?= base_url('api/jadwal') ?>',
+                type: 'POST',
+                data: function(d) {
+                    d.id_class = '<?= $content['id']; ?>';
+                }
+            },
+            pageLength: 10,
+            serverSide: true,
+            processing: true,
+            "columnDefs": [{
+                "width": "20%",
+                "targets": 3
+            }, {
+                "targets": 3,
+                "orderable": false
+            }],
+            columns: [{
+                    data: 'hari'
+                },
+                {
+                    data: 'jam_awal'
+                },
+                {
+                    data: 'jam_akhir'
+                },
+                {
+                    data: 'lokasi'
+                },
+                {
+                    data: 'id',
+                    render: function(data, type, row) {
+                        return `<a onclick="confirmDelete(this)" target="<?= base_url() ?>kelas/${data}/${row.id_santri}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
@@ -163,19 +249,28 @@
     $('#add').on('show.bs.modal', function(e) {
         $.ajax({
             type: 'get',
-            url: '<?= base_url() ?>/admin/add',
+            url: '<?= base_url() . 'kelas/addSantri/' . $content['id'] ?>',
             success: function(data) {
                 $('.add-body').html(data)
-                $('#uploadImg').on('change', function(e) {
-                    var input = this;
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader()
-                        reader.onload = function(e) {
-                            $('#imgPreview').attr('src', e.target.result); // Update image preview
-                        }
-                        reader.readAsDataURL(input.files[0]);
-                    }
+                $('#basic').select2({
+                    width: '100%'
                 })
+            }
+        })
+    })
+
+    $('#addJadwal').on('show.bs.modal', function(e) {
+        $.ajax({
+            type: 'get',
+            url: '<?= base_url() . 'kelas/addSantri/' . $content['id'] ?>',
+            success: function(data) {
+                $('.add-body').html(data)
+                $('#basic').select2({
+                    width: '100%'
+                })
+                $('#timepicker').datetimepicker({
+                    format: 'h:mm A',
+                });
             }
         })
     })
@@ -185,19 +280,9 @@
         if (typeof rowid != 'undefined') {
             $.ajax({
                 type: 'get',
-                url: `<?= base_url() ?>/admin/${rowid}`,
+                url: `<?= base_url() ?>kelas/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
-                    $('#uploadImg').on('change', function(e) {
-                        var input = this;
-                        if (input.files && input.files[0]) {
-                            var reader = new FileReader()
-                            reader.onload = function(e) {
-                                $('#imgPreview').attr('src', e.target.result); // Update image preview
-                            }
-                            reader.readAsDataURL(input.files[0]);
-                        }
-                    })
                 }
             })
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Master;
+namespace App\Controllers;
 
 use App\Models\Master\Msantri;
 use App\Models\Master\Mustadz;
@@ -10,7 +10,7 @@ use CodeIgniter\RESTful\ResourceController;
 
 class Kelas extends ResourceController
 {
-    protected $modelName = 'App\Models\Master\Mkelas';
+    protected $modelName = 'App\Models\Mkelas';
     protected $format    = 'json';
     protected $ustadz;
 
@@ -24,7 +24,7 @@ class Kelas extends ResourceController
 
     public function index()
     {
-        return view('master/kelas/index', $this->data);
+        return view('kelas/index', $this->data);
     }
 
     public function getData()
@@ -53,7 +53,7 @@ class Kelas extends ResourceController
     public function add()
     {
         $this->data['ustadz'] = $this->ustadz->findAll();
-        return view('master/kelas/add', $this->data);
+        return view('kelas/add', $this->data);
     }
 
     public function process()
@@ -79,7 +79,7 @@ class Kelas extends ResourceController
     public function detail($id = null): string
     {
         $this->data['content'] = $this->model->select('kelas.*, u.fullname')->join('ustadz u', 'u.id = kelas.id_ustadz')->where(['kelas.id' => $id])->first();
-        return view('master/kelas/detail', $this->data);
+        return view('kelas/detail', $this->data);
     }
 
     public function detailData($id = null)
@@ -87,9 +87,8 @@ class Kelas extends ResourceController
         $param = $this->request->getPost();
         $data = $this->model->select('kelas.*, u.fullname as nama_ustadz, s.fullname as nama_santri, s.nis, s.id as id_santri')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left')->join('kelas_santri ks', 'kelas.id = ks.id_kelas', 'left')->join('santri s', 'ks.id_santri = s.id')->where(['kelas.id' => $id])->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc');
         if (!empty($param['search']['value'])) {
-            $data = $this->model->like('nama_kelas', $param['search']['value']);
-            $data = $this->model->orLike('fullname', $param['search']['value']);
-            $data = $this->model->orLike('tahun_ajaran', $param['search']['value']);
+            $data = $this->model->like('nis', $param['search']['value']);
+            $data = $this->model->orLike('s.fullname', $param['search']['value']);
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->model->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -110,7 +109,7 @@ class Kelas extends ResourceController
         $santri = new Msantri();
         $this->data['santri'] = $santri->findAll();
         $this->data['id_kelas'] = $idKelas;
-        return view('master/kelas/addSantri', $this->data);
+        return view('kelas/addSantri', $this->data);
     }
 
     public function processAddSantri()
@@ -137,7 +136,7 @@ class Kelas extends ResourceController
                 'message' => $er->getMessage()
             ];
         }
-
+        return json_encode($return);
     }
 
     public function deleteSantri($id_kelas, $id_santri)

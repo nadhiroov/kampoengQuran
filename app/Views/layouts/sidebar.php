@@ -50,16 +50,17 @@
                                     <span class="sub-item">Santri</span>
                                 </a>
                             </li>
+                            <li class="<?= $submenu_materi ?? ''; ?>">
+                                <a href="<?= base_url() ?>materi">
+                                    <span class="sub-item">Materi</span>
+                                </a>
+                            </li>
                             <li class="<?= $submenu_kelas ?? ''; ?>">
                                 <a href="<?= base_url() ?>kelas">
                                     <span class="sub-item">Kelas</span>
                                 </a>
                             </li>
-                            <li class="<?= $submenu_mapel ?? ''; ?>">
-                                <a href="<?= base_url() ?>mapel">
-                                    <span class="sub-item">Mapel</span>
-                                </a>
-                            </li>
+
                             <li>
                         </ul>
                     </div>
