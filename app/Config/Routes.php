@@ -45,14 +45,17 @@ $routes->get('materi/(:num)', 'Master\Materi::detail/$1');
 $routes->get('materi/edit/(:num)', 'Master\Materi::edit/$1');
 $routes->post('materi', 'Master\Materi::getData');
 $routes->post('detailMateri', 'Master\Materi::getDataDetail');
+$routes->post('materi/process', 'Master\Materi::process');
+$routes->delete('materi/(:num)', 'Master\Materi::delete/$1');
+// submateri
 $routes->get('submateri/add/(:num)', 'Master\Materi::addSubmateri/$1');
 $routes->get('submateri/edit/(:num)', 'Master\Materi::editSubmateri/$1');
 $routes->get('submateri/add', function () {
     return view('master/materi/addSubmateri');
 });
-$routes->post('materi/process', 'Master\Materi::process');
 $routes->post('submateri/process', 'Master\Materi::processSubmateri');
-$routes->delete('materi/(:num)', 'Master\Materi::delete/$1');
+$routes->delete('submateri/(:num)', 'Master\Materi::deletesubMateri/$1');
+
 
 // Kelas
 $routes->get('kelas', 'Kelas::index');
@@ -63,9 +66,9 @@ $routes->delete('kelas/(:num)/(:num)', 'Kelas::deleteSantri/$1/$2');
 $routes->post('kelas/processAddSantri', 'Kelas::processAddSantri');
 
 // Jadwal
-$routes->get('jadwal/add', function () {
-    return view('jadwal/add');
-});
+$routes->get('jadwal/add/(:num)', 'Jadwal::add/$1');
+$routes->post('jadwal/process', 'Jadwal::process');
+$routes->delete('jadwal/(:num)', 'Jadwal::delete/$1');
 
 // Show image
 $routes->get('showImg/(:segment)/(:any)', function ($segment, $filename) {

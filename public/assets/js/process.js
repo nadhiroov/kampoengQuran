@@ -105,7 +105,7 @@ function confirmDelete(selection, func = "") {
           if (func != "") {
             func();
           }
-          $("#datatable").DataTable().ajax.reload();
+          $("#datatable").DataTable().ajax.reload()
         },
         error: function (err) {
           notif(err.status, err.title, err.message);
@@ -114,7 +114,7 @@ function confirmDelete(selection, func = "") {
     } else {
       swal.close();
     }
-  });
+  })
 }
 
 function rupiah(nominal) {

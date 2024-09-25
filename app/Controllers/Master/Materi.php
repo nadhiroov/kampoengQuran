@@ -130,4 +130,23 @@ class Materi extends BaseController
         $this->data['content'] = $this->submateri->where(['id' => $id])->first();
         return view('master/materi/editSubmateri', $this->data);
     }
+
+    public function deleteSubmateri($id = null) : string
+    {
+        try {
+            $this->submateri->delete($id);
+            $return = [
+                'status' => 1,
+                'title'  => 'Berhasil',
+                'message' => 'Berhasil menghapus data'
+            ];
+        } catch (\Exception $er) {
+            $return = [
+                'status' => 0,
+                'title'  => 'Gagal',
+                'message' => $er->getMessage()
+            ];
+        }
+        return json_encode($return);
+    }
 }

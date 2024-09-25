@@ -90,7 +90,7 @@
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
                         <div class="card-title">Semua jadwal</div>
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
+                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addJadwal">
                             <i class="fa fa-plus"></i>
                             Tambah baru
                         </button>
@@ -118,7 +118,7 @@
     </div>
 </div>
 
-<!-- Modal add new -->
+<!-- Modal add santri -->
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -140,21 +140,22 @@
     </div>
 </div>
 
-<!-- Modal edit -->
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
+<!-- Modal add jadwal -->
+<div class="modal fade" id="addJadwal" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Edit data</h5>
+                <h5 class="modal-title" id="addnewLabel">Tambah baru</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>kelas/process" method="POST">
-                <div class="modal-body edited-body"></div>
+            <form class="formAddJadwal" action="<?= base_url() ?>jadwal/process" method="POST">
+                <div class="modal-body add-jadwal">
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
@@ -167,6 +168,7 @@
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -239,7 +241,7 @@
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a onclick="confirmDelete(this)" target="<?= base_url() ?>kelas/${data}/${row.id_santri}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        return `<a onclick="confirmDelete(this, function() { $('#datatable2').DataTable().ajax.reload() })" target="<?= base_url() ?>jadwal/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
@@ -262,35 +264,34 @@
     $('#addJadwal').on('show.bs.modal', function(e) {
         $.ajax({
             type: 'get',
-            url: '<?= base_url() . 'kelas/addSantri/' . $content['id'] ?>',
+            url: '<?= base_url() . 'jadwal/add/' . $content['id'] ?>',
             success: function(data) {
-                $('.add-body').html(data)
-                $('#basic').select2({
+                $('.add-jadwal').html(data)
+                $('#hari').select2({
                     width: '100%'
                 })
-                $('#timepicker').datetimepicker({
-                    format: 'h:mm A',
+                $('#submateri').select2({
+                    width: '100%'
+                })
+                $('#ustadz').select2({
+                    width: '100%'
+                })
+                $('#timepicker, #timepicker2').datetimepicker({
+                    format: 'HH:mm',
                 });
             }
         })
     })
 
-    $('#edit').on('show.bs.modal', function(e) {
-        let rowid = $(e.relatedTarget).data('id')
-        if (typeof rowid != 'undefined') {
-            $.ajax({
-                type: 'get',
-                url: `<?= base_url() ?>kelas/${rowid}`,
-                success: function(data) {
-                    $('.edited-body').html(data)
-                }
-            })
-        }
-    })
-
-    $('.formAdd, .formEdit').submit(function(e) {
+    $('.formAdd').submit(function(e) {
         e.preventDefault()
         saveData(this)
+    })
+    $('.formAddJadwal').submit(function(e) {
+        e.preventDefault()
+        saveData(this)
+        $("#addJadwal").modal("hide")
+        $("#datatable2").DataTable().ajax.reload()
     })
 </script>
 <?= $this->endSection(); ?>

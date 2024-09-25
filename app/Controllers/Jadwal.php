@@ -2,13 +2,15 @@
 
 namespace App\Controllers;
 
+use App\Models\Master\Msubmateri;
+use App\Models\Master\Mustadz;
 use App\Models\Mkelas;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
 class Jadwal extends ResourceController
 {
-    protected $modelName = 'App\Models\Master\Mjadwal';
+    protected $modelName = 'App\Models\Mjadwal';
     protected $format    = 'json';
     protected $mKelas;
 
@@ -32,9 +34,10 @@ class Jadwal extends ResourceController
         $param = $this->request->getPost();
         $data = $this->mKelas->select('j.*, kelas.nama_kelas, u.fullname as nama_ustadz')->join('jadwal j', 'kelas.id = j.id_kelas')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left')->groupBy('j.id');
         if (!empty($param['search']['value'])) {
-            $data = $this->mKelas->like('nama_kelas', $param['search']['value']);
-            $data = $this->mKelas->orLike('fullname', $param['search']['value']);
-            $data = $this->mKelas->orLike('tahun_ajaran', $param['search']['value']);
+            $data = $this->mKelas->like('hari', $param['search']['value']);
+            $data = $this->mKelas->orLike('jam_awal', $param['search']['value']);
+            $data = $this->mKelas->orLike('jam_akhir', $param['search']['value']);
+            $data = $this->mKelas->orLike('lokasi', $param['search']['value']);
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->mKelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -50,25 +53,35 @@ class Jadwal extends ResourceController
         );
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
-
-    /**
-     * Return a new resource object, with default properties.
-     *
-     * @return ResponseInterface
-     */
-    public function new()
+    
+    public function add($idKelas = null)
     {
-        //
+        $ustadz = new Mustadz();
+        $submateri = new Msubmateri();
+        $this->data['ustadz'] = $ustadz->findAll();
+        $this->data['submateri'] = $submateri->findAll();
+        $this->data['idKelas'] = $idKelas;
+        return view('jadwal/add', $this->data);
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters.
-     *
-     * @return ResponseInterface
-     */
-    public function create()
+    public function process()
     {
-        //
+        $data = $this->request->getPost('form');
+        try {
+            $this->model->save($data);
+            $return = [
+                'status'    => 1,
+                'title'     => 'Berhasil',
+                'message'   => 'Data berhasil disimpan'
+            ];
+        } catch (\Exception $er) {
+            $return = [
+                'status'    => 0,
+                'title'     => 'Error',
+                'message'   => $er->getMessage()
+            ];
+        }
+        return json_encode($return);
     }
 
     /**
@@ -104,6 +117,20 @@ class Jadwal extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        try {
+            $this->model->delete($id);
+            $return = [
+                'status' => 1,
+                'title'  => 'Berhasil',
+                'message' => 'Berhasil menghapus data'
+            ];
+        } catch (\Exception $er) {
+            $return = [
+                'status' => 0,
+                'title'  => 'Gagal',
+                'message' => $er->getMessage()
+            ];
+        }
+        return json_encode($return);
     }
 }

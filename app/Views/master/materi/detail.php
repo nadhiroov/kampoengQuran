@@ -25,7 +25,26 @@
         </ul>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Detail Materi</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-typo">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Materi :</p>
+                                </td>
+                                <td><?= $content['materi'] ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
@@ -134,9 +153,8 @@
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="materi/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
-                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>materi/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>submateri/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
