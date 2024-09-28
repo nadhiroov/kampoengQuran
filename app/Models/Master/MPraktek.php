@@ -4,18 +4,21 @@ namespace App\Models\Master;
 
 use CodeIgniter\Model;
 
-class Mmateri extends Model
+class MPraktek extends Model
 {
-    protected $table            = 'materi';
+    protected $table            = 'praktek';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['materi', 'semester'];
+    protected $allowedFields    = ['id_materi', 'praktek'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
+
+    protected array $casts = [];
+    protected array $castHandlers = [];
 
     // Dates
     protected $useTimestamps = false;

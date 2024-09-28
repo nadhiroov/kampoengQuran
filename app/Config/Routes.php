@@ -44,7 +44,8 @@ $routes->get('materi', 'Master\Materi::index');
 $routes->get('materi/(:num)', 'Master\Materi::detail/$1');
 $routes->get('materi/edit/(:num)', 'Master\Materi::edit/$1');
 $routes->post('materi', 'Master\Materi::getData');
-$routes->post('detailMateri', 'Master\Materi::getDataDetail');
+$routes->post('detailMateri/(:num)', 'Master\Materi::getDataDetail/$1');
+$routes->post('detailPraktek/(:num)', 'Master\Materi::getDetailPraktek/$1');
 $routes->post('materi/process', 'Master\Materi::process');
 $routes->delete('materi/(:num)', 'Master\Materi::delete/$1');
 // submateri
@@ -55,11 +56,19 @@ $routes->get('submateri/add', function () {
 });
 $routes->post('submateri/process', 'Master\Materi::processSubmateri');
 $routes->delete('submateri/(:num)', 'Master\Materi::deletesubMateri/$1');
-
+// praktek
+$routes->get('praktek/add/(:num)', 'Master\Materi::addPraktek/$1');
+$routes->get('praktek/edit/(:num)', 'Master\Materi::editPraktek/$1');
+$routes->get('praktek/add', function () {
+    return view('master/materi/addPraktek');
+});
+$routes->post('praktek/process', 'Master\Materi::processPraktek');
+$routes->delete('praktek/(:num)', 'Master\Materi::deletePraktek/$1');
 
 // Kelas
 $routes->get('kelas', 'Kelas::index');
 $routes->get('kelas/add', 'Kelas::add');
+$routes->get('kelas/(:num)', 'Kelas::edit/$1');
 $routes->post('kelas/process', 'Kelas::process');
 $routes->get('kelas/addSantri/(:num)', 'Kelas::addSantri/$1');
 $routes->delete('kelas/(:num)/(:num)', 'Kelas::deleteSantri/$1/$2');

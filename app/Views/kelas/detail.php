@@ -58,7 +58,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Semua santri</div>
+                        <div class="card-title">Data Santri</div>
                         <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fa fa-plus"></i>
                             Tambah baru
@@ -89,7 +89,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Semua jadwal</div>
+                        <div class="card-title">Data Jadwal</div>
                         <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addJadwal">
                             <i class="fa fa-plus"></i>
                             Tambah baru

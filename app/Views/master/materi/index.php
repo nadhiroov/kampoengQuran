@@ -37,6 +37,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Materi</th>
+                                    <th>Semester</th>
                                     <th>Sub materi</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
@@ -125,6 +126,9 @@
                 },
                 {
                     data: 'materi'
+                },
+                {
+                    data: 'semester'
                 },
                 {
                     data: 'count_submateri'

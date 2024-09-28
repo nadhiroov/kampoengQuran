@@ -56,6 +56,13 @@ class Kelas extends ResourceController
         return view('kelas/add', $this->data);
     }
 
+    public function edit($id = null)
+    {
+        $this->data['content'] = $this->model->where(['id' => $id])->first();
+        $this->data['ustadz'] = $this->ustadz->findAll();
+        return view('kelas/edit', $this->data);
+    }
+
     public function process()
     {
         $data = $this->request->getPost('form');
@@ -165,18 +172,6 @@ class Kelas extends ResourceController
      * @return ResponseInterface
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Return the editable properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function edit($id = null)
     {
         //
     }
