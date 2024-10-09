@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Master\Msantri;
+use App\Models\Master\Mustadz;
 use CodeIgniter\RESTful\ResourceController;
 
 class Auth extends ResourceController
@@ -10,7 +12,7 @@ class Auth extends ResourceController
 
     public function index(): string
     {
-        return view('Login');
+        return view('login');
     }
 
     public function login()
@@ -40,19 +42,55 @@ class Auth extends ResourceController
                 ];
             }
         }
-        if ($this->request->getHeaderLine('type') == 'api') {
-            if ($return['status'] == 1) return $this->respond($return);
-            return $this->respond($return, 404);
+        if ($return['status'] == 1) {
+            $data['logged_in'] = true;
+            $this->session->set($data);
+            return redirect()->to('dashboard');
         } else {
-            if ($return['status'] == 1) {
-                $data['logged_in'] = true;
-                $this->session->set($data);
-                return redirect()->to('dashboard');
-            } else {
-                $this->session->setFlashdata('msg_pass', $return['message']);
-                return redirect()->to('/');
-            }
+            $this->session->setFlashdata('msg_pass', $return['message']);
+            return redirect()->to('/');
         }
+    }
+
+    public function loginUser()
+    {
+        $param = $this->request->getPost();
+        $ustadz = new Mustadz();
+        $santri = new Msantri();
+        if (!empty($param['username']) && !empty($param['password'])) {
+            $data = $ustadz->where(['username' => $param['username'], 'password' => $param['password']])->first();
+            if (empty($data)) {
+                $data = $santri->where(['nis' => $param['username'], 'password' => $param['password']])->first();
+                if (empty($data)) {
+                    $return = [
+                        'status'  => 0,
+                        'message' => 'user tidak ditemukan'
+                    ];
+                    $stts = 404;
+                } else {
+                    $return = [
+                        'status'    => 1,
+                        'role'      => 'santri',
+                        'data'      => $data
+                    ];
+                    $stts = 200;
+                }
+            } else {
+                $return = [
+                    'status'    => 1,
+                    'role'      => 'ustadz',
+                    'data'      => $data
+                ];
+                $stts = 200;
+            }
+        } else {
+            $return = [
+                'status' => 0,
+                'message' => 'username dan password tidak boleh kosong'
+            ];
+            $stts = 404;
+        }
+        return $this->respond($return, $stts);
     }
 
     public function logout()

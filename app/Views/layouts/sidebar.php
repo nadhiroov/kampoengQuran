@@ -66,8 +66,8 @@
                     </div>
                 </li>
 
-                <li class="nav-item <?= $menu_dashboard ?? ''; ?>">
-                    <a href="<?= base_url() ?>dashboard">
+                <li class="nav-item <?= $menu_nilai ?? ''; ?>">
+                    <a href="<?= base_url() ?>nilai">
                         <i class="fas fa-home"></i>
                         <p>Nilai</p>
                     </a>

@@ -41,6 +41,7 @@ $routes->delete('santri/(:num)', 'Master\Santri::delete/$1');
 
 // Materi
 $routes->get('materi', 'Master\Materi::index');
+$routes->get('materi/add', 'Master\Materi::add');
 $routes->get('materi/(:num)', 'Master\Materi::detail/$1');
 $routes->get('materi/edit/(:num)', 'Master\Materi::edit/$1');
 $routes->post('materi', 'Master\Materi::getData');
@@ -79,6 +80,10 @@ $routes->get('jadwal/add/(:num)', 'Jadwal::add/$1');
 $routes->post('jadwal/process', 'Jadwal::process');
 $routes->delete('jadwal/(:num)', 'Jadwal::delete/$1');
 
+// nilai
+$routes->get('nilai', 'Nilai::index');
+$routes->post('nilai', 'Nilai::getData');
+
 // Show image
 $routes->get('showImg/(:segment)/(:any)', function ($segment, $filename) {
     $path = WRITEPATH . "uploads/$segment/$filename";
@@ -95,6 +100,7 @@ $routes->get('showImg/(:segment)/(:any)', function ($segment, $filename) {
 // $routes->resource('admin', ['controller' => 'User\Admin']);
 $routes->group('api', static function ($routes) {
     $routes->post('auth', 'Auth::login');
+    $routes->post('login', 'Auth::loginUser');
 
     $routes->post('master/admin/data', 'Master\Admin::getData');
     // kelas

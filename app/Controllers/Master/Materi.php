@@ -28,6 +28,11 @@ class Materi extends BaseController
         return view('master/materi/index', $this->data);
     }
 
+    public function add()
+    {
+        return view('master/materi/add', $this->data);
+    }
+
     public function getData(): string
     {
         $param = $this->request->getPost();
