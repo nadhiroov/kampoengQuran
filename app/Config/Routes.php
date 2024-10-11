@@ -83,6 +83,7 @@ $routes->delete('jadwal/(:num)', 'Jadwal::delete/$1');
 // nilai
 $routes->get('nilai', 'Nilai::index');
 $routes->post('nilai', 'Nilai::getData');
+$routes->post('nilai/process', 'Nilai::process');
 
 // Show image
 $routes->get('showImg/(:segment)/(:any)', function ($segment, $filename) {
@@ -110,4 +111,11 @@ $routes->group('api', static function ($routes) {
     
     // jadwal
     $routes->post('jadwal', 'Jadwal::getData');
+    $routes->post('jadwal/(:num)', 'Jadwal::getJadwalSantri/$1');
+
+    // nilai
+    $routes->get('nilai/kelas/(:num)', 'Nilai::detail/$1');
+    $routes->post('nilai/kelas/(:num)', 'Nilai::getDataDetail/$1');
+    $routes->get('nilai/kelas/(:num)/(:num)', 'Nilai::listPenilaian/$1/$2');
+
 });

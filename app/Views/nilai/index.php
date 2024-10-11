@@ -38,7 +38,7 @@
                                     <th>No</th>
                                     <th>Nama Kelas</th>
                                     <th>Tahun Ajaran - Semester</th>
-                                    <th>Pengajar</th>
+                                    <th>Walikelas</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -51,58 +51,12 @@
         </div>
     </div>
 </div>
-
-<!-- Modal add new -->
-<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Tambah baru</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="formAdd" action="<?= base_url() ?>kelas/process" method="POST">
-                <div class="modal-body add-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal edit -->
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Edit data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="formEdit" action="<?= base_url() ?>kelas/process" method="POST">
-                <div class="modal-body edited-body"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <?= $this->endSection(); ?>
 
 
 <?= $this->section('js'); ?>
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
@@ -141,7 +95,7 @@
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="api/kelas/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
+                        return `<a href="api/nilai/kelas/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
                     }
                 }
             ]

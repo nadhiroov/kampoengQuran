@@ -17,7 +17,7 @@ class Auth extends ResourceController
 
     public function login()
     {
-        $param = $this->request->getPost('param');
+        $param = $this->request->getPost();
         $return = ['status' => 0, 'message' => ''];
         if (!empty($param['username']) && !empty($param['password'])) {
             $data = $this->model->where('username', $param['username'])->first();

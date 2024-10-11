@@ -102,9 +102,11 @@
                             <thead>
                                 <tr>
                                     <th>Hari</th>
+                                    <th>Materi</th>
                                     <th>Waktu mulai</th>
                                     <th>Waktu akhir</th>
                                     <th>Ruang</th>
+                                    <th>Ustadz</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -230,6 +232,9 @@
                     data: 'hari'
                 },
                 {
+                    data: 'materi'
+                },
+                {
                     data: 'jam_awal'
                 },
                 {
@@ -237,6 +242,9 @@
                 },
                 {
                     data: 'lokasi'
+                },
+                {
+                    data: 'nama_ustadz'
                 },
                 {
                     data: 'id',

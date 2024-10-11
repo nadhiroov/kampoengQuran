@@ -32,22 +32,16 @@
                     <table class="table table-typo">
                         <tbody>
                             <tr>
-                                <td>
+                                <th>
                                     <p>Nama kelas</p>
-                                </td>
+                                </th>
                                 <td><?= $content['nama_kelas'] ?></td>
                             </tr>
                             <tr>
-                                <td>
+                                <th>
                                     <p>Tahun ajaran - semester</p>
-                                </td>
+                                </th>
                                 <td><?= $content['tahun_ajaran'] . ' - ' . $content['semester'] ?></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Pengajar</p>
-                                </td>
-                                <td><?= $content['fullname'] ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -58,11 +52,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Data Santri</div>
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
-                            <i class="fa fa-plus"></i>
-                            Tambah baru
-                        </button>
+                        <div class="card-title">Data Penilaian</div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -70,9 +60,9 @@
                         <table id="datatable" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>NIS</th>
-                                    <th>Nama Santri</th>
+                                    <th>Materi</th>
+                                    <th>Pengajar</th>
+                                    <!-- <th>Nama Santri</th> -->
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -85,50 +75,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal add santri -->
-<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Tambah baru</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="formAdd" action="<?= base_url() ?>kelas/processAddSantri" method="POST">
-                <div class="modal-body add-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal add jadwal -->
-<div class="modal fade" id="addJadwal" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Tambah baru</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="formAddJadwal" action="<?= base_url() ?>jadwal/process" method="POST">
-                <div class="modal-body add-jadwal">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <?= $this->endSection(); ?>
 
 
@@ -136,130 +82,37 @@
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url() . 'api/kelas/detailData/' . $content['id'] ?>',
-                type: 'POST'
-            },
-            pageLength: 10,
-            serverSide: true,
-            processing: true,
-            "columnDefs": [{
-                "width": "20%",
-                "targets": 3
-            }, {
-                "targets": 3,
-                "orderable": false
-            }],
-            columns: [{
-                    data: 'id',
-                    render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                {
-                    data: 'nis'
-                },
-                {
-                    data: 'nama_santri'
-                },
-                {
-                    data: 'id',
-                    render: function(data, type, row) {
-                        return `<a onclick="confirmDelete(this)" target="<?= base_url() ?>kelas/${data}/${row.id_santri}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
-                    }
-                }
-            ]
-        })
-
-        $('#datatable2').DataTable({
-            ajax: {
-                url: '<?= base_url('api/jadwal') ?>',
+                url: '<?= base_url() . 'api/nilai/kelas/' . $content['id'] ?>',
                 type: 'POST',
-                data: function(d) {
-                    d.id_class = '<?= $content['id']; ?>';
-                }
             },
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
+            columnDefs: [{
                 "width": "20%",
-                "targets": 3
+                "targets": 2
             }, {
-                "targets": 3,
+                "targets": 2,
                 "orderable": false
             }],
             columns: [{
-                    data: 'hari'
+                    data: 'materi'
                 },
                 {
-                    data: 'jam_awal'
+                    data: 'fullname'
                 },
                 {
-                    data: 'jam_akhir'
-                },
-                {
-                    data: 'lokasi'
-                },
-                {
-                    data: 'id',
+                    data: 'id_kelas',
                     render: function(data, type, row) {
-                        return `<a onclick="confirmDelete(this, function() { $('#datatable2').DataTable().ajax.reload() })" target="<?= base_url() ?>jadwal/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        return `<a href="/api/nilai/kelas/${data}/${row.id_materi}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
                     }
                 }
             ]
         })
-    })
-
-    $('#add').on('show.bs.modal', function(e) {
-        $.ajax({
-            type: 'get',
-            url: '<?= base_url() . 'kelas/addSantri/' . $content['id'] ?>',
-            success: function(data) {
-                $('.add-body').html(data)
-                $('#basic').select2({
-                    width: '100%'
-                })
-            }
-        })
-    })
-
-    $('#addJadwal').on('show.bs.modal', function(e) {
-        $.ajax({
-            type: 'get',
-            url: '<?= base_url() . 'jadwal/add/' . $content['id'] ?>',
-            success: function(data) {
-                $('.add-jadwal').html(data)
-                $('#hari').select2({
-                    width: '100%'
-                })
-                $('#submateri').select2({
-                    width: '100%'
-                })
-                $('#ustadz').select2({
-                    width: '100%'
-                })
-                $('#timepicker, #timepicker2').datetimepicker({
-                    format: 'HH:mm',
-                });
-            }
-        })
-    })
-
-    $('.formAdd').submit(function(e) {
-        e.preventDefault()
-        saveData(this)
-    })
-    $('.formAddJadwal').submit(function(e) {
-        e.preventDefault()
-        saveData(this)
-        $("#addJadwal").modal("hide")
-        $("#datatable2").DataTable().ajax.reload()
     })
 </script>
 <?= $this->endSection(); ?>

@@ -12,5 +12,5 @@ class Mnilai extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_siswa', 'id_kelas', 'id_materi', 'nilai'];
+    protected $allowedFields    = ['id_santri', 'id_kelas', 'id_materi', 'nilai'];
 }

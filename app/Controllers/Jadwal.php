@@ -32,7 +32,7 @@ class Jadwal extends ResourceController
     public function getData()
     {
         $param = $this->request->getPost();
-        $data = $this->mKelas->select('j.*, kelas.nama_kelas, u.fullname as nama_ustadz')->join('jadwal j', 'kelas.id = j.id_kelas')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left')->groupBy('j.id');
+        $data = $this->mKelas->select('j.*, kelas.nama_kelas, u.fullname as nama_ustadz, materi')->join('jadwal j', 'kelas.id = j.id_kelas')->join('ustadz u', 'u.id = j.id_ustadz', 'left')->join('materi m', 'm.id = j.id_materi', 'left');
         if (!empty($param['search']['value'])) {
             $data = $this->mKelas->like('hari', $param['search']['value']);
             $data = $this->mKelas->orLike('jam_awal', $param['search']['value']);
@@ -48,12 +48,28 @@ class Jadwal extends ResourceController
             "draw" => $param['draw'] ?? 1,
             "recordsFiltered" => $filtered,
             "recordsTotal" => $this->mKelas->countAllResults(),
-
             "data" => $datas
         );
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
     
+    public function getJadwalSantri($id_santri = '') {
+        $param = $this->request->getPost();
+        $data = $this->mKelas->select('j.hari, j.jam_awal, j.jam_akhir, j.lokasi, m.materi, kelas.nama_kelas, u.fullname as nama_ustadz')->join('kelas_santri ks', 'ks.id_kelas = kelas.id')->join('jadwal j', 'kelas.id = j.id_kelas')->join('ustadz u', 'u.id = j.id_ustadz', 'left')->join('materi m', 'm.id = j.id_materi and m.deleted_at is null', 'left');
+        if ($id_santri != '') {
+            $data = $this->mKelas->where(['ks.id_santri' => $id_santri]);
+        }
+        $filtered = $data->countAllResults(false);
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->mKelas->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
+    }
+
     public function add($idKelas = null)
     {
         $ustadz = new Mustadz();

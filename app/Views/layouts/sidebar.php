@@ -28,12 +28,12 @@
                 </li> -->
 
                 <li class="nav-item <?= $menu_master ?? ''; ?>">
-                    <a data-toggle="collapse" href="#selling">
+                    <a data-toggle="collapse" href="#mater">
                         <i class="fas fa-layer-group"></i>
                         <p>Master data</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse <?= isset($menu_master) ? 'show' : '' ?>" id="selling">
+                    <div class="collapse <?= isset($menu_master) ? 'show' : '' ?>" id="mater">
                         <ul class="nav nav-collapse">
                             <li class="<?= $submenu_admin ?? ''; ?>">
                                 <a href="<?= base_url() ?>admin">
@@ -66,11 +66,28 @@
                     </div>
                 </li>
 
-                <li class="nav-item <?= $menu_nilai ?? ''; ?>">
-                    <a href="<?= base_url() ?>nilai">
-                        <i class="fas fa-home"></i>
-                        <p>Nilai</p>
+                <li class="nav-item <?= $menu_penilaian ?? ''; ?>">
+                    <a data-toggle="collapse" href="#penilaian">
+                        <i class="fas fa-edit"></i>
+                        <p>Penilaian</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse <?= isset($menu_penilaian) ? 'show' : '' ?>" id="penilaian">
+                        <ul class="nav nav-collapse">
+                            <li class="<?= $submenu_quran ?? ''; ?>">
+                                <a href="<?= base_url() ?>quran"
+                                >
+                                    <span class="sub-item">Al Qur'an</span>
+                                </a>
+                            </li>
+                            <li class="<?= $submenu_nilai_materi ?? ''; ?>">
+                                <a href="<?= base_url() ?>nilai">
+                                    <span class="sub-item">Materi</span>
+                                </a>
+                            </li>
+                            <li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>

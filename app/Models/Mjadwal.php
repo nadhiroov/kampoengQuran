@@ -12,7 +12,7 @@ class Mjadwal extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_kelas', 'id_submateri','hari', 'jam_awal', 'jam_akhir', 'lokasi'];
+    protected $allowedFields    = ['id_kelas', 'id_submateri','hari', 'jam_awal', 'jam_akhir', 'lokasi', 'id_ustadz'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
