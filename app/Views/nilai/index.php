@@ -61,7 +61,7 @@
     $(document).ready(function() {
         $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url('nilai') ?>',
+                url: '<?= base_url('api/nilai') ?>',
                 type: 'POST'
             },
             pageLength: 10,

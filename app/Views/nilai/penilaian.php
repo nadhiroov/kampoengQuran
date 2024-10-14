@@ -72,7 +72,7 @@
                                             <td><input type="number" min="0" max="100" name="form[nilai][]" value="<?= $key['nilai']; ?>"></td>
                                             <input type="hidden" name="form[id_santri][]" value="<?= $key['id_santri']; ?>">
                                             <input type="hidden" name="form[id_kelas]" value="<?= $id_kelas; ?>">
-                                            <input type="hidden" name="form[id_materi]" value="<?= $id_materi; ?>">
+                                            <input type="hidden" class="form-control input-full" name="form[id_materi]" value="<?= $id_materi; ?>">
                                         </tr>
                                     <?php endforeach;  ?>
                                 </tbody>

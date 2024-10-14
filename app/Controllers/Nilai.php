@@ -40,7 +40,12 @@ class Nilai extends ResourceController
     public function getData()
     {
         $param = $this->request->getPost();
-        $data = $this->kelas->select('kelas.*, u.fullname')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc');
+        $data = $this->kelas->select('kelas.*, u.fullname')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left');
+        if (!empty($param['id_santri'])) {
+            $data = $this->kelas->join('kelas_santri  ks', 'kelas.id = ks.id_kelas');
+            $data = $this->kelas->where(['ks.id_santri' => $param['id_santri']]);
+        }
+        $data = $this->kelas->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc')->groupBy('kelas.id');
         if (!empty($param['search']['value'])) {
             $data = $this->kelas->like('nama_kelas', $param['search']['value']);
             $data = $this->kelas->orLike('fullname', $param['search']['value']);
@@ -85,23 +90,25 @@ class Nilai extends ResourceController
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
-    public function listPenilaian($id_kelas, $id_materi) {
+    public function listPenilaian($id_kelas, $id_materi)
+    {
         $data = $this->kelas->select('nama_kelas, fullname, materi, nama_kelas, nilai, ks.id_santri')
-                            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
-                            ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
-                            ->join('materi m', "m.id = j.id_materi", 'left')
-                            ->join('nilai n', "kelas.id = n.id_kelas and ks.id_santri = n.id_santri and m.id = n.id_materi", 'left')
-                            ->join('santri s', 's.id = ks.id_santri')
-                            ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname ');
+            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+            ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
+            ->join('materi m', "m.id = j.id_materi", 'left')
+            ->join('nilai n', "kelas.id = n.id_kelas and ks.id_santri = n.id_santri and m.id = n.id_materi", 'left')
+            ->join('santri s', 's.id = ks.id_santri')
+            ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname ');
         $this->data['content'] = $data->find();
         $this->data['id_kelas'] = $id_kelas;
         $this->data['id_materi'] = $id_materi;
         return view('nilai/penilaian', $this->data);
     }
 
-    public function process() {
+    public function process()
+    {
         $form = $this->request->getPost('form');
-        for ($i=0; $i < count($form['id_santri']); $i++) {
+        for ($i = 0; $i < count($form['id_santri']); $i++) {
             $data[] = [
                 'id_santri' => $form['id_santri'][$i],
                 'id_kelas'  => $form['id_kelas'],
@@ -124,6 +131,29 @@ class Nilai extends ResourceController
             ];
         }
         dd($return);
+    }
+
+    public function getNilaiSantri()
+    {
+        $param = $this->request->getPost();
+        $data = $this->kelas->select('materi, nilai')
+            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+            ->join('jadwal j', 'kelas.id = j.id_kelas')
+            ->join('materi m', 'm.id = j.id_materi')
+            ->join('nilai n', 'm.id = n.id_materi and kelas.id = n.id_kelas', 'left')
+            ->where(['kelas.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
+            ->groupBy('n.id');
+        $filtered = $data->countAllResults(false);
+
+        
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->jadwal->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
     /**
