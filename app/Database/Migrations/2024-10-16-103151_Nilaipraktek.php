@@ -4,9 +4,9 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Nilai extends Migration
+class Nilaipraktek extends Migration
 {
-    protected $tableName  = 'nilai';
+    protected $tableName  = 'nilai_praktek';
     public function up()
     {
         $this->forge->addField([
@@ -16,7 +16,7 @@ class Nilai extends Migration
                 'unsigned'      => true,
                 'auto_increment' => TRUE
             ),
-            'id_siswa' => array(
+            'id_santri' => array(
                 'type'          => 'int',
                 'constraint'    => 11,
                 'unsigned'      => true,
@@ -26,21 +26,25 @@ class Nilai extends Migration
                 'constraint'    => 11,
                 'unsigned'      => true,
             ),
-            'id_materi' => array(
+            'id_praktek' => array(
                 'type'          => 'int',
                 'constraint'    => 11,
                 'unsigned'      => true,
             ),
             'nilai' => array(
                 'type'          => 'varchar',
-                'constraint'    => 100,
+                'constraint'    => 3,
+                'null'          => true,
+            ),
+            'deskripsi' => array(
+                'type'          => 'text',
                 'null'          => true,
             ),
         ]);
         $this->forge->addkey('id', true);
-        $this->forge->addForeignKey('id_siswa', 'santri', 'id', 'restrict', 'restrict', 'fk_nilai_siswa');
-        $this->forge->addForeignKey('id_kelas', 'kelas', 'id', 'restrict', 'restrict', 'fk_nilai_kelas');
-        $this->forge->addForeignKey('id_materi', 'materi', 'id', 'restrict', 'restrict', 'fk_nilai_materi');
+        $this->forge->addForeignKey('id_santri', 'santri', 'id', 'restrict', 'restrict', 'fk_nilaiPraktek_siswa');
+        $this->forge->addForeignKey('id_kelas', 'kelas', 'id', 'restrict', 'restrict', 'fk_nilaiPraktek_kelas');
+        $this->forge->addForeignKey('id_praktek', 'praktek', 'id', 'restrict', 'restrict', 'fk_nilaiPraktek_materi');
         $this->forge->createtable($this->tableName);
     }
 

@@ -46,12 +46,12 @@
     </div>
 </div>
 <div class="form-group form-inline">
-    <label for="inlineinput" class="col-md-3 col-form-label">Submateri</label>
+    <label for="inlineinput" class="col-md-3 col-form-label">Materi</label>
     <div class="col-md-9 p-0 select2-input">
-        <select id="submateri" name="form[id_submateri]" class="form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+        <select id="materi" name="form[id_materi]" class="form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
             <option value="">&nbsp;</option>
-            <?php foreach ($submateri as $key): ?>
-                <option value="<?= $key['id']; ?>"><?= $key['submateri']; ?></option>
+            <?php foreach ($materi as $key): ?>
+                <option value="<?= $key['id']; ?>"><?= $key['materi']; ?></option>
             <?php endforeach; ?>
         </select>
     </div>

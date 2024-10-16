@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Master\Mmateri;
 use App\Models\Master\Msubmateri;
 use App\Models\Master\Mustadz;
 use App\Models\Mkelas;
@@ -42,6 +43,9 @@ class Jadwal extends ResourceController
         if (!empty($param['order'][0]['column'])) {
             $data = $this->mKelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
         }
+        if (!empty($param['id_kelas'])) {
+            $data = $this->mKelas->where("kelas.id = $param[id_kelas]");
+        }
         $filtered = $data->countAllResults(false);
         $datas = $data->find();
         $return = array(
@@ -73,9 +77,9 @@ class Jadwal extends ResourceController
     public function add($idKelas = null)
     {
         $ustadz = new Mustadz();
-        $submateri = new Msubmateri();
+        $materi = new Mmateri();
         $this->data['ustadz'] = $ustadz->findAll();
-        $this->data['submateri'] = $submateri->findAll();
+        $this->data['materi'] = $materi->findAll();
         $this->data['idKelas'] = $idKelas;
         return view('jadwal/add', $this->data);
     }

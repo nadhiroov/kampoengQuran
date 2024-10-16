@@ -85,6 +85,11 @@
                                     <span class="sub-item">Materi</span>
                                 </a>
                             </li>
+                            <li class="<?= $submenu_nilai_praktek ?? ''; ?>">
+                                <a href="<?= base_url() ?>praktek">
+                                    <span class="sub-item">Praktek</span>
+                                </a>
+                            </li>
                             <li>
                         </ul>
                     </div>

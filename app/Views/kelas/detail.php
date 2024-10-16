@@ -215,7 +215,7 @@
                 url: '<?= base_url('api/jadwal') ?>',
                 type: 'POST',
                 data: function(d) {
-                    d.id_class = '<?= $content['id']; ?>';
+                    d.id_kelas = '<?= $content['id']; ?>';
                 }
             },
             pageLength: 10,

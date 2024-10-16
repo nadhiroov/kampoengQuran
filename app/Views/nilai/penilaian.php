@@ -35,13 +35,13 @@
                                 <th>
                                     <p>Nama kelas</p>
                                 </th>
-                                <td><?= $content[0]['nama_kelas'] ?></td>
+                                <td><?= $nilai[0]['nama_kelas'] ?></td>
                             </tr>
                             <tr>
                                 <th>
                                     <p>Materi</p>
                                 </th>
-                                <td><?= $content[0]['materi'] ?></td>
+                                <td><?= $nilai[0]['materi'] ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -50,7 +50,7 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <form action="/nilai/process" method="post">
+                <form action="/nilai/process" method="post" class="formNilai">
                     <div class="card-header">
                         <div class="card-head-row card-tools-still-right">
                             <div class="card-title">Data Penilaian</div>
@@ -66,13 +66,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($content as $key): ?>
+                                    <?php foreach ($nilai as $key): ?>
                                         <tr>
                                             <td><?= $key['fullname']; ?></td>
                                             <td><input type="number" min="0" max="100" name="form[nilai][]" value="<?= $key['nilai']; ?>"></td>
                                             <input type="hidden" name="form[id_santri][]" value="<?= $key['id_santri']; ?>">
                                             <input type="hidden" name="form[id_kelas]" value="<?= $id_kelas; ?>">
                                             <input type="hidden" class="form-control input-full" name="form[id_materi]" value="<?= $id_materi; ?>">
+                                            <?= !is_null($key['id_nilai']) ? '<input type="hidden" name="form[id_nilai][]" value="' . $key['id_nilai'] . '">' : '' ?>
                                         </tr>
                                     <?php endforeach;  ?>
                                 </tbody>
@@ -103,7 +104,14 @@
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 <script>
     $(document).ready(function() {
-
+        $('.formNilai').submit(function(e) {
+            e.preventDefault()
+            saveData(this, function() {
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            })
+        })
     })
 </script>
 <?= $this->endSection(); ?>

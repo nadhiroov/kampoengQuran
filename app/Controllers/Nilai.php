@@ -92,14 +92,14 @@ class Nilai extends ResourceController
 
     public function listPenilaian($id_kelas, $id_materi)
     {
-        $data = $this->kelas->select('nama_kelas, fullname, materi, nama_kelas, nilai, ks.id_santri')
+        $nilai = $this->kelas->select('nama_kelas, fullname, materi, nilai, ks.id_santri, n.id as id_nilai')
             ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
             ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
             ->join('materi m', "m.id = j.id_materi", 'left')
             ->join('nilai n', "kelas.id = n.id_kelas and ks.id_santri = n.id_santri and m.id = n.id_materi", 'left')
             ->join('santri s', 's.id = ks.id_santri')
-            ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname ');
-        $this->data['content'] = $data->find();
+            ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname ')->find();
+        $this->data['nilai'] = $nilai;
         $this->data['id_kelas'] = $id_kelas;
         $this->data['id_materi'] = $id_materi;
         return view('nilai/penilaian', $this->data);
@@ -108,6 +108,7 @@ class Nilai extends ResourceController
     public function process()
     {
         $form = $this->request->getPost('form');
+        $insert = true;
         for ($i = 0; $i < count($form['id_santri']); $i++) {
             $data[] = [
                 'id_santri' => $form['id_santri'][$i],
@@ -115,9 +116,17 @@ class Nilai extends ResourceController
                 'id_materi'  => $form['id_materi'],
                 'nilai' => $form['nilai'][$i],
             ];
+            if (isset($form['id_nilai'][$i])) {
+                $data[$i]['id'] = $form['id_nilai'][$i];
+                $insert = false;
+            }
         }
         try {
-            $this->model->insertBatch($data);
+            if ($insert) {
+                $this->model->insertBatch($data);
+            }else{
+                $this->model->updateBatch($data, 'id');
+            }
             $return = [
                 'status'    => 1,
                 'title'     => 'Berhasil',
@@ -130,22 +139,27 @@ class Nilai extends ResourceController
                 'message'   => $er->getMessage()
             ];
         }
-        dd($return);
+        return json_encode($return);
     }
 
     public function getNilaiSantri()
     {
         $param = $this->request->getPost();
-        $data = $this->kelas->select('materi, nilai')
-            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
-            ->join('jadwal j', 'kelas.id = j.id_kelas')
-            ->join('materi m', 'm.id = j.id_materi')
-            ->join('nilai n', 'm.id = n.id_materi and kelas.id = n.id_kelas', 'left')
-            ->where(['kelas.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
+        // $data = $this->kelas->select('materi, nilai, ks.id_santri, kelas.id')
+        //     ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+        //     ->join('jadwal j', 'kelas.id = j.id_kelas')
+        //     ->join('materi m', 'm.id = j.id_materi')
+        //     ->join('nilai n', 'm.id = n.id_materi and kelas.id = n.id_kelas', 'left')
+        //     ->where(['kelas.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']]);
+        $data = $this->santri->select('fullname, materi, nilai, ks.id_santri, ks.id_kelas, n.id as id_nilai')
+            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+            ->join('jadwal j', 'ks.id_kelas = j.id_kelas')
+            ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
+            ->join('nilai n', 'm.id = n.id_materi and ks.id_kelas = n.id_kelas', 'left')
+            ->where(['m.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
             ->groupBy('n.id');
         $filtered = $data->countAllResults(false);
 
-        
         $datas = $data->find();
         $return = array(
             "draw" => $param['draw'] ?? 1,

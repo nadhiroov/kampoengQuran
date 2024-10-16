@@ -18,8 +18,6 @@ class Alternilai extends Migration
             ],
         ];
         $this->forge->modifyColumn($this->tableName, $fields);
-        $this->forge->dropForeignKey($this->tableName, 'fk_nilai_siswa');
-        $this->forge->addForeignKey('id_santri', 'santri', 'id', 'restrict', 'restrict', 'fk_nilai_siswa');
     }
 
     public function down()
