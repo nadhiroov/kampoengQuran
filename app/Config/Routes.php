@@ -84,6 +84,14 @@ $routes->delete('jadwal/(:num)', 'Jadwal::delete/$1');
 $routes->get('nilai', 'Nilai::index');
 $routes->post('nilai/process', 'Nilai::process');
 
+// nilai praktek
+$routes->get('praktek', 'NilaiPraktek::index');
+$routes->post('nilaiPraktek/process', 'NilaiPraktek::process');
+
+// absensi
+$routes->get('absensi', 'Absensi::index');
+$routes->post('absensi/process', 'Absensi::process');
+
 // Show image
 $routes->get('showImg/(:segment)/(:any)', function ($segment, $filename) {
     $path = WRITEPATH . "uploads/$segment/$filename";
@@ -118,4 +126,14 @@ $routes->group('api', static function ($routes) {
     $routes->post('nilai/kelas/(:num)', 'Nilai::getDataDetail/$1');
     $routes->get('nilai/kelas/(:num)/(:num)', 'Nilai::listPenilaian/$1/$2');
     $routes->post('listNilai', 'Nilai::getNilaiSantri');
+    
+    // praktek
+    $routes->post('nilaiPraktek', 'NilaiPraktek::getData');
+    $routes->get('nilaiPraktek/kelas/(:num)', 'NilaiPraktek::detail/$1');
+    $routes->post('nilaiPraktek/kelas/(:num)', 'NilaiPraktek::getDataDetail/$1');
+    $routes->get('nilaiPraktek/kelas/(:num)/(:num)', 'nilaiPraktek::listPenilaian/$1/$2');
+    
+    // absensi
+    $routes->post('absensi', 'Absensi::getData');
+    $routes->get('absensi/kelas/(:num)', 'Absensi::detail/$1');
 });

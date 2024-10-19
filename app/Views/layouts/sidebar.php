@@ -90,6 +90,11 @@
                                     <span class="sub-item">Praktek</span>
                                 </a>
                             </li>
+                            <li class="<?= $submenu_nilai_absensi ?? ''; ?>">
+                                <a href="<?= base_url() ?>absensi">
+                                    <span class="sub-item">Absensi</span>
+                                </a>
+                            </li>
                             <li>
                         </ul>
                     </div>

@@ -32,63 +32,119 @@ class NilaiPraktek extends ResourceController
      */
     public function index()
     {
-        //
+        return view('nilaiPraktek/index', $this->data);
     }
 
-    /**
-     * Return the properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function show($id = null)
+    public function detail($id_kelas)
     {
-        //
+        $this->data['content'] = $this->kelas->where(['id' => $id_kelas])->first();
+        return view('nilaiPraktek/detail', $this->data);
     }
 
-    /**
-     * Return a new resource object, with default properties.
-     *
-     * @return ResponseInterface
-     */
-    public function new()
+    public function getData()
     {
-        //
+        $param = $this->request->getPost();
+        $data = $this->kelas->select('kelas.*, u.fullname')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left');
+        if (!empty($param['id_santri'])) {
+            $data = $this->kelas->join('kelas_santri  ks', 'kelas.id = ks.id_kelas');
+            $data = $this->kelas->where(['ks.id_santri' => $param['id_santri']]);
+        }
+        $data = $this->kelas->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc')->groupBy('kelas.id');
+        if (!empty($param['search']['value'])) {
+            $data = $this->kelas->like('nama_kelas', $param['search']['value']);
+            $data = $this->kelas->orLike('fullname', $param['search']['value']);
+            $data = $this->kelas->orLike('tahun_ajaran', $param['search']['value']);
+        }
+        if (!empty($param['order'][0]['column'])) {
+            $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
+        }
+        $filtered = $data->countAllResults(false);
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->kelas->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters.
-     *
-     * @return ResponseInterface
-     */
-    public function create()
+    public function getDataDetail($id_kelas = '')
     {
-        //
+        $param = $this->request->getPost();
+        $data = $this->jadwal->select('jadwal.id, jadwal.id_kelas, materi, jadwal.id_materi ,fullname')->join('materi m', 'm.id = jadwal.id_materi', 'left')->join('praktek p', 'm.id = p.id_materi')->join('ustadz u', 'u.id = jadwal.id_ustadz', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->groupBy('m.id');
+        if (!empty($param['search']['value'])) {
+            $data = $this->jadwal->like('materi', $param['search']['value']);
+            $data = $this->jadwal->orLikelike('fullname', $param['search']['value']);
+        }
+        if (!empty($param['order'][0]['column'])) {
+            $data = $this->jadwal->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
+        }
+        if ($id_kelas != '') {
+            $data = $this->jadwal->where(['jadwal.id_kelas' => $id_kelas]);
+        }
+        $filtered = $data->countAllResults(false);
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->jadwal->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
-    /**
-     * Return the editable properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function edit($id = null)
+    public function listPenilaian($id_kelas, $id_materi)
     {
-        //
+        $nilai = $this->kelas->select('nama_kelas, fullname, materi, nilai, deskripsi, ks.id_santri, np.id as id_nilai, p.id as id_praktek')
+        ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+        ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
+        ->join('materi m', "m.id = j.id_materi", 'left')
+        ->join('praktek p', 'm.id  = p.id_materi')
+        ->join('nilai_praktek np', "kelas.id = np.id_kelas and ks.id_santri = np.id_santri and p.id = np.id_praktek", 'left')
+        ->join('santri s', 's.id = ks.id_santri')
+        ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname')->groupBy('s.id')->find();
+        $this->data['nilai'] = $nilai;
+        $this->data['id_kelas'] = $id_kelas;
+        return view('nilaiPraktek/penilaian', $this->data);
     }
 
-    /**
-     * Add or update a model resource, from "posted" properties.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function update($id = null)
+    public function process()
     {
-        //
+        $form = $this->request->getPost('form');
+        $insert = true;
+        for ($i = 0; $i < count($form['id_santri']); $i++) {
+            $data[] = [
+                'id_santri' => $form['id_santri'][$i],
+                'id_kelas'  => $form['id_kelas'],
+                'id_praktek' => $form['id_praktek'],
+                'nilai'     => $form['nilai'][$i],
+                'deskripsi' => $form['deskripsi'][$i],
+            ];
+            if (isset($form['id_nilai'][$i])) {
+                $data[$i]['id'] = $form['id_nilai'][$i];
+                $insert = false;
+            }
+        }
+        try {
+            if ($insert) {
+                $this->model->insertBatch($data);
+            } else {
+                $this->model->updateBatch($data, 'id');
+            }
+            $return = [
+                'status'    => 1,
+                'title'     => 'Berhasil',
+                'message'   => 'Data berhasil disimpan'
+            ];
+        } catch (\Exception $er) {
+            $return = [
+                'status'    => 0,
+                'title'     => 'Error',
+                'message'   => $er->getMessage()
+            ];
+        }
+        return json_encode($return);
     }
 
     /**
