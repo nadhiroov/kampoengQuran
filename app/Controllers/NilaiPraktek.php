@@ -147,15 +147,26 @@ class NilaiPraktek extends ResourceController
         return json_encode($return);
     }
 
-    /**
-     * Delete the designated resource object from the model.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function delete($id = null)
+    public function getNilaiPraktek()
     {
-        //
+        $param = $this->request->getPost();
+        $data = $this->santri->select('fullname, materi, praktek, nilai, deskripsi, ks.id_santri, ks.id_kelas, n.id as id_nilai_praktek')
+        ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+        ->join('jadwal j', 'ks.id_kelas = j.id_kelas')
+        ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
+        ->join('praktek p', 'm.id = p.id_materi')
+        ->join('nilai_praktek n', 'p.id = n.id_praktek and ks.id_kelas = n.id_kelas', 'left')
+        ->where(['m.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
+        ->groupBy('santri.id');
+        $filtered = $data->countAllResults(false);
+
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->santri->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 }

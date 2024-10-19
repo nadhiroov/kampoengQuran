@@ -145,96 +145,22 @@ class Nilai extends ResourceController
     public function getNilaiSantri()
     {
         $param = $this->request->getPost();
-        // $data = $this->kelas->select('materi, nilai, ks.id_santri, kelas.id')
-        //     ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
-        //     ->join('jadwal j', 'kelas.id = j.id_kelas')
-        //     ->join('materi m', 'm.id = j.id_materi')
-        //     ->join('nilai n', 'm.id = n.id_materi and kelas.id = n.id_kelas', 'left')
-        //     ->where(['kelas.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']]);
         $data = $this->santri->select('fullname, materi, nilai, ks.id_santri, ks.id_kelas, n.id as id_nilai')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
             ->join('jadwal j', 'ks.id_kelas = j.id_kelas')
             ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
             ->join('nilai n', 'm.id = n.id_materi and ks.id_kelas = n.id_kelas', 'left')
             ->where(['m.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
-            ->groupBy('n.id');
+            ->groupBy('santri.id');
         $filtered = $data->countAllResults(false);
 
         $datas = $data->find();
         $return = array(
             "draw" => $param['draw'] ?? 1,
             "recordsFiltered" => $filtered,
-            "recordsTotal" => $this->jadwal->countAllResults(),
+            "recordsTotal" => $this->santri->countAllResults(),
             "data" => $datas
         );
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
-    }
-
-    /**
-     * Return the properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function show($id = null)
-    {
-        //
-    }
-
-    /**
-     * Return a new resource object, with default properties.
-     *
-     * @return ResponseInterface
-     */
-    public function new()
-    {
-        //
-    }
-
-    /**
-     * Create a new resource object, from "posted" parameters.
-     *
-     * @return ResponseInterface
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Return the editable properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function edit($id = null)
-    {
-        //
-    }
-
-    /**
-     * Add or update a model resource, from "posted" properties.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function update($id = null)
-    {
-        //
-    }
-
-    /**
-     * Delete the designated resource object from the model.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function delete($id = null)
-    {
-        //
     }
 }

@@ -131,7 +131,8 @@ $routes->group('api', static function ($routes) {
     $routes->post('nilaiPraktek', 'NilaiPraktek::getData');
     $routes->get('nilaiPraktek/kelas/(:num)', 'NilaiPraktek::detail/$1');
     $routes->post('nilaiPraktek/kelas/(:num)', 'NilaiPraktek::getDataDetail/$1');
-    $routes->get('nilaiPraktek/kelas/(:num)/(:num)', 'nilaiPraktek::listPenilaian/$1/$2');
+    $routes->get('nilaiPraktek/kelas/(:num)/(:num)', 'NilaiPraktek::listPenilaian/$1/$2');
+    $routes->post('listNilaiPraktek', 'NilaiPraktek::getNilaiPraktek');
     
     // absensi
     $routes->post('absensi', 'Absensi::getData');
