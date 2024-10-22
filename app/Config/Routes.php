@@ -120,6 +120,10 @@ $routes->group('api', static function ($routes) {
     $routes->post('jadwal', 'Jadwal::getData');
     $routes->post('jadwal/(:num)', 'Jadwal::getJadwalSantri/$1');
 
+    // materi
+    $routes->post('materi', 'Master\Materi::getDataByStudent');
+
+
     // nilai
     $routes->post('nilai', 'Nilai::getData');
     $routes->get('nilai/kelas/(:num)', 'Nilai::detail/$1');

@@ -2,16 +2,18 @@
 
 namespace App\Controllers\Master;
 
-use App\Controllers\BaseController;
 use App\Models\Master\Mmateri;
 use App\Models\Master\MPraktek;
 use App\Models\Master\Msubmateri;
+use App\Models\Mkelas;
+use CodeIgniter\RESTful\ResourceController;
 
-class Materi extends BaseController
+class Materi extends ResourceController
 {
     protected $materi;
     protected $submateri;
     protected $praktek;
+    protected $kelas;
 
     public function __construct()
     {
@@ -33,7 +35,7 @@ class Materi extends BaseController
         return view('master/materi/add', $this->data);
     }
 
-    public function getData(): string
+    public function getData()
     {
         $param = $this->request->getPost();
         $data = $this->materi->select('materi.*, count(s.id) as count_submateri')->join('submateri s', 'materi.id = s.id_materi', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('materi', 'asc')->groupBy('materi.id')->where('s.deleted_at is null');
@@ -51,7 +53,41 @@ class Materi extends BaseController
             "recordsTotal" => $this->materi->countAllResults(),
             "data" => $datas
         );
-        return json_encode($return);
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
+    }
+
+    public function getDataByStudent()
+    {
+        $this->kelas = new Mkelas();
+        $param = $this->request->getPost();
+        $data = $this->kelas->select('')
+            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+            ->join('jadwal j', 'kelas.id = j.id_kelas', 'left')
+            ->join('materi m', 'j.id.materi =  m.id and m.deleted_at is null', 'left')
+            ->join('submateri sm', 'm.id = sm.id_materi', 'left')->orderBy('kelas.semester, materi');
+        if (!empty($param['semester'])) {
+            $data = $this->kelas->where(['kelas.semester' => $param['semester']]);
+        }
+        if (!empty($param['id_santri'])) {
+            $data = $data->where(['ks.id_santri' => $param['id_santri']]);
+        }
+
+        $data = $this->materi->select('materi.*, count(s.id) as count_submateri')->join('submateri s', 'materi.id = s.id_materi', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('materi', 'asc')->groupBy('materi.id')->where('s.deleted_at is null');
+        if (!empty($param['search']['value'])) {
+            $data = $this->materi->like('materi', $param['search']['value']);
+        }
+        if (!empty($param['order'][0]['column'])) {
+            $data = $this->materi->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
+        }
+        $filtered = $data->countAllResults(false);
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->materi->countAllResults(),
+            "data" => $datas
+        );
+        return $this->respond($return);
     }
 
     public function process(): string
