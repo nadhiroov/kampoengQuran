@@ -12,15 +12,25 @@
 </div>
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Semester</label>
-    <div class="col-md-9 p-0">
-        <input type="text" class="form-control input-full" placeholder="masukkan nama semester" name="form[semester]">
+    <div class="col-md-9 p-0 select2-input">
+        <select id="semester" name="form[semester]" class="form-control select2-hidden-accessible" data-select2-id="semester" tabindex="-1" aria-hidden="true">
+            <option value="" disabled selected>Pilih Semester</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
     </div>
 </div>
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Pengajar</label>
     <div class="col-md-9 p-0 select2-input">
         <select id="basic" name="form[id_ustadz]" class="form-control select2-hidden-accessible" data-select2-id="basic" tabindex="-1" aria-hidden="true">
-            <option value="">&nbsp;</option>
+            <option value="" disabled selected>Pilih pengajar</option>
             <?php foreach ($ustadz as $key): ?>
                 <option value="<?= $key['id']; ?>"><?= $key['fullname']; ?></option>
             <?php endforeach; ?>

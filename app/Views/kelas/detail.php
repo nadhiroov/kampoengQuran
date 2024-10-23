@@ -278,7 +278,7 @@
                 $('#hari').select2({
                     width: '100%'
                 })
-                $('#submateri').select2({
+                $('#materi').select2({
                     width: '100%'
                 })
                 $('#ustadz').select2({

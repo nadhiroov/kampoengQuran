@@ -28,10 +28,6 @@
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
                         <div class="card-title">Semua data</div>
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
-                            <i class="fa fa-plus"></i>
-                            Tambah baru
-                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -42,8 +38,7 @@
                                     <th>No</th>
                                     <th>Nama Kelas</th>
                                     <th>Tahun Ajaran - Semester</th>
-                                    <th>Pengajar</th>
-                                    <th>Santri</th>
+                                    <th>Walikelas</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -56,70 +51,24 @@
         </div>
     </div>
 </div>
-
-<!-- Modal add new -->
-<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Tambah baru</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="formAdd" action="<?= base_url() ?>kelas/process" method="POST">
-                <div class="modal-body add-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal edit -->
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Edit data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="formEdit" action="<?= base_url() ?>kelas/process" method="POST">
-                <div class="modal-body edited-body"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <?= $this->endSection(); ?>
 
 
 <?= $this->section('js'); ?>
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url('api/kelas') ?>',
+                url: '<?= base_url('api/nilaiQuran') ?>',
                 type: 'POST'
             },
             pageLength: 10,
             serverSide: true,
             processing: true,
             "columnDefs": [{
-                "width": "20%",
+                "width": "20px",
                 "targets": 4
             }, {
                 "targets": 4,
@@ -136,22 +85,17 @@
                 },
                 {
                     data: 'tahun_ajaran',
-                    render : function(data, type, row){
-                        return data + ' - ' +row.semester
+                    render: function(data, type, row) {
+                        return data + ' - ' + row.semester
                     }
                 },
                 {
                     data: 'fullname'
                 },
                 {
-                    data: 'total_santri'
-                },
-                {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="api/kelas/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
-                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/santri/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        return `<a href="quran/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
                     }
                 }
             ]
@@ -165,9 +109,6 @@
             success: function(data) {
                 $('.add-body').html(data)
                 $('#basic').select2({
-                    width: '100%'
-                })
-                $('#semester').select2({
                     width: '100%'
                 })
             }

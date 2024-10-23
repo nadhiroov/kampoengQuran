@@ -89,7 +89,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>admin/process" method="POST">
+            <form class="formEdit" action="<?= base_url() ?>ustadz/process" method="POST">
                 <div class="modal-body edited-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>

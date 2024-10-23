@@ -145,15 +145,15 @@ class Nilai extends ResourceController
     public function getNilaiSantri()
     {
         $param = $this->request->getPost();
-        $data = $this->santri->select('fullname, materi, nilai, ks.id_santri, ks.id_kelas, n.id as id_nilai')
+        $data = $this->santri->select('fullname, materi, nilai, m.id as id_materi, ks.id_santri, ks.id_kelas, n.id as id_nilai')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
-            ->join('jadwal j', 'ks.id_kelas = j.id_kelas')
+            ->join('kelas k', 'k.id = ks.id_kelas')
+            ->join('jadwal j', 'k.id = j.id_kelas')
             ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
             ->join('nilai n', 'm.id = n.id_materi and ks.id_kelas = n.id_kelas', 'left')
-            ->where(['m.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
+            ->where(['k.semester' => $param['semester'], 'santri.id' => $param['id_santri']])
             ->groupBy('santri.id');
         $filtered = $data->countAllResults(false);
-
         $datas = $data->find();
         $return = array(
             "draw" => $param['draw'] ?? 1,

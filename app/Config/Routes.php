@@ -88,6 +88,13 @@ $routes->post('nilai/process', 'Nilai::process');
 $routes->get('praktek', 'NilaiPraktek::index');
 $routes->post('nilaiPraktek/process', 'NilaiPraktek::process');
 
+// niali quran
+$routes->get('quran', 'NilaiQuran::index');
+$routes->get('nilaiQuran/add/(:num)/(:num)', 'NilaiQuran::add/$1/$2');
+$routes->get('quran/(:num)', 'NilaiQuran::detail/$1');
+$routes->get('detailSantri', 'NilaiQuran::detailSantri');
+$routes->post('nilaiQuran/process', 'NilaiQuran::process');
+
 // absensi
 $routes->get('absensi', 'Absensi::index');
 $routes->post('absensi/process', 'Absensi::process');
@@ -137,6 +144,11 @@ $routes->group('api', static function ($routes) {
     $routes->post('nilaiPraktek/kelas/(:num)', 'NilaiPraktek::getDataDetail/$1');
     $routes->get('nilaiPraktek/kelas/(:num)/(:num)', 'NilaiPraktek::listPenilaian/$1/$2');
     $routes->post('listNilaiPraktek', 'NilaiPraktek::getNilaiPraktek');
+    
+    // quran
+    $routes->post('nilaiQuran', 'NilaiQuran::getData');
+    $routes->post('nilaiQuran/kelas/(:num)', 'NilaiQuran::getDataDetail/$1');
+    $routes->post('nilaiQuran/santri', 'NilaiQuran::getNilaiSantri');
     
     // absensi
     $routes->post('absensi', 'Absensi::getData');

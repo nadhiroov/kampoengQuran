@@ -60,31 +60,30 @@ class Materi extends ResourceController
     {
         $this->kelas = new Mkelas();
         $param = $this->request->getPost();
-        $data = $this->kelas->select('')
+        $data = $this->kelas->select('m.id as id_materi, materi, count(sm.id) as count_submateri, kelas.semester')
             ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
             ->join('jadwal j', 'kelas.id = j.id_kelas', 'left')
-            ->join('materi m', 'j.id.materi =  m.id and m.deleted_at is null', 'left')
-            ->join('submateri sm', 'm.id = sm.id_materi', 'left')->orderBy('kelas.semester, materi');
+            ->join('materi m', 'j.id_materi =  m.id and m.deleted_at is null')
+            ->join('submateri sm', 'm.id = sm.id_materi and sm.deleted_at is null')->orderBy('kelas.semester, materi')->groupBy('m.id');
         if (!empty($param['semester'])) {
             $data = $this->kelas->where(['kelas.semester' => $param['semester']]);
         }
         if (!empty($param['id_santri'])) {
-            $data = $data->where(['ks.id_santri' => $param['id_santri']]);
+            $data = $this->kelas->where(['ks.id_santri' => $param['id_santri']]);
         }
-
-        $data = $this->materi->select('materi.*, count(s.id) as count_submateri')->join('submateri s', 'materi.id = s.id_materi', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('materi', 'asc')->groupBy('materi.id')->where('s.deleted_at is null');
+        
         if (!empty($param['search']['value'])) {
-            $data = $this->materi->like('materi', $param['search']['value']);
+            $data = $this->kelas->like('materi', $param['search']['value']);
         }
         if (!empty($param['order'][0]['column'])) {
-            $data = $this->materi->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
+            $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
         }
         $filtered = $data->countAllResults(false);
         $datas = $data->find();
         $return = array(
             "draw" => $param['draw'] ?? 1,
             "recordsFiltered" => $filtered,
-            "recordsTotal" => $this->materi->countAllResults(),
+            "recordsTotal" => $this->kelas->countAllResults(),
             "data" => $datas
         );
         return $this->respond($return);
@@ -141,7 +140,7 @@ class Materi extends ResourceController
             "recordsTotal" => $this->materi->countAllResults(),
             "data" => $datas
         );
-        return json_encode($return);
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
     public function getDetailPraktek($idMateri = null)

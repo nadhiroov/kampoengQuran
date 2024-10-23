@@ -2,6 +2,7 @@
     <label for="inlineinput" class="col-md-3 col-form-label">Username</label>
     <div class="col-md-9 p-0">
         <input type="text" class="form-control input-full" placeholder="masukkan username" name="form[username]" value="<?= $content['username']; ?>">
+        <input type="hidden" name="form[id]" value="<?= $content['id']; ?>">
     </div>
 </div>
 <div class="form-group form-inline">
