@@ -40,7 +40,10 @@ class Materi extends ResourceController
         $param = $this->request->getPost();
         $data = $this->materi->select('materi.*, count(s.id) as count_submateri')->join('submateri s', 'materi.id = s.id_materi', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('materi', 'asc')->groupBy('materi.id')->where('s.deleted_at is null');
         if (!empty($param['search']['value'])) {
-            $data = $this->materi->like('materi', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('materi', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->materi->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -71,9 +74,12 @@ class Materi extends ResourceController
         if (!empty($param['id_santri'])) {
             $data = $this->kelas->where(['ks.id_santri' => $param['id_santri']]);
         }
-        
+
         if (!empty($param['search']['value'])) {
-            $data = $this->kelas->like('materi', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('materi', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -127,7 +133,10 @@ class Materi extends ResourceController
         $param = $this->request->getPost();
         $data = $this->submateri->select('submateri.*, m.materi')->join('materi m', 'm.id = submateri.id_materi', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->where(['m.id' => $idMateri]);
         if (!empty($param['search']['value'])) {
-            $data = $this->materi->like('materi', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('materi', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->materi->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -148,7 +157,10 @@ class Materi extends ResourceController
         $param = $this->request->getPost();
         $data = $this->praktek->select('praktek.*, m.materi')->join('materi m', 'm.id = praktek.id_materi', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->where(['m.id' => $idMateri]);
         if (!empty($param['search']['value'])) {
-            $data = $this->materi->like('materi', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('materi', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->materi->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);

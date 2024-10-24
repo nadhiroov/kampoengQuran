@@ -154,7 +154,7 @@
                     render: function(data, type, row) {
                         // <a href="categoryDetail/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
                         return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
-                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/admin/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/ustadz/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]

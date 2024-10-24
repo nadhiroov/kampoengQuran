@@ -35,10 +35,13 @@ class Jadwal extends ResourceController
         $param = $this->request->getPost();
         $data = $this->mKelas->select('j.*, kelas.nama_kelas, u.fullname as nama_ustadz, materi')->join('jadwal j', 'kelas.id = j.id_kelas')->join('ustadz u', 'u.id = j.id_ustadz', 'left')->join('materi m', 'm.id = j.id_materi', 'left');
         if (!empty($param['search']['value'])) {
-            $data = $this->mKelas->like('hari', $param['search']['value']);
-            $data = $this->mKelas->orLike('jam_awal', $param['search']['value']);
-            $data = $this->mKelas->orLike('jam_akhir', $param['search']['value']);
-            $data = $this->mKelas->orLike('lokasi', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('hari', $searchValue)
+                ->orLike('jama_awal', $searchValue)
+                ->orLike('jam_akhir', $searchValue)
+                ->orLike('lokasi', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->mKelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);

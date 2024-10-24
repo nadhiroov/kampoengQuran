@@ -42,69 +42,83 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <div class="form-group form-group-default">
-                                <label>NIS</label>
-                                <input type="text" class="form-control" name="form[nis]" placeholder="Name" value="<?= $content['nis']; ?>">
+                    <form action="/santri/process" method="post" class="formEdit">
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="form-group form-group-default">
+                                    <label>NIS</label>
+                                    <input type="text" class="form-control" name="form[nis]" placeholder="NIS" value="<?= $content['nis']; ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-group-default">
+                                    <label>Nama lengkap</label>
+                                    <input type="text" class="form-control" name="form[fullname]" placeholder="Nama Lengkap" value="<?= $content['fullname']; ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-group-default">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" name="form[email]" placeholder="Email" value="<?= $content['email']; ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-group-default">
+                                    <label>Password</label>
+                                    <input type="text" class="form-control" name="form[password]" placeholder="password">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-group-default">
-                                <label>Nama lengkap</label>
-                                <input type="text" class="form-control" name="form[name]" placeholder="Name" value="<?= $content['fullname']; ?>">
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <div class="form-group form-group-default">
+                                    <label>Tanggal lahir</label>
+                                    <input type="text" class="form-control" id="datepicker" name="form[tanggal_lahir]" placeholder="Tanggal lahir" name="form[tanggal_lahir]">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-group-default">
+                                    <label>Gender</label>
+                                    <select class="form-control" id="gender" name="form[gender]">
+                                        <option <?= $content['gender'] == 'Pria' ? 'selected' : ''; ?>>Pria</option>
+                                        <option <?= $content['gender'] == 'Wanita' ? 'selected' : ''; ?>>Wanita</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-group-default">
+                                    <label>Phone</label>
+                                    <input type="text" class="form-control" value="<?= $content['phone']; ?>" name="form[phone]" placeholder="Phone">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-group-default">
+                                    <label>Angkatan</label>
+                                    <input type="text" class="form-control" value="<?= $content['angkatan']; ?>" name="form[angkatan]" placeholder="angkatan">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-group-default">
-                                <label>Email</label>
-                                <input type="email" class="form-control" name="form[email]" placeholder="Name" value="<?= $content['email']; ?>">
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="form-group form-group-default">
+                                    <label>Alamat Asal</label>
+                                    <textarea class="form-control" name="form[alamat_asal]" placeholder="Alamat asal" rows="2"><?= $content['alamat_asal']; ?></textarea>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <div class="form-group form-group-default">
-                                <label>Tanggal lahir</label>
-                                <input type="text" class="form-control" id="datepicker" name="datepicker" value="<?= $content['tanggal_lahir']; ?>" placeholder="Tanggal lahir" name="form[tanggal_lahir]">
+                        <div class="row mt-3 mb-1">
+                            <div class="col-md-12">
+                                <div class="form-group form-group-default">
+                                    <label>Alamat Domisili</label>
+                                    <textarea class="form-control" name="form[alamat_domisili]" placeholder="Alamat domisili" rows="2"><?= $content['alamat_domisili']; ?></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-group-default">
-                                <label>Gender</label>
-                                <select class="form-control" id="gender">
-                                    <option <?= $content['gender'] == 'Pria' ? 'selected' : ''; ?>>Pria</option>
-                                    <option <?= $content['gender'] == 'Wanita' ? 'selected' : ''; ?>>Wanita</option>
-                                </select>
-                            </div>
+                        <input type="hidden" name="form[id]" value="<?= $content['id']; ?>">
+                        <div class="text-right mt-3 mb-3">
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-group-default">
-                                <label>Phone</label>
-                                <input type="text" class="form-control" value="<?= $content['phone']; ?>" name="form[phone]" placeholder="Phone">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <div class="form-group form-group-default">
-                                <label>Alamat Asal</label>
-                                <textarea class="form-control" name="form[alamat_asal]" placeholder="Alamat asal" rows="2"><?= $content['alamat_asal']; ?></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-3 mb-1">
-                        <div class="col-md-12">
-                            <div class="form-group form-group-default">
-                                <label>Alamat Domisili</label>
-                                <textarea class="form-control" name="form[alamat_domisili]" placeholder="Alamat domisili" rows="2"><?= $content['alamat_domisili']; ?></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-right mt-3 mb-3">
-                        <button class="btn btn-primary">Save</button>
-                        <button class="btn btn-danger">Reset</button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -122,23 +136,6 @@
                         <div class="name"><?= $content['fullname']; ?></div>
                         <div class="job"><?= $content['nis']; ?></div>
                         <div class="desc"><?= $content['angkatan']; ?></div>
-                        <div class="social-media">
-                            <a class="btn btn-info btn-twitter btn-sm btn-link" href="#">
-                                <span class="btn-label just-icon"><i class="flaticon-twitter"></i> </span>
-                            </a>
-                            <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="#">
-                                <span class="btn-label just-icon"><i class="flaticon-google-plus"></i> </span>
-                            </a>
-                            <a class="btn btn-primary btn-sm btn-link" rel="publisher" href="#">
-                                <span class="btn-label just-icon"><i class="flaticon-facebook"></i> </span>
-                            </a>
-                            <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="#">
-                                <span class="btn-label just-icon"><i class="flaticon-dribbble"></i> </span>
-                            </a>
-                        </div>
-                        <div class="view-profile">
-                            <a href="#" class="btn btn-secondary btn-block">View Full Profile</a>
-                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -161,5 +158,30 @@
         </div>
     </div>
 </div>
+
+<?= $this->endSection(); ?>
+
+<?= $this->section('js'); ?>
+<script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#datepicker').datetimepicker({
+            format: 'MM/DD/YYYY',
+            defaultDate: '<?= $content['tanggal_lahir']; ?>'
+        })
+    })
+
+    $('.formEdit').submit(function(e) {
+        e.preventDefault()
+        saveData(this, function() {
+            setTimeout(() => {
+                location.reload()
+            }, 1000);
+        })
+    })
+</script>
 
 <?= $this->endSection(); ?>

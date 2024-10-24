@@ -26,9 +26,12 @@ class Admin extends BaseController
         // return $this->respond($this->request->getPost());
         $data = $this->model->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('username', 'asc');
         if (!empty($param['search']['value'])) {
-            $data = $this->model->like('username', $param['search']['value']);
-            $data = $this->model->orLike('fullname', $param['search']['value']);
-            $data = $this->model->orLike('email', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('username', $searchValue)
+                ->orLike('fullname', $searchValue)
+                ->orLike('email', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->model->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);

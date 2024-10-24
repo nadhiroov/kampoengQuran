@@ -51,9 +51,12 @@ class NilaiPraktek extends ResourceController
         }
         $data = $this->kelas->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc')->groupBy('kelas.id');
         if (!empty($param['search']['value'])) {
-            $data = $this->kelas->like('nama_kelas', $param['search']['value']);
-            $data = $this->kelas->orLike('fullname', $param['search']['value']);
-            $data = $this->kelas->orLike('tahun_ajaran', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('nama_kelas', $searchValue)
+                ->orLike('fullname', $searchValue)
+                ->orLike('tahun_ajaran', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -74,8 +77,11 @@ class NilaiPraktek extends ResourceController
         $param = $this->request->getPost();
         $data = $this->jadwal->select('jadwal.id, jadwal.id_kelas, materi, jadwal.id_materi ,fullname')->join('materi m', 'm.id = jadwal.id_materi', 'left')->join('praktek p', 'm.id = p.id_materi')->join('ustadz u', 'u.id = jadwal.id_ustadz', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->groupBy('m.id');
         if (!empty($param['search']['value'])) {
-            $data = $this->jadwal->like('materi', $param['search']['value']);
-            $data = $this->jadwal->orLikelike('fullname', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('materi', $searchValue)
+                ->orLike('fullname', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->jadwal->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -97,13 +103,13 @@ class NilaiPraktek extends ResourceController
     public function listPenilaian($id_kelas, $id_materi)
     {
         $nilai = $this->kelas->select('nama_kelas, fullname, materi, nilai, deskripsi, ks.id_santri, np.id as id_nilai, p.id as id_praktek')
-        ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
-        ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
-        ->join('materi m', "m.id = j.id_materi", 'left')
-        ->join('praktek p', 'm.id  = p.id_materi')
-        ->join('nilai_praktek np', "kelas.id = np.id_kelas and ks.id_santri = np.id_santri and p.id = np.id_praktek", 'left')
-        ->join('santri s', 's.id = ks.id_santri')
-        ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname')->groupBy('s.id')->find();
+            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+            ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
+            ->join('materi m', "m.id = j.id_materi", 'left')
+            ->join('praktek p', 'm.id  = p.id_materi')
+            ->join('nilai_praktek np', "kelas.id = np.id_kelas and ks.id_santri = np.id_santri and p.id = np.id_praktek", 'left')
+            ->join('santri s', 's.id = ks.id_santri')
+            ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname')->groupBy('s.id')->find();
         $this->data['nilai'] = $nilai;
         $this->data['id_kelas'] = $id_kelas;
         return view('nilaiPraktek/penilaian', $this->data);
@@ -151,13 +157,13 @@ class NilaiPraktek extends ResourceController
     {
         $param = $this->request->getPost();
         $data = $this->santri->select('fullname, materi, praktek, nilai, deskripsi, ks.id_santri, ks.id_kelas, n.id as id_nilai_praktek')
-        ->join('kelas_santri ks', 'santri.id = ks.id_santri')
-        ->join('jadwal j', 'ks.id_kelas = j.id_kelas')
-        ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
-        ->join('praktek p', 'm.id = p.id_materi')
-        ->join('nilai_praktek n', 'p.id = n.id_praktek and ks.id_kelas = n.id_kelas', 'left')
-        ->where(['m.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
-        ->groupBy('santri.id');
+            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+            ->join('jadwal j', 'ks.id_kelas = j.id_kelas')
+            ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
+            ->join('praktek p', 'm.id = p.id_materi')
+            ->join('nilai_praktek n', 'p.id = n.id_praktek and ks.id_kelas = n.id_kelas', 'left')
+            ->where(['m.semester' => $param['semester'], 'ks.id_santri' => $param['id_santri']])
+            ->groupBy('santri.id');
         $filtered = $data->countAllResults(false);
 
         $datas = $data->find();

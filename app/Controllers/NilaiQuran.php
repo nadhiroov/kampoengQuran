@@ -82,9 +82,12 @@ class NilaiQuran extends ResourceController
         }
         $data = $this->kelas->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc')->groupBy('kelas.id');
         if (!empty($param['search']['value'])) {
-            $data = $this->kelas->like('nama_kelas', $param['search']['value']);
-            $data = $this->kelas->orLike('fullname', $param['search']['value']);
-            $data = $this->kelas->orLike('tahun_ajaran', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('nama_kelas', $searchValue)
+                ->orLike('fullname', $searchValue)
+                ->orLike('tahun_ajaran', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -109,7 +112,10 @@ class NilaiQuran extends ResourceController
             ->join('nilai_quran nq', 'kelas.id = nq.id_kelas and s.id = nq.id_santri', 'left')
             ->where(['kelas.id' => $id_kelas])->orderBy('fullname ')->groupBy('s.id');
         if (!empty($param['search']['value'])) {
-            $data = $this->kelas->Like('fullname', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('fullname', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);

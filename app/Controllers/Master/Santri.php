@@ -25,9 +25,12 @@ class Santri extends BaseController
         $param = $this->request->getPost();
         $data = $this->model->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('angkatan, fullname', 'asc');
         if (!empty($param['search']['value'])) {
-            $data = $this->model->like('nis', $param['search']['value']);
-            $data = $this->model->orLike('fullname', $param['search']['value']);
-            $data = $this->model->orLike('email', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('nis', $searchValue)
+                ->orLike('fullname', $searchValue)
+                ->orLike('email', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->model->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -61,6 +64,9 @@ class Santri extends BaseController
         }
         if (isset($data['tanggal_lahir'])) {
             $data['tanggal_lahir'] = date('Y-m-d', strtotime($data['tanggal_lahir']));
+        }
+        if ($data['password'] == '') {
+            unset($data['password']);
         }
 
         // Hash the password before saving

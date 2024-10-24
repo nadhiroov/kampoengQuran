@@ -47,9 +47,12 @@ class Nilai extends ResourceController
         }
         $data = $this->kelas->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc')->groupBy('kelas.id');
         if (!empty($param['search']['value'])) {
-            $data = $this->kelas->like('nama_kelas', $param['search']['value']);
-            $data = $this->kelas->orLike('fullname', $param['search']['value']);
-            $data = $this->kelas->orLike('tahun_ajaran', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('nama_kelas', $searchValue)
+                ->orLike('fullname', $searchValue)
+                ->orLike('tahun_ajaran', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
@@ -70,8 +73,11 @@ class Nilai extends ResourceController
         $param = $this->request->getPost();
         $data = $this->jadwal->select('jadwal.id, jadwal.id_kelas, materi, jadwal.id_materi ,fullname')->join('materi m', 'm.id = jadwal.id_materi', 'left')->join('ustadz u', 'u.id = jadwal.id_ustadz', 'left')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->groupBy('m.id');
         if (!empty($param['search']['value'])) {
-            $data = $this->jadwal->like('materi', $param['search']['value']);
-            $data = $this->jadwal->orLikelike('fullname', $param['search']['value']);
+            $searchValue = $param['search']['value'];
+            $data->groupStart()
+                ->like('materi', $searchValue)
+                ->orLike('fullname', $searchValue)
+                ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->jadwal->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);

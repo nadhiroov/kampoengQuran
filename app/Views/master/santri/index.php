@@ -66,7 +66,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formAdd" action="<?= base_url() ?>kelas/process" method="POST">
+            <form class="formAdd" action="<?= base_url() ?>santri/process" method="POST">
                 <div class="modal-body add-body">
                 </div>
                 <div class="modal-footer">
@@ -147,7 +147,6 @@
                     data: 'id',
                     render: function(data, type, row) {
                         return `<a href="santri/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
                         <a onclick="confirmDelete(this)" target="<?= base_url() ?>/santri/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
@@ -186,7 +185,7 @@
         if (typeof rowid != 'undefined') {
             $.ajax({
                 type: 'get',
-                url: `<?= base_url() ?>/admin/${rowid}`,
+                url: `<?= base_url() ?>/santri/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
                     $('#uploadImg').on('change', function(e) {
