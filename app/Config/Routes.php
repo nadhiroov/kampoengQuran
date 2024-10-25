@@ -72,6 +72,7 @@ $routes->get('kelas/add', 'Kelas::add');
 $routes->get('kelas/(:num)', 'Kelas::edit/$1');
 $routes->post('kelas/process', 'Kelas::process');
 $routes->get('kelas/addSantri/(:num)', 'Kelas::addSantri/$1');
+$routes->delete('kelas/(:num)', 'Kelas::delete/$1');
 $routes->delete('kelas/(:num)/(:num)', 'Kelas::deleteSantri/$1/$2');
 $routes->post('kelas/processAddSantri', 'Kelas::processAddSantri');
 

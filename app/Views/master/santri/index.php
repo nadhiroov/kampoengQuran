@@ -161,6 +161,7 @@
             success: function(data) {
                 $('.add-body').html(data)
                 $('#basic').select2({
+                    theme: "bootstrap",
                     width: '100%'
                 })
                 $('#datepicker').datetimepicker({

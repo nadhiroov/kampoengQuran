@@ -201,6 +201,7 @@
                         </div>`
                     container.append(newRow);
                     $('#surat-0').select2({
+                        theme: "bootstrap",
                         width: '100%'
                     })
                     $('#add-row').off('click').on('click', function() {
@@ -235,6 +236,7 @@
                     </div>`
                         container.append(newRows);
                         $('#surat-' + index).select2({
+                            theme: "bootstrap",
                             width: '100%'
                         })
 

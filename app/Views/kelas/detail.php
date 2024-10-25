@@ -263,6 +263,7 @@
             success: function(data) {
                 $('.add-body').html(data)
                 $('#basic').select2({
+                    theme: "bootstrap",
                     width: '100%'
                 })
             }
@@ -276,12 +277,15 @@
             success: function(data) {
                 $('.add-jadwal').html(data)
                 $('#hari').select2({
+                    theme: "bootstrap",
                     width: '100%'
                 })
                 $('#materi').select2({
+                    theme: "bootstrap",
                     width: '100%'
                 })
                 $('#ustadz').select2({
+                    theme: "bootstrap",
                     width: '100%'
                 })
                 $('#timepicker, #timepicker2').datetimepicker({

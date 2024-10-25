@@ -101,7 +101,6 @@ class Kelas extends ResourceController
             $data->groupStart()
                 ->like('nis', $searchValue)
                 ->orLike('s.fullname', $searchValue)
-                ->orLike('email', $searchValue)
                 ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
@@ -173,37 +172,22 @@ class Kelas extends ResourceController
         return json_encode($return);
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters.
-     *
-     * @return ResponseInterface
-     */
-    public function create()
+    public function delete($id = null): string
     {
-        //
-    }
-
-    /**
-     * Add or update a model resource, from "posted" properties.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function update($id = null)
-    {
-        //
-    }
-
-    /**
-     * Delete the designated resource object from the model.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function delete($id = null)
-    {
-        //
+        try {
+            $this->model->delete($id);
+            $return = [
+                'status' => 1,
+                'title'  => 'Berhasil',
+                'message' => 'Data berhasil dihapus'
+            ];
+        } catch (\Exception $er) {
+            $return = [
+                'status' => 0,
+                'title'  => 'Gagal',
+                'message' => $er->getMessage()
+            ];
+        }
+        return json_encode($return);
     }
 }

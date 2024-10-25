@@ -38,8 +38,9 @@ class Jadwal extends ResourceController
             $searchValue = $param['search']['value'];
             $data->groupStart()
                 ->like('hari', $searchValue)
-                ->orLike('jama_awal', $searchValue)
+                ->orLike('jam_awal', $searchValue)
                 ->orLike('jam_akhir', $searchValue)
+                ->orLike('materi', $searchValue)
                 ->orLike('lokasi', $searchValue)
                 ->groupEnd();
         }

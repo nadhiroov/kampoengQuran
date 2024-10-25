@@ -13,7 +13,7 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Semester</label>
     <div class="col-md-9 p-0 select2-input">
-        <select id="semester" name="form[semester]" class="form-control select2-hidden-accessible" data-select2-id="semester" tabindex="-1" aria-hidden="true">
+        <select id="semester" name="form[semester]" class="form-control">
             <option value="" disabled selected>Pilih Semester</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -29,7 +29,7 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Pengajar</label>
     <div class="col-md-9 p-0 select2-input">
-        <select id="basic" name="form[id_ustadz]" class="form-control select2-hidden-accessible" data-select2-id="basic" tabindex="-1" aria-hidden="true">
+        <select id="basic" name="form[id_ustadz]" class="form-control">
             <option value="" disabled selected>Pilih pengajar</option>
             <?php foreach ($ustadz as $key): ?>
                 <option value="<?= $key['id']; ?>"><?= $key['fullname']; ?></option>

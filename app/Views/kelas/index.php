@@ -1,6 +1,7 @@
 <?= $this->extend('layouts/template'); ?>
 
 <?= $this->section('css'); ?>
+<link rel="stylesheet" href="<?= base_url() ?>assets/css/select2.min.css">
 
 <?= $this->endSection(); ?>
 
@@ -107,7 +108,8 @@
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/select2/select2.full.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/Gruntfile.min.js"></script> -->
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
@@ -136,8 +138,8 @@
                 },
                 {
                     data: 'tahun_ajaran',
-                    render : function(data, type, row){
-                        return data + ' - ' +row.semester
+                    render: function(data, type, row) {
+                        return data + ' - ' + row.semester
                     }
                 },
                 {
@@ -151,7 +153,7 @@
                     render: function(data, type, row) {
                         return `<a href="api/kelas/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
                         <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
-                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/santri/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/kelas/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
@@ -165,10 +167,13 @@
             success: function(data) {
                 $('.add-body').html(data)
                 $('#basic').select2({
+                    theme: "bootstrap",
                     width: '100%'
                 })
                 $('#semester').select2({
-                    width: '100%'
+                    theme: "bootstrap",
+                    width: '100%',
+                    minimumInputLength: 0
                 })
             }
         })
@@ -182,6 +187,14 @@
                 url: `<?= base_url() ?>kelas/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
+                    $('#semester').select2({
+                    theme: "bootstrap",
+                        width: '100%'
+                    })
+                    $('#basic').select2({
+                    theme: "bootstrap",
+                        width: '100%'
+                    })
                 }
             })
         }
