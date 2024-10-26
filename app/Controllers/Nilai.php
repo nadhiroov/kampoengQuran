@@ -108,6 +108,7 @@ class Nilai extends ResourceController
         $this->data['nilai'] = $nilai;
         $this->data['id_kelas'] = $id_kelas;
         $this->data['id_materi'] = $id_materi;
+
         return view('nilai/penilaian', $this->data);
     }
 
@@ -130,7 +131,7 @@ class Nilai extends ResourceController
         try {
             if ($insert) {
                 $this->model->insertBatch($data);
-            }else{
+            } else {
                 $this->model->updateBatch($data, 'id');
             }
             $return = [
@@ -168,5 +169,59 @@ class Nilai extends ResourceController
             "data" => $datas
         );
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
+    }
+
+    public function getReport($id_santri, $semester)
+    {
+        $santri = $this->santri->select('fullname, nama_kelas, tahun_ajaran, semester,')
+            ->join('kelas_santri ks',  'santri.id = ks.id_santri')
+            ->join('kelas k', 'ks.id_kelas = k.id')
+            ->where(['santri.id' => $id_santri, 'semester' => $semester])->findAll();
+
+        $tahfidz = $this->santri->select('surat, ayat, nilai')
+            ->join('kelas_santri ks',  'santri.id = ks.id_santri')
+            ->join('kelas k', 'ks.id_kelas = k.id')
+            ->join('nilai_quran nq', 'k.id = nq.id_kelas and santri.id = nq.id_santri', 'left')
+            ->orderBy('nq.nomor_surat')
+            ->where(['santri.id' => $id_santri, 'semester' => $semester])->findAll();
+
+        $tahsin = $this->santri->select('fashohah, tajwid, kelancaran')
+            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+            ->join('kelas k', 'ks.id_kelas = k.id')
+            ->join('nilai_tahsin nt', 'k.id = nt.id_kelas and santri.id = nt.id_santri', 'left')
+            ->where(['santri.id' => $id_santri, 'semester' => $semester])->findAll();
+
+        $materi = $this->santri->select('materi, nilai')
+            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+            ->join('kelas k', 'ks.id_kelas = k.id')
+            ->join('jadwal j', 'k.id = j.id_kelas')
+            ->join('materi m', 'j.id_materi = m.id and m.deleted_at is null')
+            ->join('nilai n', 'k.id = n.id_kelas and santri.id = n.id_santri and m.id = n.id_materi', 'left')
+            ->where(['santri.id' => $id_santri, 'k.semester' => $semester])->findAll();
+
+        $praktek = $this->santri->select('praktek, nilai as nilai_pengetahuan, deskripsi as deskrippsi_pengetahuan, nilai_keterampilan, deskripsi_keterampilan')
+            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+            ->join('kelas k', 'ks.id_kelas = k.id')
+            ->join('jadwal j', 'k.id = j.id_kelas')
+            ->join('materi m', 'j.id_materi = m.id and m.deleted_at is null')
+            ->join('praktek p', 'm.id = p.id_materi and p.deleted_at is null')
+            ->join('nilai_praktek np', 'k.id = np.id_kelas and santri.id = np.id_santri and p.id = np.id_praktek', 'left')
+            ->where(['santri.id' => $id_santri, 'k.semester' => $semester])->findAll();
+
+        $absensi = $this->santri->select('sakit, izin, tanpa_keterangan, catatan')
+            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+            ->join('kelas k', 'ks.id_kelas = k.id')
+            ->join('absensi a', 'k.id = a.id_kelas and santri.id = a.id_santri', 'left')
+            ->where(['santri.id' => $id_santri, 'semester' => $semester])->findAll();
+
+        $return = [
+            'santri'   => $santri,
+            'tahfidz'  => $tahfidz,
+            'tahsin'   => $tahsin,
+            'materi'   => $materi,
+            'praktek'  => $praktek,
+            'absensi'  => $absensi,
+        ];
+        return  $this->respond($return);
     }
 }

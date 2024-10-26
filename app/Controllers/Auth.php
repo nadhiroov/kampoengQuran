@@ -68,6 +68,9 @@ class Auth extends ResourceController
                     ];
                     $stts = 404;
                 } else {
+                    $dataKelas = $santri->select('semester, nama_kelas')->join('kelas_santri ks', 'santri.id = ks.id_santri')->join('kelas k', 'ks.id_kelas = k.id')->orderBy('semester', 'desc')->where('santri.id = ', $data['id'])->first();
+                    $data['semester'] = $dataKelas['semester'];
+                    $data['nama_kelas'] = $dataKelas['nama_kelas'];
                     $return = [
                         'status'    => 1,
                         'role'      => 'santri',

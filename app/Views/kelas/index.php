@@ -167,10 +167,12 @@
             success: function(data) {
                 $('.add-body').html(data)
                 $('#basic').select2({
+                    minimumResultsForSearch: -1,
                     theme: "bootstrap",
                     width: '100%'
                 })
                 $('#semester').select2({
+                    minimumResultsForSearch: -1,
                     theme: "bootstrap",
                     width: '100%',
                     minimumInputLength: 0
@@ -188,11 +190,13 @@
                 success: function(data) {
                     $('.edited-body').html(data)
                     $('#semester').select2({
-                    theme: "bootstrap",
+                        minimumResultsForSearch: -1,
+                        theme: "bootstrap",
                         width: '100%'
                     })
                     $('#basic').select2({
-                    theme: "bootstrap",
+                        minimumResultsForSearch: -1,
+                        theme: "bootstrap",
                         width: '100%'
                     })
                 }

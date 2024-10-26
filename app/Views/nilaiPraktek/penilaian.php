@@ -20,6 +20,18 @@
             <li class="nav-item">
                 <a href="#"><?= esc($menu); ?></a>
             </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="/praktek">Praktek</a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="/api/nilaiPraktek/kelas/<?= $id_kelas; ?>"><?= esc($menu); ?></a>
+            </li>
         </ul>
     </div>
     <div class="row">
@@ -64,7 +76,10 @@
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
-                                        <th>Nilai</th>
+                                        <th>Nilai Pengetahun</th>
+                                        <th>Deskripsi Pengetahun</th>
+                                        <th>Nilai Keterampilan</th>
+                                        <th>Deskripsi Keterampilan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,6 +88,8 @@
                                             <td><?= $key['fullname']; ?></td>
                                             <td><input type="number" min="0" max="100" name="form[nilai][]" value="<?= $key['nilai']; ?>"></td>
                                             <td><textarea class="form-control" name="form[deskripsi][]"><?= $key['deskripsi']; ?></textarea></td>
+                                            <td><input type="number" min="0" max="100" name="form[nilai_keterampilan][]" value="<?= $key['nilai_keterampilan']; ?>"></td>
+                                            <td><textarea class="form-control" name="form[deskripsi_keterampilan][]"><?= $key['deskripsi_keterampilan']; ?></textarea></td>
                                             <input type="hidden" name="form[id_santri][]" value="<?= $key['id_santri']; ?>">
                                             <input type="hidden" name="form[id_kelas]" value="<?= $id_kelas; ?>">
                                             <input type="hidden" class="form-control input-full" name="form[id_praktek]" value="<?= $key['id_praktek']; ?>">
@@ -84,10 +101,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
-                            <i class="far fa-arrow-alt-circle-left"></i>
-                            Kembali
-                        </button>
+                        <a href="/api/nilaiPraktek/kelas/<?= $id_kelas; ?>" class="btn btn-primary btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
                         <button type="submit" class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fas fa-save"></i>
                             Simpan

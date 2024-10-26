@@ -102,7 +102,7 @@ class NilaiPraktek extends ResourceController
 
     public function listPenilaian($id_kelas, $id_materi)
     {
-        $nilai = $this->kelas->select('nama_kelas, fullname, materi, nilai, deskripsi, ks.id_santri, np.id as id_nilai, p.id as id_praktek')
+        $nilai = $this->kelas->select('nama_kelas, fullname, materi, nilai, deskripsi, nilai_keterampilan, deskripsi_keterampilan,ks.id_santri, np.id as id_nilai, p.id as id_praktek')
             ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
             ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
             ->join('materi m', "m.id = j.id_materi", 'left')
@@ -126,6 +126,8 @@ class NilaiPraktek extends ResourceController
                 'id_praktek' => $form['id_praktek'],
                 'nilai'     => $form['nilai'][$i],
                 'deskripsi' => $form['deskripsi'][$i],
+                'nilai_keterampilan'     => $form['nilai_keterampilan'][$i],
+                'deskripsi_keterampilan' => $form['deskripsi_keterampilan'][$i],
             ];
             if (isset($form['id_nilai'][$i])) {
                 $data[$i]['id'] = $form['id_nilai'][$i];

@@ -93,8 +93,11 @@ $routes->post('nilaiPraktek/process', 'NilaiPraktek::process');
 $routes->get('quran', 'NilaiQuran::index');
 $routes->get('nilaiQuran/add/(:num)/(:num)', 'NilaiQuran::add/$1/$2');
 $routes->get('quran/(:num)', 'NilaiQuran::detail/$1');
-$routes->get('detailSantri', 'NilaiQuran::detailSantri');
+$routes->get('detailSantri/(:num)/(:num)', 'NilaiQuran::detailSantri/$1/$2');
 $routes->post('nilaiQuran/process', 'NilaiQuran::process');
+$routes->delete('nilaiQuran/(:num)', 'NilaiQuran::deleteNilai/$1');
+$routes->get('addNilaiTahsin/(:num)/(:num)', 'NilaiQuran::addNilaiTahsin/$1/$2');
+$routes->post('nilaiTahsin/process', 'NilaiQuran::processTahsin');
 
 // absensi
 $routes->get('absensi', 'Absensi::index');
@@ -138,20 +141,23 @@ $routes->group('api', static function ($routes) {
     $routes->post('nilai/kelas/(:num)', 'Nilai::getDataDetail/$1');
     $routes->get('nilai/kelas/(:num)/(:num)', 'Nilai::listPenilaian/$1/$2');
     $routes->post('listNilai', 'Nilai::getNilaiSantri');
-    
+
     // praktek
     $routes->post('nilaiPraktek', 'NilaiPraktek::getData');
     $routes->get('nilaiPraktek/kelas/(:num)', 'NilaiPraktek::detail/$1');
     $routes->post('nilaiPraktek/kelas/(:num)', 'NilaiPraktek::getDataDetail/$1');
     $routes->get('nilaiPraktek/kelas/(:num)/(:num)', 'NilaiPraktek::listPenilaian/$1/$2');
     $routes->post('listNilaiPraktek', 'NilaiPraktek::getNilaiPraktek');
-    
+
     // quran
     $routes->post('nilaiQuran', 'NilaiQuran::getData');
     $routes->post('nilaiQuran/kelas/(:num)', 'NilaiQuran::getDataDetail/$1');
     $routes->post('nilaiQuran/santri', 'NilaiQuran::getNilaiSantri');
-    
+
     // absensi
     $routes->post('absensi', 'Absensi::getData');
     $routes->get('absensi/kelas/(:num)', 'Absensi::detail/$1');
+
+    //report
+    $routes->get('report/(:num)/(:num)', 'Nilai::getReport/$1/$2');
 });

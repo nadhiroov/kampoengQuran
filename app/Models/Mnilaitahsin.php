@@ -4,13 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class MnilaiPraktek extends Model
+class Mnilaitahsin extends Model
 {
-    protected $table            = 'nilai_praktek';
+    protected $table            = 'nilai_tahsin';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_santri', 'id_kelas', 'id_praktek', 'nilai', 'deskripsi', 'nilai_keterampilan', 'deskripsi_keterampilan'];
+    protected $allowedFields    = ['id_santri', 'id_kelas', 'fashohah', 'tajwid', 'kelancaran'];
 }

@@ -263,6 +263,7 @@
             success: function(data) {
                 $('.add-body').html(data)
                 $('#basic').select2({
+                    minimumResultsForSearch: -1,
                     theme: "bootstrap",
                     width: '100%'
                 })
@@ -277,14 +278,17 @@
             success: function(data) {
                 $('.add-jadwal').html(data)
                 $('#hari').select2({
+                    minimumResultsForSearch: -1,
                     theme: "bootstrap",
                     width: '100%'
                 })
                 $('#materi').select2({
+                    minimumResultsForSearch: -1,
                     theme: "bootstrap",
                     width: '100%'
                 })
                 $('#ustadz').select2({
+                    minimumResultsForSearch: -1,
                     theme: "bootstrap",
                     width: '100%'
                 })

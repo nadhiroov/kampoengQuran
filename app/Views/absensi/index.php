@@ -101,36 +101,5 @@
             ]
         })
     })
-
-    $('#add').on('show.bs.modal', function(e) {
-        $.ajax({
-            type: 'get',
-            url: '<?= base_url() ?>kelas/add',
-            success: function(data) {
-                $('.add-body').html(data)
-                $('#basic').select2({
-                    width: '100%'
-                })
-            }
-        })
-    })
-
-    $('#edit').on('show.bs.modal', function(e) {
-        let rowid = $(e.relatedTarget).data('id')
-        if (typeof rowid != 'undefined') {
-            $.ajax({
-                type: 'get',
-                url: `<?= base_url() ?>kelas/${rowid}`,
-                success: function(data) {
-                    $('.edited-body').html(data)
-                }
-            })
-        }
-    })
-
-    $('.formAdd, .formEdit').submit(function(e) {
-        e.preventDefault()
-        saveData(this)
-    })
 </script>
 <?= $this->endSection(); ?>

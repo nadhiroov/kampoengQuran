@@ -38,6 +38,7 @@ class Absensi extends ResourceController
             ->where(['kelas.id' => $id_kelas])->orderBy('fullname ')->find();
         $this->data['id_kelas'] = $id_kelas;
         $this->data['absensi'] = $absensi;
+        $this->data['content'] = $this->kelas->where(['id' => $id_kelas])->first();
         return view('absensi/detail', $this->data);
     }
 

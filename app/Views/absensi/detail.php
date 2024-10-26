@@ -18,7 +18,13 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#"><?= esc($menu); ?></a>
+                <a href="/absensi"><?= esc($menu); ?></a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Detail</a>
             </li>
         </ul>
     </div>
@@ -35,7 +41,19 @@
                                 <th>
                                     <p>Nama kelas</p>
                                 </th>
-                                <td><?= $absensi[0]['nama_kelas'] ?></td>
+                                <td><?= $content['nama_kelas'] ?></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p>Tahun Ajaran</p>
+                                </th>
+                                <td><?= $content['tahun_ajaran'] ?></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p>Semester</p>
+                                </th>
+                                <td><?= $content['semester'] ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -82,10 +100,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
-                            <i class="far fa-arrow-alt-circle-left"></i>
-                            Kembali
-                        </button>
+                        <a href="/absensi" class="btn btn-primary btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
                         <button type="submit" class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fas fa-save"></i>
                             Simpan

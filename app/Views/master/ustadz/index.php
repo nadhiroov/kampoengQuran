@@ -167,7 +167,11 @@
             url: '<?= base_url() ?>/ustadz/add',
             success: function(data) {
                 $('.add-body').html(data)
-                // $('#basic').select2()
+                $('#basic').select2({
+                    theme: "bootstrap",
+                    minimumResultsForSearch: -1,
+                    width: '100%'
+                })
                 $('#uploadImg').on('change', function(e) {
                     var input = this;
                     if (input.files && input.files[0]) {
@@ -190,6 +194,11 @@
                 url: `<?= base_url() ?>/ustadz/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
+                    $('#basic').select2({
+                        theme: "bootstrap",
+                        minimumResultsForSearch: -1,
+                        width: '100%'
+                    })
                     $('#uploadImg').on('change', function(e) {
                         var input = this;
                         if (input.files && input.files[0]) {

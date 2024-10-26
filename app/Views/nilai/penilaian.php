@@ -20,6 +20,18 @@
             <li class="nav-item">
                 <a href="#"><?= esc($menu); ?></a>
             </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="/api/nilai/kelas/<?= $id_kelas; ?>">Materi</a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Penilaian</a>
+            </li>
         </ul>
     </div>
     <div class="row">
@@ -81,10 +93,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
-                            <i class="far fa-arrow-alt-circle-left"></i>
-                            Kembali
-                        </button>
+                        <a href="/api/nilai/kelas/<?= $id_kelas; ?>" class="btn btn-primary btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
                         <button type="submit" class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fas fa-save"></i>
                             Simpan

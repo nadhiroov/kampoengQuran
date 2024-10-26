@@ -18,7 +18,13 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#"><?= esc($menu); ?></a>
+                <a href="/praktek"><?= esc($menu); ?></a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Praktek</a>
             </li>
         </ul>
     </div>
@@ -39,9 +45,15 @@
                             </tr>
                             <tr>
                                 <th>
-                                    <p>Tahun ajaran - semester</p>
+                                    <p>Tahun Ajaran</p>
                                 </th>
-                                <td><?= $content['tahun_ajaran'] . ' - ' . $content['semester'] ?></td>
+                                <td><?= $content['tahun_ajaran'] ?></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p>Semester</p>
+                                </th>
+                                <td><?= $content['semester'] ?></td>
                             </tr>
                         </tbody>
                     </table>

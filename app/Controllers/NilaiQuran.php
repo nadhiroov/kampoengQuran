@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Master\Msantri;
 use App\Models\Mkelas;
+use App\Models\Mnilaitahsin;
 use CodeIgniter\RESTful\ResourceController;
 
 class NilaiQuran extends ResourceController
@@ -66,10 +67,18 @@ class NilaiQuran extends ResourceController
         }
         $return = [
             'santri'  => $this->santri->find($id_santri),
-            'id_kelas'=> $id_kelas,
+            'id_kelas' => $id_kelas,
             'content' => $response
         ];
         return json_encode($return);
+    }
+
+    public function addNilaiTahsin($id_kelas, $id_santri) {
+        $this->data['content'] = $this->kelas->select('semester, fashohah, tajwid, kelancaran, nt.id as id_nilai_tahsin, kelas.id as id_kelas, s.id as id_santri')
+        ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+        ->join('santri s', 's.id = ks.id_santri')
+        ->join('nilai_tahsin nt', 'kelas.id = nt.id_kelas and s.id = nt.id_santri', 'left')->where(['kelas.id' =>  $id_kelas, 's.id' => $id_santri])->first();
+        return view('nilaiQuran/addTahsin', $this->data);
     }
 
     public function getData()
@@ -131,8 +140,12 @@ class NilaiQuran extends ResourceController
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
-    public function detailSantri()
+    public function detailSantri($id_kelas, $id_santri)
     {
+        $this->data['tahsin'] = $this->kelas->select('semester, fashohah, tajwid, kelancaran')
+        ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+        ->join('santri s', 's.id = ks.id_santri')
+        ->join('nilai_tahsin nt', 'kelas.id = nt.id_kelas and s.id = nt.id_santri', 'left')->where(['kelas.id' =>  $id_kelas, 's.id' => $id_santri])->first();
         return view('nilaiQuran/detailNilai', $this->data);
     }
 
@@ -143,15 +156,15 @@ class NilaiQuran extends ResourceController
             ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
             ->join('santri s', 's.id = ks.id_santri')
             ->join('nilai_quran nq', 'kelas.id = nq.id_kelas and s.id = nq.id_santri')
-            ->orderBy('nq.id ')->groupBy('nq.id');
+            ->orderBy('nq.nomor_surat ')->groupBy('nq.id');
         if (!empty($param['semester'])) {
-            $data = $this->kelas->where('kelas.semester',  $param['semester']);
+            $data = $data->where('kelas.semester',  $param['semester']);
         }
         if (!empty($param['id_kelas'])) {
-            $data = $this->kelas->where('kelas.id', $param['id_kelas']);
+            $data = $data->where('kelas.id', $param['id_kelas']);
         }
         if (!empty($param['id_santri'])) {
-            $data = $this->kelas->where('s.id',  $param['id_santri']);
+            $data = $data->where('s.id',  $param['id_santri']);
         }
         $filtered = $data->countAllResults(false);
         $datas = $data->find();
@@ -164,13 +177,15 @@ class NilaiQuran extends ResourceController
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
-    public function process() {
+    public function process()
+    {
         $form = $this->request->getPost('form');
-        for ($i=0; $i < count($form['surat']); $i++) {
+        for ($i = 0; $i < count($form['surat']); $i++) {
             $data[] = [
                 'id_kelas' => $form['id_kelas'],
                 'id_santri' => $form['id_santri'],
-                'surat' => $form['surat'][$i],
+                'surat' => explode('#', $form['surat'][$i])[1],
+                'nomor_surat' => explode('#', $form['surat'][$i])[0],
                 'ayat' => $form['ayat'][$i],
                 'nilai' => $form['nilai'][$i]
             ];
@@ -187,6 +202,45 @@ class NilaiQuran extends ResourceController
                 'status'    => 0,
                 'title'     => 'Error',
                 'message'   => $er->getMessage()
+            ];
+        }
+        return json_encode($return);
+    }
+
+    public function processTahsin() {
+        $form = $this->request->getPost('form');
+        $mtahsin = new Mnilaitahsin();
+        try {
+            $mtahsin->save($form);
+            $return = [
+                'status'    => 1,
+                'title'     => 'Berhasil',
+                'message'   => 'Data berhasil disimpan'
+            ];
+        } catch (\Exception $er) {
+            $return = [
+                'status'    => 0,
+                'title'     => 'Error',
+                'message'   => $er->getMessage()
+            ];
+        }
+        return json_encode($return);
+    }
+
+    public function deleteNilai($id = null)
+    {
+        try {
+            $this->model->delete($id);
+            $return = [
+                'status' => 1,
+                'title'  => 'Berhasil',
+                'message' => 'Berhasil menghapus data'
+            ];
+        } catch (\Exception $er) {
+            $return = [
+                'status' => 0,
+                'title'  => 'Gagal',
+                'message' => $er->getMessage()
             ];
         }
         return json_encode($return);

@@ -110,6 +110,7 @@
                 $('.add-body').html(data)
                 $('#basic').select2({
                     theme: "bootstrap",
+                    minimumResultsForSearch: -1,
                     width: '100%'
                 })
             }

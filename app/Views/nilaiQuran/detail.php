@@ -37,6 +37,18 @@
                                 </th>
                                 <td><?= $content['nama_kelas'] ?></td>
                             </tr>
+                            <tr>
+                                <th>
+                                    <p>Tahun Ajaran</p>
+                                </th>
+                                <td><?= $content['tahun_ajaran'] ?></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p>Semester</p>
+                                </th>
+                                <td><?= $content['semester'] ?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -70,18 +82,42 @@
     </div>
 </div>
 
-<!-- Modal add nilai -->
+<!-- Modal add nilai tahfidz-->
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Add nilai</h5>
+                <h5 class="modal-title" id="addnewLabel">Tambah nilai tahfidz</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form class="formAdd" action="<?= base_url() ?>nilaiQuran/process" method="POST">
                 <div class="modal-body add-body">
+                    <div class="item-container"></div>
+                    <button type="button" id="add-row" class="btn btn-primary">Tambah Baris</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add nilai tahsin-->
+<div class="modal fade" id="addTahsin" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addnewLabel">Tambah nilai tahsin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="formAddTahsin" action="<?= base_url() ?>nilaiTahsin/process" method="POST">
+                <div class="modal-body add-body-tahsin">
                     <div class="item-container"></div>
                     <button type="button" id="add-row" class="btn btn-primary">Tambah Baris</button>
                 </div>
@@ -146,7 +182,8 @@
                 {
                     data: 'id_santri',
                     render: function(data, type, row) {
-                        return `<a href="#add" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fa fa-plus"></i></a>
+                        return `<a href="#add" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fa fa-clipboard-list"></i></a>
+                        <a href="#addTahsin" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fa fa-headset"></i></a>
                         <a href="#detail" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
                     }
                 }
@@ -169,7 +206,7 @@
                     if (response.content.code == 200) {
                         option = `<select id="surat-${index}" name="form[surat][]" class="form-control" tabindex="-1" aria-hidden="true" required><option value="">&nbsp;</option>`
                         response.content.data.forEach(function(item) {
-                            option += `<option value="${item.namaLatin}">${item.namaLatin}</option>`;
+                            option += `<option value="${item.nomor}#${item.namaLatin}">${item.nomor} - ${item.namaLatin}</option>`;
                         });
                         option += '</select>';
                     } else {
@@ -202,13 +239,14 @@
                     container.append(newRow);
                     $('#surat-0').select2({
                         theme: "bootstrap",
+                        minimumResultsForSearch: -1,
                         width: '100%'
                     })
                     $('#add-row').off('click').on('click', function() {
                         index++
                         option = `<select id="surat-${index}" name="form[surat][]" class="form-control" tabindex="-1" aria-hidden="true" required><option value="">&nbsp;</option>`
                         response.content.data.forEach(function(item) {
-                            option += `<option value="${item.namaLatin}">${item.namaLatin}</option>`;
+                            option += `<option value="${item.nomor}#${item.namaLatin}">${item.nomor} - ${item.namaLatin}</option>`;
                         });
                         option += '</select>';
                         let newRows = `<div id="repeater-container-${index}">
@@ -237,6 +275,7 @@
                         container.append(newRows);
                         $('#surat-' + index).select2({
                             theme: "bootstrap",
+                            minimumResultsForSearch: -1,
                             width: '100%'
                         })
 
@@ -245,6 +284,24 @@
                         });
                     })
                 }
+            })
+        })
+
+        $('#addTahsin').on('show.bs.modal', function(e) {
+            let rowid = $(e.relatedTarget).data('id')
+            $.ajax({
+                type: 'get',
+                url: '<?= base_url('addNilaiTahsin/') . $id_kelas ?>/' + rowid,
+                success: function(data) {
+                    $('.add-body-tahsin').html(data)
+                }
+            })
+        })
+
+        $('.formAddTahsin').submit(function(e) {
+            e.preventDefault()
+            saveData(this, function() {
+                $("#addTahsin").modal("hide");
             })
         })
 
@@ -258,7 +315,7 @@
             if (typeof rowid != 'undefined') {
                 $.ajax({
                     type: 'get',
-                    url: '<?= base_url('detailSantri') ?>',
+                    url: '<?= base_url('detailSantri/') . $id_kelas ?>/' + rowid,
                     success: function(data) {
                         $('.detail-body').html(data)
                         $('#datatableDetail').DataTable({
@@ -294,9 +351,9 @@
                                     data: 'nilai',
                                 },
                                 {
-                                    data: 'id_santri',
+                                    data: 'id',
                                     render: function(data, type, row) {
-                                        return `<a href="#detail" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
+                                        return `<a onclick="confirmDelete(this, function() { $('#datatableDetail').DataTable().ajax.reload(); $('#datatable').DataTable().ajax.reload() })" target="/nilaiQuran/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                                     }
                                 }
                             ]
