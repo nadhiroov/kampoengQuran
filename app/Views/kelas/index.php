@@ -1,7 +1,6 @@
 <?= $this->extend('layouts/template'); ?>
 
 <?= $this->section('css'); ?>
-<link rel="stylesheet" href="<?= base_url() ?>assets/css/select2.min.css">
 
 <?= $this->endSection(); ?>
 
@@ -109,7 +108,6 @@
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/select2/select2.full.min.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/Gruntfile.min.js"></script> -->
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
@@ -121,10 +119,10 @@
             serverSide: true,
             processing: true,
             "columnDefs": [{
-                "width": "20%",
-                "targets": 4
+                "width": "25%",
+                "targets": 5
             }, {
-                "targets": 4,
+                "targets": 5,
                 "orderable": false
             }],
             columns: [{
@@ -189,12 +187,12 @@
                 url: `<?= base_url() ?>kelas/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
-                    $('#semester').select2({
+                    $('#semesterEdit').select2({
                         minimumResultsForSearch: -1,
                         theme: "bootstrap",
                         width: '100%'
                     })
-                    $('#basic').select2({
+                    $('#ustadzEdit').select2({
                         minimumResultsForSearch: -1,
                         theme: "bootstrap",
                         width: '100%'

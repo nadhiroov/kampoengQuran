@@ -39,6 +39,9 @@ class Kelas extends ResourceController
                 ->orLike('tahun_ajaran', $searchValue)
                 ->groupEnd();
         }
+        if (!empty($param['id_santri'])) {
+            $data = $data->where('ks.id_santri', $param['id_santri']);
+        }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->model->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
         }

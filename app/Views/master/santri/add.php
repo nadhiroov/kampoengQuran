@@ -19,7 +19,7 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Tanggal lahir</label>
     <div class="input-group col-md-9 p-0">
-        <input type="text" class="form-control" id="datepicker" name="datepicker">
+        <input type="text" class="form-control" id="datepicker" name="form[tanggal_lahir]">
         <div class="input-group-append">
             <span class="input-group-text">
                 <i class="fa fa-calendar-check"></i>

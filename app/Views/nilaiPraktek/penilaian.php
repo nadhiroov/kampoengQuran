@@ -47,13 +47,19 @@
                                 <th>
                                     <p>Nama kelas</p>
                                 </th>
-                                <td><?= $nilai[0]['nama_kelas'] ?></td>
+                                <td><?= $nilai[0]['nama_kelas'] ?? '-' ?></td>
                             </tr>
                             <tr>
                                 <th>
                                     <p>Materi</p>
                                 </th>
-                                <td><?= $nilai[0]['materi'] ?></td>
+                                <td><?= $nilai[0]['materi'] ?? '-' ?></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p>Praktek</p>
+                                </th>
+                                <td><?= $nilai[0]['praktek'] ?? '-' ?></td>
                             </tr>
                         </tbody>
                     </table>

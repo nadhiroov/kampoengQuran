@@ -22,7 +22,7 @@ class Ustadz extends BaseController
     public function getData(): string
     {
         $param = $this->request->getPost();
-        $data = $this->model->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('username', 'asc');
+        $data = $this->model->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('fullname', 'asc');
         if (!empty($param['search']['value'])) {
             $searchValue = $param['search']['value'];
             $data->groupStart()
@@ -59,6 +59,10 @@ class Ustadz extends BaseController
             $imageName = $image->getRandomName();
             $image->move(WRITEPATH . 'uploads/ustadz', $imageName);
             $data['image'] = $imageName;
+        }
+
+        if ($data['password'] == '') {
+            unset($data['password']);
         }
 
         // Hash the password before saving

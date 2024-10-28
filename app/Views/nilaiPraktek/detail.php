@@ -73,8 +73,8 @@
                             <thead>
                                 <tr>
                                     <th>Materi</th>
+                                    <th>Praktek</th>
                                     <th>Pengajar</th>
-                                    <!-- <th>Nama Santri</th> -->
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -115,12 +115,15 @@
                     data: 'materi'
                 },
                 {
+                    data: 'praktek'
+                },
+                {
                     data: 'fullname'
                 },
                 {
                     data: 'id_kelas',
                     render: function(data, type, row) {
-                        return `<a href="/api/nilaiPraktek/kelas/${data}/${row.id_materi}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
+                        return `<a href="/api/nilaiPraktek/kelas/${data}/${row.id_praktek}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
                     }
                 }
             ]

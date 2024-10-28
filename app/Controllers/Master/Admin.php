@@ -63,6 +63,10 @@ class Admin extends BaseController
             $data['image'] = $imageName;
         }
 
+        if ($data['password'] == '') {
+            unset($data['password']);
+        }
+
         // Hash the password before saving
         // $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         try {

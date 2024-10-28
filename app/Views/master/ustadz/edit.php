@@ -8,7 +8,8 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">password</label>
     <div class="col-md-9 p-0">
-        <input type="text" class="form-control input-full" placeholder="masukkan password" name="form[password]" value="<?= $content['password']; ?>">
+        <input type="text" class="form-control input-full" placeholder="masukkan password" name="form[password]">
+        <small id="emailHelp" class="form-text text-muted">Kosongkan jika tidak ingin merubah password</small>
     </div>
 </div>
 <div class="form-group form-inline">
@@ -20,7 +21,7 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Jenis Kelamin</label>
     <div class="col-md-9 p-0">
-        <select id="basic" name="basic" class="form-control" data-select2-id="basic" tabindex="-1" aria-hidden="true">
+        <select id="basic" name="form[gender]" class="form-control" data-select2-id="basic" tabindex="-1" aria-hidden="true">
             <option value="">&nbsp;</option>
             <option value="Pria" <?= $content['gender'] == 'Pria' ? 'selected' : ''; ?>>Pria</option>
             <option value="Wanita" <?= $content['gender'] == 'Wanita' ? 'selected' : ''; ?>>Wanita</option>

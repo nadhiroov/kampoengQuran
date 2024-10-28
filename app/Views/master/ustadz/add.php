@@ -19,7 +19,7 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Jenis Kelamin</label>
     <div class="col-md-9 p-0">
-        <select id="basic" name="basic" class="form-control" data-select2-id="basic" tabindex="-1" aria-hidden="true">
+        <select id="basic" name="form[gender]" class="form-control" data-select2-id="basic" tabindex="-1" aria-hidden="true">
             <option value="">&nbsp;</option>
             <option value="Pria">Pria</option>
             <option value="Wanita">Wanita</option>

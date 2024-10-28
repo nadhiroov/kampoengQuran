@@ -67,6 +67,7 @@
                                     <label>Password</label>
                                     <input type="text" class="form-control" name="form[password]" placeholder="password">
                                 </div>
+                                <small id="emailHelp" class="form-text text-muted">Kosongkan jika tidak ingin merubah password</small>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -126,7 +127,7 @@
             <div class="card card-profile">
                 <div class="card-header" style="background-image: url('../assets/img/blogpost.jpg')">
                     <div class="profile-picture">
-                        <div class="avatar avatar-xl">
+                        <div class="avatar avatar-xl avatar avatar-online">
                             <img src="<?= base_url() . 'showImg/santri/' . $content['image'] ?>" onerror="this.onerror=null;this.src='<?= base_url() ?>assets/img/profile.jpg';" alt="profile" class="avatar-img rounded-circle">
                         </div>
                     </div>

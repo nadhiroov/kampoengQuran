@@ -98,12 +98,12 @@ class Nilai extends ResourceController
 
     public function listPenilaian($id_kelas, $id_materi)
     {
-        $nilai = $this->kelas->select('nama_kelas, fullname, materi, nilai, ks.id_santri, n.id as id_nilai')
+        $nilai = $this->kelas->select('nama_kelas, fullname, materi, nilai, ks.id_santri, n.id as id_nilai, kelas.id')
             ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
             ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
-            ->join('materi m', "m.id = j.id_materi", 'left')
-            ->join('nilai n', "kelas.id = n.id_kelas and ks.id_santri = n.id_santri and m.id = n.id_materi", 'left')
+            ->join('materi m', "m.id = j.id_materi and m.deleted_at is null", 'left')
             ->join('santri s', 's.id = ks.id_santri')
+            ->join('nilai n', "kelas.id = n.id_kelas and ks.id_santri = n.id_santri and m.id = n.id_materi", 'left')
             ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname ')->find();
         $this->data['nilai'] = $nilai;
         $this->data['id_kelas'] = $id_kelas;
@@ -154,18 +154,18 @@ class Nilai extends ResourceController
         $param = $this->request->getPost();
         $data = $this->santri->select('fullname, materi, nilai, m.id as id_materi, ks.id_santri, ks.id_kelas, n.id as id_nilai')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
-            ->join('kelas k', 'k.id = ks.id_kelas')
+            ->join('kelas k', 'k.id = ks.id_kelas and k.deleted_at is null')
             ->join('jadwal j', 'k.id = j.id_kelas')
             ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
             ->join('nilai n', 'm.id = n.id_materi and ks.id_kelas = n.id_kelas', 'left')
             ->where(['k.semester' => $param['semester'], 'santri.id' => $param['id_santri']])
-            ->groupBy('santri.id');
+            ->groupBy('m.id');
         $filtered = $data->countAllResults(false);
         $datas = $data->find();
         $return = array(
             "draw" => $param['draw'] ?? 1,
             "recordsFiltered" => $filtered,
-            "recordsTotal" => $this->santri->countAllResults(),
+            "recordsTotal" => $data->countAllResults(),
             "data" => $datas
         );
         return isset($param['api']) ? $this->respond($return) : json_encode($return);

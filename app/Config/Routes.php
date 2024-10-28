@@ -133,6 +133,7 @@ $routes->group('api', static function ($routes) {
 
     // materi
     $routes->post('materi', 'Master\Materi::getDataByStudent');
+    $routes->post('materi/(:num)', 'Master\Materi::getDataDetail/$1');
 
 
     // nilai

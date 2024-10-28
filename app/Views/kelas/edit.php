@@ -13,7 +13,7 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Semester</label>
     <div class="col-md-9 p-0 select2-input">
-        <select id="semester" name="form[semester]" class="form-control select2-hidden-accessible" data-select2-id="semester" tabindex="-1" aria-hidden="true">
+        <select id="semesterEdit" name="form[semester]" class="form-control select2-hidden-accessible" data-select2-id="semester" tabindex="-1" aria-hidden="true">
             <option value="" disabled >Pilih Semester</option>
             <option <?= $content['semester'] == 1 ? 'selected' : ''; ?> value="1">1</option>
             <option <?= $content['semester'] == 2 ? 'selected' : ''; ?> value="2">2</option>
@@ -29,7 +29,7 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Pengajar</label>
     <div class="col-md-9 p-0 select2-input">
-        <select id="basic" name="form[id_ustadz]" class="form-control select2-hidden-accessible" data-select2-id="basic" tabindex="-1" aria-hidden="true">
+        <select id="ustadzEdit" name="form[id_ustadz]" class="form-control select2-hidden-accessible" data-select2-id="basic" tabindex="-1" aria-hidden="true">
             <option value="">&nbsp;</option>
             <?php foreach ($ustadz as $key): ?>
                 <option <?= $content['id_ustadz'] == $key['id'] ? 'selected' : ''; ?> value="<?= $key['id']; ?>"><?= $key['fullname']; ?></option>

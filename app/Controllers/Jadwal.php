@@ -68,7 +68,7 @@ class Jadwal extends ResourceController
             $data = $this->mKelas->where(['ks.id_santri' => $id_santri]);
         }
         if (!empty($param['semester'])) {
-            $data = $this->mKelas->where('kelas.semester', $param['semester']);
+            $data = $data->where('kelas.semester', $param['semester']);
         }
         $filtered = $data->countAllResults(false);
         $datas = $data->find();
