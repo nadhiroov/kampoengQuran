@@ -35,7 +35,6 @@ class Kelas extends ResourceController
             $searchValue = $param['search']['value'];
             $data->groupStart()
                 ->like('nama_kelas', $searchValue)
-                ->orLike('fullname', $searchValue)
                 ->orLike('tahun_ajaran', $searchValue)
                 ->groupEnd();
         }

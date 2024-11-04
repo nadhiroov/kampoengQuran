@@ -104,6 +104,7 @@ class Nilai extends ResourceController
             ->join('materi m', "m.id = j.id_materi and m.deleted_at is null", 'left')
             ->join('santri s', 's.id = ks.id_santri')
             ->join('nilai n', "kelas.id = n.id_kelas and ks.id_santri = n.id_santri and m.id = n.id_materi", 'left')
+            ->groupBy('s.id')
             ->where(['kelas.id' => $id_kelas, 'm.id' => $id_materi])->orderBy('fullname ')->find();
         $this->data['nilai'] = $nilai;
         $this->data['id_kelas'] = $id_kelas;
@@ -152,14 +153,22 @@ class Nilai extends ResourceController
     public function getNilaiSantri()
     {
         $param = $this->request->getPost();
-        $data = $this->santri->select('fullname, materi, nilai, m.id as id_materi, ks.id_santri, ks.id_kelas, n.id as id_nilai')
+        $data = $this->kelas->select('nama_kelas, fullname, materi, nilai, ks.id_santri, n.id as id_nilai, kelas.id')
+            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+            ->join('jadwal j', "kelas.id = j.id_kelas", 'left')
+            ->join('materi m', "m.id = j.id_materi and m.deleted_at is null", 'left')
+            ->join('santri s', 's.id = ks.id_santri')
+            ->join('nilai n', "kelas.id = n.id_kelas and ks.id_santri = n.id_santri and m.id = n.id_materi", 'left')
+            ->where(['kelas.semester' => $param['semester'], 's.id' => $param['id_santri']])->groupBy('m.id');
+
+        /* $data = $this->santri->select('fullname, materi, nilai, m.id as id_materi, ks.id_santri, ks.id_kelas, n.id as id_nilai')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
             ->join('kelas k', 'k.id = ks.id_kelas and k.deleted_at is null')
-            ->join('jadwal j', 'k.id = j.id_kelas')
-            ->join('materi m', 'm.id = j.id_materi and m.deleted_at is null')
-            ->join('nilai n', 'm.id = n.id_materi and ks.id_kelas = n.id_kelas', 'left')
+            ->join('nilai n', 'ks.id_kelas = n.id_kelas', 'left')
+            ->join('materi m', 'm.id = n.id_materi and m.deleted_at is null')
+            // ->join('jadwal j', 'k.id = j.id_kelas')
             ->where(['k.semester' => $param['semester'], 'santri.id' => $param['id_santri']])
-            ->groupBy('m.id');
+            ->groupBy('m.id'); */
         $filtered = $data->countAllResults(false);
         $datas = $data->find();
         $return = array(
@@ -176,7 +185,7 @@ class Nilai extends ResourceController
         $santri = $this->santri->select('fullname, nama_kelas, tahun_ajaran, semester,')
             ->join('kelas_santri ks',  'santri.id = ks.id_santri')
             ->join('kelas k', 'ks.id_kelas = k.id')
-            ->where(['santri.id' => $id_santri, 'semester' => $semester])->findAll();
+            ->where(['santri.id' => $id_santri, 'semester' => $semester])->first();
 
         $tahfidz = $this->santri->select('surat, ayat, nilai')
             ->join('kelas_santri ks',  'santri.id = ks.id_santri')
@@ -189,7 +198,20 @@ class Nilai extends ResourceController
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
             ->join('kelas k', 'ks.id_kelas = k.id')
             ->join('nilai_tahsin nt', 'k.id = nt.id_kelas and santri.id = nt.id_santri', 'left')
-            ->where(['santri.id' => $id_santri, 'semester' => $semester])->findAll();
+            ->where(['santri.id' => $id_santri, 'semester' => $semester])->first();
+
+        $thsn[] = [
+            'jenis'    => 'fashohah',
+            'nilai'     => $tahsin['fashohah'] ?? '-',
+        ];
+        $thsn[] = [
+            'jenis'    => 'tajwid',
+            'nilai'     => $tahsin['tajwid'] ?? '-',
+        ];
+        $thsn[] = [
+            'jenis'    => 'kelancaran',
+            'nilai'     => $tahsin['kelancaran'] ?? '-',
+        ];
 
         $materi = $this->santri->select('materi, nilai')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
@@ -212,16 +234,16 @@ class Nilai extends ResourceController
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
             ->join('kelas k', 'ks.id_kelas = k.id')
             ->join('absensi a', 'k.id = a.id_kelas and santri.id = a.id_santri', 'left')
-            ->where(['santri.id' => $id_santri, 'semester' => $semester])->findAll();
+            ->where(['santri.id' => $id_santri, 'semester' => $semester])->first();
 
         $return = [
-            'santri'   => $santri,
+            'santri'   => [$santri],
             'tahfidz'  => $tahfidz,
-            'tahsin'   => $tahsin,
+            'tahsin'   => $thsn,
             'materi'   => $materi,
             'praktek'  => $praktek,
-            'absensi'  => $absensi,
+            'absensi'  => [$absensi],
         ];
-        return  $this->respond($return);
+        return $this->respond($return);
     }
 }

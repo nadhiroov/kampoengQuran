@@ -73,11 +73,12 @@ class NilaiQuran extends ResourceController
         return json_encode($return);
     }
 
-    public function addNilaiTahsin($id_kelas, $id_santri) {
+    public function addNilaiTahsin($id_kelas, $id_santri)
+    {
         $this->data['content'] = $this->kelas->select('semester, fashohah, tajwid, kelancaran, nt.id as id_nilai_tahsin, kelas.id as id_kelas, s.id as id_santri')
-        ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
-        ->join('santri s', 's.id = ks.id_santri')
-        ->join('nilai_tahsin nt', 'kelas.id = nt.id_kelas and s.id = nt.id_santri', 'left')->where(['kelas.id' =>  $id_kelas, 's.id' => $id_santri])->first();
+            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+            ->join('santri s', 's.id = ks.id_santri')
+            ->join('nilai_tahsin nt', 'kelas.id = nt.id_kelas and s.id = nt.id_santri', 'left')->where(['kelas.id' =>  $id_kelas, 's.id' => $id_santri])->first();
         return view('nilaiQuran/addTahsin', $this->data);
     }
 
@@ -143,9 +144,9 @@ class NilaiQuran extends ResourceController
     public function detailSantri($id_kelas, $id_santri)
     {
         $this->data['tahsin'] = $this->kelas->select('semester, fashohah, tajwid, kelancaran')
-        ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
-        ->join('santri s', 's.id = ks.id_santri')
-        ->join('nilai_tahsin nt', 'kelas.id = nt.id_kelas and s.id = nt.id_santri', 'left')->where(['kelas.id' =>  $id_kelas, 's.id' => $id_santri])->first();
+            ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
+            ->join('santri s', 's.id = ks.id_santri')
+            ->join('nilai_tahsin nt', 'kelas.id = nt.id_kelas and s.id = nt.id_santri', 'left')->where(['kelas.id' =>  $id_kelas, 's.id' => $id_santri])->first();
         return view('nilaiQuran/detailNilai', $this->data);
     }
 
@@ -166,6 +167,23 @@ class NilaiQuran extends ResourceController
         if (!empty($param['id_santri'])) {
             $data = $data->where('s.id',  $param['id_santri']);
         }
+        $filtered = $data->countAllResults(false);
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->kelas->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
+    }
+
+    public function getTahsin()
+    {
+        $param = $this->request->getPost();
+        $data = $this->kelas->select('id_santri, semester, fashohah, kelancaran, tajwid')
+            ->join('nilai_tahsin nt', 'nt.id_kelas = kelas.id')
+            ->where(['kelas.semester' => $param['semester'], 'nt.id_santri' => $param['id_santri']]);
         $filtered = $data->countAllResults(false);
         $datas = $data->find();
         $return = array(
@@ -207,7 +225,8 @@ class NilaiQuran extends ResourceController
         return json_encode($return);
     }
 
-    public function processTahsin() {
+    public function processTahsin()
+    {
         $form = $this->request->getPost('form');
         $mtahsin = new Mnilaitahsin();
         try {

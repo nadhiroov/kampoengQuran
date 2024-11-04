@@ -63,7 +63,7 @@ class Materi extends ResourceController
     {
         $this->kelas = new Mkelas();
         $param = $this->request->getPost();
-        $data = $this->kelas->select('m.id as id_materi, materi, count(sm.id) as count_submateri, kelas.semester')
+        $data = $this->kelas->select('m.id as id_materi, materi, count(distinct sm.id) as count_submateri, kelas.semester')
             ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
             ->join('jadwal j', 'kelas.id = j.id_kelas', 'left')
             ->join('materi m', 'j.id_materi =  m.id and m.deleted_at is null')

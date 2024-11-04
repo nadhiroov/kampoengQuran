@@ -23,10 +23,6 @@
                     </a>
                 </li>
 
-                <!-- <li class="nav-section">
-                    <h4 class="text-section">Fitur</h4>
-                </li> -->
-
                 <li class="nav-item <?= $menu_master ?? ''; ?>">
                     <a data-toggle="collapse" href="#mater">
                         <i class="fas fa-layer-group"></i>

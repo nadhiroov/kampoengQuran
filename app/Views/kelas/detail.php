@@ -163,6 +163,28 @@
         </div>
     </div>
 </div>
+
+<!-- Modal edit jadwal -->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addnewLabel">Edit data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="formAddJadwal" action="<?= base_url() ?>jadwal/process" method="POST">
+                <div class="modal-body edit-body-jadwal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <?= $this->endSection(); ?>
 
 
@@ -182,10 +204,7 @@
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
-                "width": "20%",
-                "targets": 3
-            }, {
+            columnDefs: [{
                 "targets": 3,
                 "orderable": false
             }],
@@ -221,11 +240,8 @@
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
-                "width": "20%",
-                "targets": 3
-            }, {
-                "targets": 3,
+            columnDefs: [{
+                "targets": 6,
                 "orderable": false
             }],
             columns: [{
@@ -248,8 +264,9 @@
                 },
                 {
                     data: 'id',
-                    render: function(data, type, row) {
-                        return `<a onclick="confirmDelete(this, function() { $('#datatable2').DataTable().ajax.reload() })" target="<?= base_url() ?>jadwal/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                    render: function(data) {
+                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        <a onclick="confirmDelete(this, function() { $('#datatable2').DataTable().ajax.reload() })" target="<?= base_url() ?>jadwal/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
@@ -266,6 +283,35 @@
                     minimumResultsForSearch: -1,
                     theme: "bootstrap",
                     width: '100%'
+                })
+            }
+        })
+    })
+
+    $('#edit').on('show.bs.modal', function(e) {
+        let rowid = $(e.relatedTarget).data('id')
+        $.ajax({
+            type: 'get',
+            url: '<?= base_url() . 'jadwal/edit/'?>' + rowid,
+            success: function(data) {
+                $('.edit-body-jadwal').html(data)
+                $('#edithari').select2({
+                    minimumResultsForSearch: -1,
+                    theme: "bootstrap",
+                    width: '100%'
+                })
+                $('#editmateri').select2({
+                    minimumResultsForSearch: -1,
+                    theme: "bootstrap",
+                    width: '100%'
+                })
+                $('#editustadz').select2({
+                    minimumResultsForSearch: -1,
+                    theme: "bootstrap",
+                    width: '100%'
+                })
+                $('#timepicker, #timepicker2').datetimepicker({
+                    format: 'HH:mm',
                 })
             }
         })
@@ -303,6 +349,7 @@
         e.preventDefault()
         saveData(this)
     })
+
     $('.formAddJadwal').submit(function(e) {
         e.preventDefault()
         saveData(this)

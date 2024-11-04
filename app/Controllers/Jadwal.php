@@ -91,6 +91,17 @@ class Jadwal extends ResourceController
         return view('jadwal/add', $this->data);
     }
 
+    public function edit($id = null): string
+    {
+        $ustadz = new Mustadz();
+        $materi = new Mmateri();
+        $this->data['content'] = $this->model->select('fullname, u.id as id_ustadz, materi, m.id as id_materi, hari, jam_awal, jam_akhir, lokasi')->join('kelas k', 'k.id = jadwal.id_kelas', 'left')->join('materi m', 'm.id = jadwal.id_materi', 'left')->join('ustadz u', 'u.id = jadwal.id_ustadz', 'left')->where(['jadwal.id' => $id])->first();
+        $this->data['ustadz'] = $ustadz->findAll();
+        $this->data['materi'] = $materi->findAll();
+        $this->data['id_edit'] = $id;
+        return view('jadwal/edit', $this->data);
+    }
+
     public function process()
     {
         $data = $this->request->getPost('form');
@@ -111,37 +122,6 @@ class Jadwal extends ResourceController
         return json_encode($return);
     }
 
-    /**
-     * Return the editable properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function edit($id = null)
-    {
-        //
-    }
-
-    /**
-     * Add or update a model resource, from "posted" properties.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function update($id = null)
-    {
-        //
-    }
-
-    /**
-     * Delete the designated resource object from the model.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
     public function delete($id = null)
     {
         try {

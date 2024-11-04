@@ -79,6 +79,7 @@ $routes->post('kelas/processAddSantri', 'Kelas::processAddSantri');
 // Jadwal
 $routes->get('jadwal/add/(:num)', 'Jadwal::add/$1');
 $routes->post('jadwal/process', 'Jadwal::process');
+$routes->get('jadwal/edit/(:num)', 'Jadwal::edit/$1');
 $routes->delete('jadwal/(:num)', 'Jadwal::delete/$1');
 
 // nilai
@@ -154,6 +155,7 @@ $routes->group('api', static function ($routes) {
     $routes->post('nilaiQuran', 'NilaiQuran::getData');
     $routes->post('nilaiQuran/kelas/(:num)', 'NilaiQuran::getDataDetail/$1');
     $routes->post('nilaiQuran/santri', 'NilaiQuran::getNilaiSantri');
+    $routes->post('tahsin', 'NilaiQuran::getTahsin');
 
     // absensi
     $routes->post('absensi', 'Absensi::getData');
