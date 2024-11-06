@@ -197,8 +197,9 @@ class Nilai extends ResourceController
         $tahsin = $this->santri->select('fashohah, tajwid, kelancaran')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
             ->join('kelas k', 'ks.id_kelas = k.id')
-            ->join('nilai_tahsin nt', 'k.id = nt.id_kelas and santri.id = nt.id_santri', 'left')
-            ->where(['santri.id' => $id_santri, 'semester' => $semester])->first();
+            ->join('nilai_tahsin nt', 'k.id = nt.id_kelas and santri.id = nt.id_santri')
+            ->where(['santri.id' => $id_santri, 'k.semester' => $semester])->first();
+
 
         $thsn[] = [
             'jenis'    => 'fashohah',
@@ -212,14 +213,14 @@ class Nilai extends ResourceController
             'jenis'    => 'kelancaran',
             'nilai'     => $tahsin['kelancaran'] ?? '-',
         ];
-
-        $materi = $this->santri->select('materi, nilai')
-            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
-            ->join('kelas k', 'ks.id_kelas = k.id')
-            ->join('jadwal j', 'k.id = j.id_kelas')
-            ->join('materi m', 'j.id_materi = m.id and m.deleted_at is null')
-            ->join('nilai n', 'k.id = n.id_kelas and santri.id = n.id_santri and m.id = n.id_materi', 'left')
-            ->where(['santri.id' => $id_santri, 'k.semester' => $semester])->findAll();
+        
+        $materi = $this->santri->select('materi, nilai, k.id')
+        ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+        ->join('kelas k', 'ks.id_kelas = k.id')
+        ->join('jadwal j', 'k.id = j.id_kelas')
+        ->join('materi m', 'j.id_materi = m.id and m.deleted_at is null')
+        ->join('nilai n', 'k.id = n.id_kelas and santri.id = n.id_santri and m.id = n.id_materi', 'left')
+        ->where(['santri.id' => $id_santri, 'k.semester' => $semester])->findAll();
 
         $praktek = $this->santri->select('praktek, nilai as nilai_pengetahuan, deskripsi as deskrippsi_pengetahuan, nilai_keterampilan, deskripsi_keterampilan')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
