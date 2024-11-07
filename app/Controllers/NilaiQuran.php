@@ -185,14 +185,31 @@ class NilaiQuran extends ResourceController
             ->join('nilai_tahsin nt', 'nt.id_kelas = kelas.id')
             ->where(['kelas.semester' => $param['semester'], 'nt.id_santri' => $param['id_santri']]);
         $filtered = $data->countAllResults(false);
-        $datas = $data->find();
+        $datas = $data->first();
+        $thsn[] = [
+            'id_santri'    => $datas['id_santri'] ?? '-',
+            'semester'    => $datas['semester'] ?? '-',
+            'jenis'    => 'fashohah',
+            'nilai'     => $datas['fashohah'] ?? '-',
+        ];
+        $thsn[] = [
+            'id_santri'    => $datas['id_santri'] ?? '-',
+            'semester'    => $datas['semester'] ?? '-',
+            'jenis'    => 'tajwid',
+            'nilai'     => $datas['tajwid'] ?? '-',
+        ];
+        $thsn[] = [
+            'id_santri'    => $datas['id_santri'] ?? '-',
+            'semester'    => $datas['semester'] ?? '-',
+            'jenis'    => 'kelancaran',
+            'nilai'     => $datas['kelancaran'] ?? '-',
+        ];
         $return = array(
             "draw" => $param['draw'] ?? 1,
             "recordsFiltered" => $filtered,
-            "recordsTotal" => $this->kelas->countAllResults(),
-            "data" => $datas
+            "data" => $thsn
         );
-        return isset($param['api']) ? $this->respond($return) : json_encode($return);
+        return $this->respond($return);
     }
 
     public function process()

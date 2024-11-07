@@ -213,14 +213,14 @@ class Nilai extends ResourceController
             'jenis'    => 'kelancaran',
             'nilai'     => $tahsin['kelancaran'] ?? '-',
         ];
-        
+
         $materi = $this->santri->select('materi, nilai, k.id')
-        ->join('kelas_santri ks', 'santri.id = ks.id_santri')
-        ->join('kelas k', 'ks.id_kelas = k.id')
-        ->join('jadwal j', 'k.id = j.id_kelas')
-        ->join('materi m', 'j.id_materi = m.id and m.deleted_at is null')
-        ->join('nilai n', 'k.id = n.id_kelas and santri.id = n.id_santri and m.id = n.id_materi', 'left')
-        ->where(['santri.id' => $id_santri, 'k.semester' => $semester])->findAll();
+            ->join('kelas_santri ks', 'santri.id = ks.id_santri')
+            ->join('kelas k', 'ks.id_kelas = k.id')
+            ->join('jadwal j', 'k.id = j.id_kelas')
+            ->join('materi m', 'j.id_materi = m.id and m.deleted_at is null')
+            ->join('nilai n', 'k.id = n.id_kelas and santri.id = n.id_santri and m.id = n.id_materi', 'left')
+            ->where(['santri.id' => $id_santri, 'k.semester' => $semester])->groupBy('m.id')->findAll();
 
         $praktek = $this->santri->select('praktek, nilai as nilai_pengetahuan, deskripsi as deskrippsi_pengetahuan, nilai_keterampilan, deskripsi_keterampilan')
             ->join('kelas_santri ks', 'santri.id = ks.id_santri')
@@ -237,13 +237,32 @@ class Nilai extends ResourceController
             ->join('absensi a', 'k.id = a.id_kelas and santri.id = a.id_santri', 'left')
             ->where(['santri.id' => $id_santri, 'semester' => $semester])->first();
 
+        $abs[] = [
+            'jenis' => 'sakit',
+            'jumlah' => $absensi['sakit'] ?? '-'
+        ];
+        $abs[] = [
+            'jenis' => 'izin',
+            'jumlah' => $absensi['izin'] ?? '-'
+        ];
+        $abs[] = [
+            'jenis' => 'Tanpa Keterangan',
+            'jumlah' => $absensi['tanpa_keterangan'] ?? '-'
+        ];
+        // $ctt[] = [
+        //     'jenis' => 'catatan',
+        //     'isi' => $absensi['catatan'] ?? '-'
+        // ];
+
         $return = [
             'santri'   => [$santri],
             'tahfidz'  => $tahfidz,
             'tahsin'   => $thsn,
             'materi'   => $materi,
             'praktek'  => $praktek,
-            'absensi'  => [$absensi],
+            'absensi'  => $abs,
+            'catatan'  => $absensi['catatan'] ?? '-'
+
         ];
         return $this->respond($return);
     }
