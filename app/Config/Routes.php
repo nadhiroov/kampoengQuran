@@ -8,6 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Auth::index');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Dashboard::index');
+$routes->get('privacypolicy', function () {
+    return view('privacypolicy');
+});
 
 // Admin
 $routes->get('admin', 'Master\Admin::index');
