@@ -21,7 +21,7 @@ class NilaiPraktek extends ResourceController
         $this->kelas = new Mkelas();
         $this->santri = new Msantri();
         $this->jadwal = new Mjadwal();
-        $this->data['menu'] = 'Nilai praktek kelas';
+        $this->data['menu'] = 'Nilai Ibadah Praktis';
         $this->view = \Config\Services::renderer();
         $this->view->setData(['menu_penilaian' => 'active', 'submenu_nilai_praktek' => 'active']);
     }
@@ -54,8 +54,7 @@ class NilaiPraktek extends ResourceController
             $searchValue = $param['search']['value'];
             $data->groupStart()
                 ->like('nama_kelas', $searchValue)
-                ->orLike('fullname', $searchValue)
-                ->orLike('tahun_ajaran', $searchValue)
+                ->orLike('semester', $searchValue)
                 ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {

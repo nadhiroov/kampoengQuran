@@ -83,7 +83,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addnewLabel">Edit data</h5>
+                <h5 class="modal-title" id="addnewLabel">Edit foto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -146,7 +146,8 @@
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="santri/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
+                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="santri/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
                         <a onclick="confirmDelete(this)" target="<?= base_url() ?>/santri/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
@@ -187,7 +188,7 @@
         if (typeof rowid != 'undefined') {
             $.ajax({
                 type: 'get',
-                url: `<?= base_url() ?>/santri/${rowid}`,
+                url: `<?= base_url() ?>/santri/foto/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
                     $('#uploadImg').on('change', function(e) {

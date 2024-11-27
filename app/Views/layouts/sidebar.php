@@ -3,7 +3,7 @@
         <div class="sidebar-content">
             <div class="user">
                 <div class="avatar-sm float-left mr-2">
-                    <img src="<?= base_url() ?>assets/img/<?= session()->get('image') ?>" onerror="this.onerror=null;this.src='<?= base_url() ?>assets/img/profile.jpg';" alt="profile" class="avatar-img rounded-circle">
+                    <img src="<?= base_url() ?>showImg/admin/<?= session()->get('image') ?>" onerror="this.onerror=null;this.src='<?= base_url() ?>assets/img/profile.jpg';" alt="profile" class="avatar-img rounded-circle">
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
@@ -64,15 +64,14 @@
 
                 <li class="nav-item <?= $menu_penilaian ?? ''; ?>">
                     <a data-toggle="collapse" href="#penilaian">
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-pencil-alt"></i>
                         <p>Penilaian</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse <?= isset($menu_penilaian) ? 'show' : '' ?>" id="penilaian">
                         <ul class="nav nav-collapse">
                             <li class="<?= $submenu_quran ?? ''; ?>">
-                                <a href="<?= base_url() ?>quran"
-                                >
+                                <a href="<?= base_url() ?>quran">
                                     <span class="sub-item">Al Qur'an</span>
                                 </a>
                             </li>
@@ -83,7 +82,7 @@
                             </li>
                             <li class="<?= $submenu_nilai_praktek ?? ''; ?>">
                                 <a href="<?= base_url() ?>praktek">
-                                    <span class="sub-item">Praktek</span>
+                                    <span class="sub-item">Ibadah Praktis</span>
                                 </a>
                             </li>
                             <li class="<?= $submenu_nilai_absensi ?? ''; ?>">

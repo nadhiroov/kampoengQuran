@@ -182,8 +182,8 @@
                 {
                     data: 'id_santri',
                     render: function(data, type, row) {
-                        return `<a href="#add" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fa fa-clipboard-list"></i></a>
-                        <a href="#addTahsin" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fa fa-headset"></i></a>
+                        return `<a href="#add" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fa fa-clipboard-list"></i></a>
+                        <a href="#addTahsin" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fa fa-headset"></i></a>
                         <a href="#detail" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
                     }
                 }
@@ -217,13 +217,13 @@
                     newRow = `<div class="row repeater-item">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Surat</label>
+                                    <label>Nama Surat/Hal</label>
                                     ${option}
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Ayat :</label>
+                                    <label>Ayat/Juz/Jilid:</label>
                                     <input name="form[ayat][]" type="number" min="1" class="form-control" required="">
                                 </div>
                             </div>

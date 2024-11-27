@@ -55,8 +55,7 @@ class Absensi extends ResourceController
             $searchValue = $param['search']['value'];
             $data->groupStart()
                 ->like('nama_kelas', $searchValue)
-                ->orLike('fullname', $searchValue)
-                ->orLike('tahun_ajaran', $searchValue)
+                ->orLike('semester', $searchValue)
                 ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {

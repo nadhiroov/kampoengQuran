@@ -24,7 +24,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Praktek</a>
+                <a href="#">Materi</a>
             </li>
         </ul>
     </div>
@@ -73,7 +73,7 @@
                             <thead>
                                 <tr>
                                     <th>Materi</th>
-                                    <th>Praktek</th>
+                                    <th>Ibadah Praktis</th>
                                     <th>Pengajar</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
@@ -105,11 +105,11 @@
             serverSide: true,
             processing: true,
             columnDefs: [{
-                "width": "20%",
-                "targets": 2
+                width: "20%",
+                targets: 2
             }, {
-                "targets": 2,
-                "orderable": false
+                targets: 2,
+                orderable: false
             }],
             columns: [{
                     data: 'materi'

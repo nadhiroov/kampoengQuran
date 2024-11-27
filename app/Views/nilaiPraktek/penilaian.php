@@ -24,7 +24,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="/praktek">Praktek</a>
+                <a href="/praktek">Materi</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
@@ -82,8 +82,8 @@
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
-                                        <th>Nilai Pengetahun</th>
-                                        <th>Deskripsi Pengetahun</th>
+                                        <th>Nilai Pengetahaun</th>
+                                        <th>Deskripsi Pengetahaun</th>
                                         <th>Nilai Keterampilan</th>
                                         <th>Deskripsi Keterampilan</th>
                                     </tr>
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="/api/nilaiPraktek/kelas/<?= $id_kelas; ?>" class="btn btn-primary btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
+                        <a href="/api/nilaiPraktek/kelas/<?= $id_kelas; ?>" class="btn btn-black btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
                         <button type="submit" class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fas fa-save"></i>
                             Simpan

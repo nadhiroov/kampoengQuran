@@ -45,7 +45,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Pengajar</p>
+                                    <p>Wali Kelas</p>
                                 </td>
                                 <td><?= $content['fullname'] ?></td>
                             </tr>
@@ -265,7 +265,7 @@
                 {
                     data: 'id',
                     render: function(data) {
-                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-pencil-alt"></i></a>
                         <a onclick="confirmDelete(this, function() { $('#datatable2').DataTable().ajax.reload() })" target="<?= base_url() ?>jadwal/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
@@ -292,7 +292,7 @@
         let rowid = $(e.relatedTarget).data('id')
         $.ajax({
             type: 'get',
-            url: '<?= base_url() . 'jadwal/edit/'?>' + rowid,
+            url: '<?= base_url() . 'jadwal/edit/' ?>' + rowid,
             success: function(data) {
                 $('.edit-body-jadwal').html(data)
                 $('#edithari').select2({

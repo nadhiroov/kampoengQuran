@@ -101,6 +101,8 @@
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/select2/select2.full.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable({
@@ -111,12 +113,12 @@
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
-                "width": "20%",
-                "targets": 3
+            columnDefs: [{
+                width: "20%",
+                targets: 4
             }, {
-                "targets": 3,
-                "orderable": false
+                targets: 4,
+                orderable: false
             }],
             columns: [{
                     data: 'id',
@@ -137,7 +139,7 @@
                     data: 'id',
                     render: function(data, type, row) {
                         return `<a href="materi/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-pencil-alt"></i></a>
                         <a onclick="confirmDelete(this)" target="<?= base_url() ?>materi/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
@@ -151,6 +153,12 @@
             url: '<?= base_url() ?>materi/add',
             success: function(data) {
                 $('.add-body').html(data)
+                $('#semester').select2({
+                    minimumResultsForSearch: -1,
+                    theme: "bootstrap",
+                    width: '100%',
+                    minimumInputLength: 0
+                })
             }
         })
     })
@@ -163,6 +171,11 @@
                 url: `<?= base_url() ?>materi/edit/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
+                    $('#semesterEdit').select2({
+                        minimumResultsForSearch: -1,
+                        theme: "bootstrap",
+                        width: '100%'
+                    })
                 }
             })
         }

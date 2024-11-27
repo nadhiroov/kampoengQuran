@@ -84,7 +84,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Data Praktek</div>
+                        <div class="card-title">Data Ibadah Praktis</div>
                         <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addPraktek">
                             <i class="fa fa-plus"></i>
                             Tambah baru
@@ -97,7 +97,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Praktek</th>
+                                    <th>Ibadah Praktis</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -213,12 +213,12 @@
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
-                "width": "20%",
-                "targets": 2
+            columnDefs: [{
+                width: "20%",
+                targets: 2
             }, {
-                "targets": 2,
-                "orderable": false
+                targets: 2,
+                orderable: false
             }],
             columns: [{
                     data: 'id',
@@ -232,7 +232,7 @@
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-pencil-alt"></i></a>
                         <a onclick="confirmDelete(this)" target="<?= base_url() ?>submateri/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
@@ -247,12 +247,12 @@
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
-                "width": "20%",
-                "targets": 2
+            columnDefs: [{
+                width: "20%",
+                targets: 2
             }, {
-                "targets": 2,
-                "orderable": false
+                targets: 2,
+                orderable: false
             }],
             columns: [{
                     data: 'id',
@@ -266,7 +266,7 @@
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="#editPraktek" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-edit"></i></a>
+                        return `<a href="#editPraktek" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-pencil-alt"></i></a>
                         <a onclick="confirmDelete(this,  function() { $('#datatable2').DataTable().ajax.reload() } )" target="<?= base_url() ?>praktek/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }

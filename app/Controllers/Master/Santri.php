@@ -53,6 +53,13 @@ class Santri extends BaseController
         return view('master/santri/detail', $this->data);
     }
 
+    public function foto($id = null): string
+    {
+        $this->data['submenu'] = 'detail satri';
+        $this->data['content'] = $this->model->where(['id' => $id])->first();
+        return view('master/santri/foto', $this->data);
+    }
+
     public function process(): string
     {
         $data = $this->request->getPost('form');
@@ -65,7 +72,7 @@ class Santri extends BaseController
         if (isset($data['tanggal_lahir'])) {
             $data['tanggal_lahir'] = date('Y-m-d', strtotime($data['tanggal_lahir']));
         }
-        if ($data['password'] == '') {
+        if (isset($data['password']) && $data['password'] == '') {
             unset($data['password']);
         }
 

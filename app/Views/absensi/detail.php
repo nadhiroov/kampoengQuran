@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="/absensi" class="btn btn-primary btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
+                        <a href="/absensi" class="btn btn-black btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
                         <button type="submit" class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fas fa-save"></i>
                             Simpan

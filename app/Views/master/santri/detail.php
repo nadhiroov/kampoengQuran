@@ -36,8 +36,6 @@
                     <div class="row row-nav-line">
                         <ul class="nav nav-tabs nav-line nav-color-secondary w-100 pl-3" role="tablist">
                             <li class="nav-item submenu"> <a class="nav-link active show" data-toggle="tab" href="#home" role="tab" aria-selected="true">Profile</a> </li>
-                            <!-- <li class="nav-item submenu"> <a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-selected="false">Profile</a> </li> -->
-                            <!-- <li class="nav-item submenu"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab" aria-selected="false">Settings</a> </li> -->
                         </ul>
                     </div>
                 </div>
@@ -127,7 +125,7 @@
             <div class="card card-profile">
                 <div class="card-header" style="background-image: url('../assets/img/blogpost.jpg')">
                     <div class="profile-picture">
-                        <div class="avatar avatar-xl avatar avatar-online">
+                        <div class="avatar avatar-xl">
                             <img src="<?= base_url() . 'showImg/santri/' . $content['image'] ?>" onerror="this.onerror=null;this.src='<?= base_url() ?>assets/img/profile.jpg';" alt="profile" class="avatar-img rounded-circle">
                         </div>
                     </div>

@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="/api/nilai/kelas/<?= $id_kelas; ?>" class="btn btn-primary btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
+                        <a href="/api/nilai/kelas/<?= $id_kelas; ?>" class="btn btn-black btn-round ml-auto"><i class="far fa-arrow-alt-circle-left"></i>Kembali</a>
                         <button type="submit" class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#add">
                             <i class="fas fa-save"></i>
                             Simpan

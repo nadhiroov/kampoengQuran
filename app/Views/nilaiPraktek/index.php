@@ -67,12 +67,12 @@
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
-                "width": "20px",
-                "targets": 4
+            columnDefs: [{
+                width: "20px",
+                targets: 4
             }, {
-                "targets": 4,
-                "orderable": false
+                targets: 4,
+                orderable: false
             }],
             columns: [{
                     data: 'id',

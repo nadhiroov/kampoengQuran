@@ -27,10 +27,10 @@
     </div>
 </div>
 <div class="form-group form-inline">
-    <label for="inlineinput" class="col-md-3 col-form-label">Pengajar</label>
+    <label for="inlineinput" class="col-md-3 col-form-label">Wali Kelas</label>
     <div class="col-md-9 p-0 select2-input">
         <select id="basic" name="form[id_ustadz]" class="form-control">
-            <option value="" disabled selected>Pilih pengajar</option>
+            <option value="" disabled selected>Pilih wali kelas</option>
             <?php foreach ($ustadz as $key): ?>
                 <option value="<?= $key['id']; ?>"><?= $key['fullname']; ?></option>
             <?php endforeach; ?>

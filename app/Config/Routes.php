@@ -35,6 +35,7 @@ $routes->delete('ustadz/(:num)', 'Master\Ustadz::delete/$1');
 // Santri
 $routes->get('santri', 'Master\Santri::index');
 $routes->get('santri/(:num)', 'Master\Santri::detail/$1');
+$routes->get('santri/foto/(:num)', 'Master\Santri::foto/$1');
 $routes->post('santri/data', 'Master\Santri::getData');
 $routes->get('santri/add', function () {
     return view('master/santri/add');

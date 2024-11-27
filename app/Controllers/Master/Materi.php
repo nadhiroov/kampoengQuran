@@ -43,6 +43,7 @@ class Materi extends ResourceController
             $searchValue = $param['search']['value'];
             $data->groupStart()
                 ->like('materi', $searchValue)
+                ->orLike('semester', $searchValue)
                 ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
@@ -159,7 +160,7 @@ class Materi extends ResourceController
         if (!empty($param['search']['value'])) {
             $searchValue = $param['search']['value'];
             $data->groupStart()
-                ->like('materi', $searchValue)
+                ->like('praktek', $searchValue)
                 ->groupEnd();
         }
         if (!empty($param['order'][0]['column'])) {
