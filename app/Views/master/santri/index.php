@@ -139,7 +139,7 @@
                 {
                     data: 'image',
                     render: function(data, type, row) {
-                        return data == 'user.png' ? '<div class="avatar"><img src="<?= base_url() ?>assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded"></div>' : `<div class="avatar"><img src="<?= base_url() ?>showImg/santri/${row.image}" alt="..." class="avatar-img rounded"></div>`
+                        return data == 'user.png' ? '<div class="avatar"><img src="<?= base_url() ?>assets/img/profile.jpg" alt="..." class="avatar-img rounded"></div>' : `<div class="avatar"><img src="<?= base_url() ?>showImg/santri/${row.image}" alt="..." class="avatar-img rounded"   onerror="this.onerror=null; this.src='<?= base_url() ?>assets/img/profile.jpg';"></div>`
                     }
                 },
 
