@@ -12,6 +12,12 @@ $routes->get('privacypolicy', function () {
     return view('privacypolicy');
 });
 
+// Dashboard
+$routes->get('getTotalSantri', 'Dashboard::getTotalSantri');
+$routes->get('getTotalUstadz', 'Dashboard::getTotalUstadz');
+$routes->get('getTotalMateri', 'Dashboard::getTotalMateri');
+
+
 // Admin
 $routes->get('admin', 'Master\Admin::index');
 $routes->get('admin/(:num)', 'Master\Admin::detail/$1');
