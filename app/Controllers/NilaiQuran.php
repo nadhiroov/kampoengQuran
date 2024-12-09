@@ -85,10 +85,17 @@ class NilaiQuran extends ResourceController
     public function getData()
     {
         $param = $this->request->getPost();
+        $filter = $this->request->getPost('filter');
         $data = $this->kelas->select('kelas.*, u.fullname')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left');
         if (!empty($param['id_santri'])) {
             $data = $this->kelas->join('kelas_santri  ks', 'kelas.id = ks.id_kelas');
             $data = $this->kelas->where(['ks.id_santri' => $param['id_santri']]);
+        }
+        if (!empty($filter['tahunAjaran'])) {
+            $data = $this->kelas->where(['kelas.tahun_ajaran' => $filter['tahunAjaran']]);
+        }
+        if (!empty($filter['semester'])) {
+            $data = $this->kelas->where(['kelas.semester' => $filter['semester']]);
         }
         $data = $this->kelas->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc')->groupBy('kelas.id');
         if (!empty($param['search']['value'])) {

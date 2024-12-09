@@ -1,6 +1,76 @@
 <?= $this->extend('layouts/template'); ?>
 
 <?= $this->section('css'); ?>
+<style>
+    .spinner {
+        height: 60px;
+        width: 60px;
+        margin: auto;
+        display: flex;
+        position: absolute;
+        -webkit-animation: rotation .6s infinite linear;
+        -moz-animation: rotation .6s infinite linear;
+        -o-animation: rotation .6s infinite linear;
+        animation: rotation .6s infinite linear;
+        border-left: 6px solid rgba(0, 174, 239, .15);
+        border-right: 6px solid rgba(0, 174, 239, .15);
+        border-bottom: 6px solid rgba(0, 174, 239, .15);
+        border-top: 6px solid rgba(0, 174, 239, .8);
+        border-radius: 100%;
+    }
+
+    @-webkit-keyframes rotation {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+
+    @-moz-keyframes rotation {
+        from {
+            -moz-transform: rotate(0deg);
+        }
+
+        to {
+            -moz-transform: rotate(359deg);
+        }
+    }
+
+    @-o-keyframes rotation {
+        from {
+            -o-transform: rotate(0deg);
+        }
+
+        to {
+            -o-transform: rotate(359deg);
+        }
+    }
+
+    @keyframes rotation {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(359deg);
+        }
+    }
+
+    #overlay {
+        position: absolute;
+        display: none;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.15);
+        z-index: 2;
+        cursor: pointer;
+    }
+</style>
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
@@ -47,6 +117,44 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="icon-big text-center">
+                                <i class="flaticon-user"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Total Ustadz</p>
+                                <h4 class="card-title"><?= $total_ustadz['total_ustadz'] ?? '-'; ?></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-primary card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="flaticon-users"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Total Santri</p>
+                                <h4 class="card-title"><?= $total_santri['total_santri'] ?? '-'; ?></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-primary card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
                                 <i class="flaticon-presentation"></i>
                             </div>
                         </div>
@@ -65,9 +173,14 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Total Santri </div>
+                    <div class="card-title">Sebaran Santri </div>
                 </div>
                 <div class="card-body">
+                    <div class="loadTotalSantri" id="overlay">
+                        <div class="w-100 d-flex justify-content-center align-items-center">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
                     <div class="chart-container">
                         <canvas id="multipleBarChart"></canvas>
                     </div>
@@ -77,9 +190,14 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Total Ustadz</div>
+                    <div class="card-title">Sebaran Ustadz</div>
                 </div>
                 <div class="card-body">
+                    <div class="loadTotalUstadz" id="overlay">
+                        <div class="w-100 d-flex justify-content-center align-items-center">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
                     <div class="chart-container">
                         <canvas id="pieChart" style="width: 50%; height: 50%"></canvas>
                     </div>
@@ -94,6 +212,11 @@
                     <div class="card-title">Total Materi per semester</div>
                 </div>
                 <div class="card-body">
+                    <div class="loadTotalMateri" id="overlay">
+                        <div class="w-100 d-flex justify-content-center align-items-center">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
                     <div class="chart-container">
                         <canvas id="multipleBarChartMateri" style="width: 50%; height: 50%"></canvas>
                     </div>
@@ -121,6 +244,9 @@
             url: '<?= base_url('getTotalSantri') ?>', // Ganti dengan URL endpoint Anda
             method: 'GET',
             dataType: 'json',
+            beforeSend: function() {
+                $(".loadTotalSantri").css("display", "flex");
+            },
             success: function(data) {
                 // Extract labels dan data dari response
                 const labels = data.map(item => item.angkatan)
@@ -170,6 +296,8 @@
                         }
                     }
                 })
+                $(".loadTotalSantri").css("display", "none");
+                // document.getElementById("loadTotalSantri").style.display = "none";
             },
             error: function(xhr, status, error) {
                 console.error('Error fetching chart data:', error)
@@ -182,6 +310,9 @@
             url: '<?= base_url('getTotalUstadz') ?>', // Ganti dengan endpoint API Anda
             method: 'GET',
             dataType: 'json',
+            beforeSend: function() {
+                $(".loadTotalUstadz").css("display", "flex");
+            },
             success: function(data) {
                 // Extract data
                 const totalPria = parseInt(data[0].total_pria)
@@ -226,6 +357,7 @@
                         }
                     }
                 })
+                $(".loadTotalUstadz").css("display", "none");
             },
             error: function(xhr, status, error) {
                 console.error('Error fetching pie chart data:', error)
@@ -238,6 +370,9 @@
             url: '<?= base_url('getTotalMateri') ?>', // Ganti dengan URL endpoint Anda
             method: 'GET',
             dataType: 'json',
+            beforeSend: function() {
+                $(".loadTotalMateri").css("display", "flex");
+            },
             success: function(data) {
                 // Extract labels dan data dari response
                 const labels = data.map(item => item.semester)
@@ -269,6 +404,8 @@
                         },
                     }
                 })
+                $(".loadTotalMateri").css("display", "none");
+
             },
             error: function(xhr, status, error) {
                 console.error('Error fetching chart data:', error)

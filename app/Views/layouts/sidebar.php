@@ -46,6 +46,11 @@
                                     <span class="sub-item">Santri</span>
                                 </a>
                             </li>
+                            <li class="<?= $submenu_tahunakademik ?? ''; ?>">
+                                <a href="<?= base_url() ?>tahun_akademik">
+                                    <span class="sub-item">Tahun Akademik</span>
+                                </a>
+                            </li>
                             <li class="<?= $submenu_materi ?? ''; ?>">
                                 <a href="<?= base_url() ?>materi">
                                     <span class="sub-item">Materi</span>
@@ -53,7 +58,7 @@
                             </li>
                             <li class="<?= $submenu_kelas ?? ''; ?>">
                                 <a href="<?= base_url() ?>kelas">
-                                    <span class="sub-item">Kelas</span>
+                                    <span class="sub-item">Kelas dan Jadwal</span>
                                 </a>
                             </li>
 

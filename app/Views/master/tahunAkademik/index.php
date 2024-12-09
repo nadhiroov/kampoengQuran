@@ -35,40 +35,12 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="filterTahunAjaran">Filter: </label>
-                            <select id="filterTahunAjaran" class="form-control select2">
-                                <option value="">Semua Tahun Ajaran</option>
-                                <?php foreach ($tahun_akademik as $key): ?>
-                                    <option value="<?= $key['tahun_akademik']; ?>"><?= $key['tahun_akademik']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="filterSemester"></label>
-                            <select id="filterSemester" class="form-control select2">
-                                <option value="">Semua Semester</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="table-responsive">
                         <table id="datatable" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Kelas</th>
-                                    <th>Tahun Ajaran - Semester</th>
-                                    <th>Wali Kelas</th>
-                                    <th>Santri</th>
+                                    <th>Tahun Akademik</th>
                                     <th class="col-xs-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -92,7 +64,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formAdd" action="<?= base_url() ?>kelas/process" method="POST">
+            <form class="formAdd" action="<?= base_url() ?>tahun_akademik/process" method="POST">
                 <div class="modal-body add-body">
                 </div>
                 <div class="modal-footer">
@@ -114,11 +86,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="formEdit" action="<?= base_url() ?>kelas/process" method="POST">
+            <form class="formEdit" action="<?= base_url() ?>tahun_akademik/process" method="POST">
                 <div class="modal-body edited-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
@@ -131,29 +103,24 @@
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/datepicker/datepicker.min.js"></script>
-<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
-    // url: '<?= base_url('api/kelas') ?>',
     $(document).ready(function() {
-        let table = $('#datatable').DataTable({
+        $('#datatable').DataTable({
             ajax: {
-                url: '<?= base_url('api/kelas') ?>',
-                type: 'POST',
-                data: function(d) {
-                    d.filter = d.filter || {};
-                    d.filter['tahunAjaran'] = $('#filterTahunAjaran').val();
-                    d.filter['semester'] = $('#filterSemester').val();
-                }
+                url: '<?= base_url('tahun_akademik/data') ?>',
+                type: 'POST'
             },
             pageLength: 10,
             serverSide: true,
             processing: true,
             columnDefs: [{
-                width: "20px",
-                targets: 4
+                width: "20%",
+                targets: 2
             }, {
-                targets: 4,
+                targets: 2,
+                orderable: false
+            }, {
+                targets: 2,
                 orderable: false
             }],
             columns: [{
@@ -163,60 +130,25 @@
                     }
                 },
                 {
-                    data: 'nama_kelas'
-                },
-                {
-                    data: 'tahun_ajaran',
-                    render: function(data, type, row) {
-                        return data + ' - ' + row.semester
-                    }
-                },
-                {
-                    data: 'fullname'
-                },
-                {
-                    data: 'total_santri'
+                    data: 'tahun_akademik'
                 },
                 {
                     data: 'id',
                     render: function(data, type, row) {
-                        return `<a href="api/kelas/${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/kelas/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
+                        return `<a href="#edit" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                        <a onclick="confirmDelete(this)" target="<?= base_url() ?>/tahun_akademik/${data}" class="btn btn-delete btn-sm btn-round btn-danger"><i class="far fa-trash-alt"></i></a>`;
                     }
                 }
             ]
-        })
-
-        $('#filterTahunAjaran, #filterSemester').on('change', function() {
-            table.ajax.reload(); // Reload data berdasarkan filter
-        })
-
-        $('#filterTahunAjaran, #filterSemester').select2({
-            placeholder: 'Pilih Semester',
-            allowClear: true
         })
     })
 
     $('#add').on('show.bs.modal', function(e) {
         $.ajax({
             type: 'get',
-            url: '<?= base_url() ?>kelas/add',
+            url: '<?= base_url() ?>/tahun_akademik/add',
             success: function(data) {
                 $('.add-body').html(data)
-                $('#basic').select2({
-                    placeholder: 'Pilih wali kelas',
-                    minimumResultsForSearch: -1,
-                    theme: "bootstrap",
-                    width: '100%'
-                })
-                $('#semester').select2({
-                    placeholder: 'Pilih Semester',
-                    minimumResultsForSearch: -1,
-                    theme: "bootstrap",
-                    width: '100%',
-                    minimumInputLength: 0
-                })
             }
         })
     })
@@ -226,19 +158,9 @@
         if (typeof rowid != 'undefined') {
             $.ajax({
                 type: 'get',
-                url: `<?= base_url() ?>kelas/${rowid}`,
+                url: `<?= base_url() ?>/tahun_akademik/${rowid}`,
                 success: function(data) {
                     $('.edited-body').html(data)
-                    $('#semesterEdit').select2({
-                        minimumResultsForSearch: -1,
-                        theme: "bootstrap",
-                        width: '100%'
-                    })
-                    $('#ustadzEdit').select2({
-                        minimumResultsForSearch: -1,
-                        theme: "bootstrap",
-                        width: '100%'
-                    })
                 }
             })
         }

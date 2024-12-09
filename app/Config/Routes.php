@@ -49,6 +49,16 @@ $routes->get('santri/add', function () {
 $routes->post('santri/process', 'Master\Santri::process');
 $routes->delete('santri/(:num)', 'Master\Santri::delete/$1');
 
+// Tahun akademik
+$routes->get('tahun_akademik', 'Master\TahunAkademik::index');
+$routes->post('tahun_akademik/data', 'Master\TahunAkademik::getData');
+$routes->get('tahun_akademik/add', function () {
+    return view('master/tahunAkademik/add');
+});
+$routes->post('tahun_akademik/process', 'Master\TahunAkademik::process');
+$routes->get('tahun_akademik/(:num)', 'Master\TahunAkademik::detail/$1');
+$routes->delete('tahun_akademik/(:num)', 'Master\TahunAkademik::delete/$1');
+
 // Materi
 $routes->get('materi', 'Master\Materi::index');
 $routes->get('materi/add', 'Master\Materi::add');

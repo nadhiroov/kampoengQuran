@@ -32,6 +32,8 @@ class Dashboard extends BaseController
     {
         $this->data['total_admin'] = $this->admin->select('count(id) as total_admin')->first();
         $this->data['total_kelas'] = $this->kelas->select('count(id) as total_kelas')->first();
+        $this->data['total_ustadz'] = $this->ustadz->select('count(id) as total_ustadz')->first();
+        $this->data['total_santri'] = $this->santri->select('count(id) as total_santri')->first();
         // dd($this->data['total_admin']);
         return view('dashboard', $this->data);
     }

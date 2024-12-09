@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Master\Msantri;
+use App\Models\Master\MtahunAkademik;
 use App\Models\Master\Mustadz;
 use App\Models\Mkelassantri;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -13,10 +14,12 @@ class Kelas extends ResourceController
     protected $modelName = 'App\Models\Mkelas';
     protected $format    = 'json';
     protected $ustadz;
+    protected $thnAkademik;
 
     public function __construct()
     {
         $this->ustadz = new Mustadz();
+        $this->thnAkademik = new MtahunAkademik();
         $this->data['menu'] = 'Master data kelas';
         $this->view = \Config\Services::renderer();
         $this->view->setData(['menu_master' => 'active', 'submenu_kelas' => 'active']);
@@ -24,12 +27,14 @@ class Kelas extends ResourceController
 
     public function index()
     {
+        $this->data['tahun_akademik'] = $this->thnAkademik->findAll();
         return view('kelas/index', $this->data);
     }
 
     public function getData()
     {
         $param = $this->request->getPost();
+        $filter = $this->request->getPost('filter');
         $data = $this->model->select('kelas.*, u.fullname, count(ks.id) as total_santri')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left')->join('kelas_santri ks', 'kelas.id = ks.id_kelas', 'left')->groupBy('kelas.id')->limit(intval($param['length'] ?? 10), intval($param['start'] ?? 0))->orderBy('tahun_ajaran, semester, nama_kelas', 'asc');
         if (!empty($param['search']['value'])) {
             $searchValue = $param['search']['value'];
@@ -40,6 +45,12 @@ class Kelas extends ResourceController
         }
         if (!empty($param['id_santri'])) {
             $data = $data->where('ks.id_santri', $param['id_santri']);
+        }
+        if (!empty($filter['tahunAjaran'])) {
+            $data = $data->where('kelas.tahun_ajaran', $filter['tahunAjaran']);
+        }
+        if (!empty($filter['semester'])) {
+            $data = $data->where('kelas.semester', $filter['semester']);
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->model->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
