@@ -217,6 +217,13 @@
                     width: '100%',
                     minimumInputLength: 0
                 })
+                $('#tahun_akademik').select2({
+                    placeholder: 'masukkan tahun ajaran',
+                    minimumResultsForSearch: -1,
+                    theme: "bootstrap",
+                    width: '100%',
+                    minimumInputLength: 0
+                })
             }
         })
     })
@@ -238,6 +245,13 @@
                         minimumResultsForSearch: -1,
                         theme: "bootstrap",
                         width: '100%'
+                    })
+                    $('#tahun_akademikEdit').select2({
+                        placeholder: 'masukkan tahun ajaran',
+                        minimumResultsForSearch: -1,
+                        theme: "bootstrap",
+                        width: '100%',
+                        minimumInputLength: 0
                     })
                 }
             })

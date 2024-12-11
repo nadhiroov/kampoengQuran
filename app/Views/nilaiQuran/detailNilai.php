@@ -26,6 +26,7 @@
     <thead>
         <tr>
             <th>Surah</th>
+            <th>Halaman</th>
             <th>Ayat</th>
             <th>Nilai</th>
             <th>Aksi</th>

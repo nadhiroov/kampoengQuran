@@ -81,6 +81,26 @@ class Jadwal extends ResourceController
         return isset($param['api']) ? $this->respond($return) : json_encode($return);
     }
 
+    public function getJadwalUstadz($id_ustadz = '') {
+        $param = $this->request->getPost();
+        $data = $this->mKelas->select('j.hari, j.jam_awal, j.jam_akhir, j.lokasi, m.materi, kelas.nama_kelas, count(ks.id)')->join('kelas_santri ks', 'ks.id_kelas = kelas.id')->join('jadwal j', 'kelas.id = j.id_kelas')->join('materi m', 'm.id = j.id_materi and m.deleted_at is null', 'left')->groupBy('j.id');
+        if ($id_ustadz != '') {
+            $data = $this->mKelas->where(['j.id_ustadz' => $id_ustadz]);
+        }
+        if (!empty($param['semester'])) {
+            $data = $data->where('kelas.semester', $param['semester']);
+        }
+        $filtered = $data->countAllResults(false);
+        $datas = $data->find();
+        $return = array(
+            "draw" => $param['draw'] ?? 1,
+            "recordsFiltered" => $filtered,
+            "recordsTotal" => $this->mKelas->countAllResults(),
+            "data" => $datas
+        );
+        return isset($param['api']) ? $this->respond($return) : json_encode($return);
+    }
+
     public function add($idKelas = null)
     {
         $ustadz = new Mustadz();

@@ -151,6 +151,7 @@ $routes->group('api', static function ($routes) {
     // jadwal
     $routes->post('jadwal', 'Jadwal::getData');
     $routes->post('jadwal/(:num)', 'Jadwal::getJadwalSantri/$1');
+    $routes->post('jadwalUstadz/(:num)', 'Jadwal::getJadwalUstadz/$1');
 
     // materi
     $routes->post('materi', 'Master\Materi::getDataByStudent');

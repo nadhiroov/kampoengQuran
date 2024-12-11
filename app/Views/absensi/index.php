@@ -31,6 +31,31 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="filterTahunAjaran">Filter: </label>
+                            <select id="filterTahunAjaran" class="form-control select2">
+                                <option value=""></option>
+                                <?php foreach ($tahun_akademik as $key): ?>
+                                    <option value="<?= $key['tahun_akademik']; ?>"><?= $key['tahun_akademik']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filterSemester"></label>
+                            <select id="filterSemester" class="form-control select2">
+                                <option value=""></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table id="datatable" class="display table table-striped table-hover">
                             <thead>
@@ -57,22 +82,28 @@
 <?= $this->section('js'); ?>
 <script src="<?= base_url() ?>assets/js/plugin/datatables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="<?= base_url() ?>assets/js/plugin/select2/select2.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#datatable').DataTable({
+        let table = $('#datatable').DataTable({
             ajax: {
                 url: '<?= base_url('api/absensi') ?>',
-                type: 'POST'
+                type: 'POST',
+                data: function(d) {
+                    d.filter = d.filter || {};
+                    d.filter['tahunAjaran'] = $('#filterTahunAjaran').val();
+                    d.filter['semester'] = $('#filterSemester').val();
+                }
             },
             pageLength: 10,
             serverSide: true,
             processing: true,
-            "columnDefs": [{
-                "width": "20px",
-                "targets": 4
+            columnDefs: [{
+                width: "20px",
+                targets: 4
             }, {
-                "targets": 4,
-                "orderable": false
+                targets: 4,
+                orderable: false
             }],
             columns: [{
                     data: 'id',
@@ -99,6 +130,19 @@
                     }
                 }
             ]
+        })
+
+        $('#filterTahunAjaran, #filterSemester').on('change', function() {
+            table.ajax.reload(); // Reload data berdasarkan filter
+        })
+
+        $('#filterTahunAjaran').select2({
+            placeholder: 'Pilih Tahun Ajaran',
+            allowClear: true
+        })
+        $('#filterSemester').select2({
+            placeholder: 'Pilih Semester',
+            allowClear: true
         })
     })
 </script>

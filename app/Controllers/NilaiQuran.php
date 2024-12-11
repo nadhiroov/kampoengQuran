@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Master\Msantri;
+use App\Models\Master\MtahunAkademik;
 use App\Models\Mkelas;
 use App\Models\Mnilaitahsin;
 use CodeIgniter\RESTful\ResourceController;
@@ -14,12 +15,15 @@ class NilaiQuran extends ResourceController
     protected $kelas;
     protected $santri;
     protected $jadwal;
+    protected $thnAkademik;
 
     public function __construct()
     {
         $this->kelas = new Mkelas();
         $this->santri = new Msantri();
+        $this->thnAkademik = new MtahunAkademik();
         // $this->jadwal = new Mjadwal();
+        $this->data['tahun_akademik'] = $this->thnAkademik->orderBy('tahun_akademik', 'desc')->limit(7)->findAll();
         $this->data['menu'] = 'Nilai Al Qur\'an';
         $this->view = \Config\Services::renderer();
         $this->view->setData(['menu_penilaian' => 'active', 'submenu_quran' => 'active']);
@@ -159,7 +163,7 @@ class NilaiQuran extends ResourceController
     public function getNilaiSantri()
     {
         $param = $this->request->getPost();
-        $data = $this->kelas->select('nis, fullname, ks.id_santri, surat, ayat, nilai, nq.id')
+        $data = $this->kelas->select('nis, fullname, ks.id_santri, surat, halaman, ayat, nilai, nq.id')
             ->join('kelas_santri ks', 'kelas.id = ks.id_kelas')
             ->join('santri s', 's.id = ks.id_santri')
             ->join('nilai_quran nq', 'kelas.id = nq.id_kelas and s.id = nq.id_santri')
@@ -228,6 +232,7 @@ class NilaiQuran extends ResourceController
                 'surat' => explode('#', $form['surat'][$i])[1],
                 'nomor_surat' => explode('#', $form['surat'][$i])[0],
                 'ayat' => $form['ayat'][$i],
+                'halaman' => $form['halaman'][$i],
                 'nilai' => $form['nilai'][$i]
             ];
         }

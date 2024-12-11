@@ -35,18 +35,16 @@
                         <div class="col-md-3">
                             <label for="filterTahunAjaran">Filter: </label>
                             <select id="filterTahunAjaran" class="form-control select2">
-                                <option value="">Semua Tahun Ajaran</option>
-                                <option value="2025/2026">2025/2026</option>
-                                <option value="2024/2025">2024/2025</option>
-                                <option value="2023/2024">2023/2024</option>
-                                <option value="2022/2023">2022/2023</option>
-                                <option value="2021/2022">2021/2022</option>
+                                <option value=""></option>
+                                <?php foreach ($tahun_akademik as $key): ?>
+                                    <option value="<?= $key['tahun_akademik']; ?>"><?= $key['tahun_akademik']; ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="filterSemester"></label>
                             <select id="filterSemester" class="form-control select2">
-                                <option value="">Semua Semester</option>
+                                <option value=""></option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -138,7 +136,11 @@
             table.ajax.reload(); // Reload data berdasarkan filter
         })
 
-        $('#filterTahunAjaran, #filterSemester').select2({
+        $('#filterTahunAjaran').select2({
+            placeholder: 'Pilih Tahun Ajaran',
+            allowClear: true
+        })
+        $('#filterSemester').select2({
             placeholder: 'Pilih Semester',
             allowClear: true
         })

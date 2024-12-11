@@ -12,5 +12,5 @@ class Mnilaiquran extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_kelas', 'id_santri', 'surat', 'nomor_surat', 'ayat', 'nilai'];
+    protected $allowedFields    = ['id_kelas', 'id_santri', 'surat', 'halaman', 'nomor_surat', 'ayat', 'nilai'];
 }

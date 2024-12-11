@@ -132,7 +132,7 @@
 
 <!-- Modal detail nilai -->
 <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addnewLabel">Detail nilai</h5>
@@ -215,21 +215,27 @@
                         option += '</div>'
                     }
                     newRow = `<div class="row repeater-item">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Nama Surat/Hal</label>
+                                    <label>Nama Surat:</label>
                                     ${option}
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Halaman:</label>
+                                    <input name="form[halaman][]" type="number" min="1" class="form-control" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Ayat/Juz/Jilid:</label>
                                     <input name="form[ayat][]" type="number" min="1" class="form-control" required="">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Nilai :</label>
+                                    <label>Nilai:</label>
                                     <input name="form[nilai][]" type="number" min="1" max="100" class="form-control" required="">
                                 </div>
                             </div>
@@ -251,21 +257,27 @@
                         option += '</select>';
                         let newRows = `<div id="repeater-container-${index}">
                         <div class="row repeater-item">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Surat</label>
+                                    <label>Nama Surat:</label>
                                     ${option}
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Ayat :</label>
+                                    <label>Halaman:</label>
+                                    <input name="form[halaman][]" type="number" min="1" class="form-control" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Ayat/Juz/Jilid:</label>
                                     <input name="form[ayat][]" type="number" min="1" class="form-control" required="">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Nilai :</label>
+                                    <label>Nilai:</label>
                                     <input name="form[nilai][]" type="number" min="1" max="100" class="form-control" required="">
                                 </div>
                                 <button type="button" class="btn btn-danger btn-sm remove-row"><span class="btn-label"><i class="icon-close"></i></span></button>
@@ -336,13 +348,19 @@
                             info: false,
                             columnDefs: [{
                                 "width": "20px",
-                                "targets": 3
+                                "targets": 4
                             }, {
-                                "targets": 3,
+                                "targets": 4,
                                 "orderable": false
                             }],
                             columns: [{
                                     data: 'surat'
+                                },
+                                {
+                                    data: 'halaman',
+                                    render: function(data, type){
+                                        return data ?? '-';
+                                    }
                                 },
                                 {
                                     data: 'ayat'

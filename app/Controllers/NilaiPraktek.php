@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Master\Msantri;
+use App\Models\Master\MtahunAkademik;
 use App\Models\Mjadwal;
 use App\Models\Mkelas;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -15,12 +16,15 @@ class NilaiPraktek extends ResourceController
     protected $kelas;
     protected $santri;
     protected $jadwal;
+    protected $thnAkademik;
 
     public function __construct()
     {
         $this->kelas = new Mkelas();
         $this->santri = new Msantri();
         $this->jadwal = new Mjadwal();
+        $this->thnAkademik = new MtahunAkademik();
+        $this->data['tahun_akademik'] = $this->thnAkademik->orderBy('tahun_akademik', 'desc')->limit(7)->findAll();
         $this->data['menu'] = 'Nilai Ibadah Praktis';
         $this->view = \Config\Services::renderer();
         $this->view->setData(['menu_penilaian' => 'active', 'submenu_nilai_praktek' => 'active']);
@@ -44,6 +48,7 @@ class NilaiPraktek extends ResourceController
     public function getData()
     {
         $param = $this->request->getPost();
+        $filter = $this->request->getPost('filter');
         $data = $this->kelas->select('kelas.*, u.fullname')->join('ustadz u', 'u.id = kelas.id_ustadz', 'left');
         if (!empty($param['id_santri'])) {
             $data = $this->kelas->join('kelas_santri  ks', 'kelas.id = ks.id_kelas');
@@ -59,6 +64,12 @@ class NilaiPraktek extends ResourceController
         }
         if (!empty($param['order'][0]['column'])) {
             $data = $this->kelas->orderBy($param['columns'][$param['order'][0]['column']]['data'], $param['order'][0]['dir']);
+        }
+        if (!empty($filter['tahunAjaran'])) {
+            $data = $data->where('kelas.tahun_ajaran', $filter['tahunAjaran']);
+        }
+        if (!empty($filter['semester'])) {
+            $data = $data->where('kelas.semester', $filter['semester']);
         }
         $filtered = $data->countAllResults(false);
         $datas = $data->find();

@@ -20,6 +20,7 @@ class Kelas extends ResourceController
     {
         $this->ustadz = new Mustadz();
         $this->thnAkademik = new MtahunAkademik();
+        $this->data['tahun_akademik'] = $this->thnAkademik->orderBy('tahun_akademik', 'desc')->limit(7)->findAll();
         $this->data['menu'] = 'Master data kelas';
         $this->view = \Config\Services::renderer();
         $this->view->setData(['menu_master' => 'active', 'submenu_kelas' => 'active']);
@@ -27,7 +28,6 @@ class Kelas extends ResourceController
 
     public function index()
     {
-        $this->data['tahun_akademik'] = $this->thnAkademik->findAll();
         return view('kelas/index', $this->data);
     }
 

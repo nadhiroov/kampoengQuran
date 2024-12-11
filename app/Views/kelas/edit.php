@@ -7,14 +7,19 @@
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Tahun ajaran</label>
     <div class="col-md-9 p-0">
-        <input type="text" class="form-control input-full" placeholder="masukkan tahun ajaran" name="form[tahun_ajaran]" value="<?= $content['tahun_ajaran']; ?>">
+        <select id="tahun_akademikEdit" name="form[tahun_ajaran]" class="form-control">
+            <option value="" disabled selected></option>
+            <?php foreach ($tahun_akademik as $key): ?>
+                <option <?= $content['tahun_ajaran'] == $key['tahun_akademik'] ? 'selected' : ''; ?> value="<?= $key['tahun_akademik']; ?>"><?= $key['tahun_akademik']; ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
 </div>
 <div class="form-group form-inline">
     <label for="inlineinput" class="col-md-3 col-form-label">Semester</label>
     <div class="col-md-9 p-0 select2-input">
         <select id="semesterEdit" name="form[semester]" class="form-control select2-hidden-accessible" data-select2-id="semester" tabindex="-1" aria-hidden="true">
-            <option value="" disabled >Pilih Semester</option>
+            <option value="" disabled>Pilih Semester</option>
             <option <?= $content['semester'] == 1 ? 'selected' : ''; ?> value="1">1</option>
             <option <?= $content['semester'] == 2 ? 'selected' : ''; ?> value="2">2</option>
             <option <?= $content['semester'] == 3 ? 'selected' : ''; ?> value="3">3</option>

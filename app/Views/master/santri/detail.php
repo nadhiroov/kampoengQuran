@@ -79,8 +79,8 @@
                                 <div class="form-group form-group-default">
                                     <label>Gender</label>
                                     <select class="form-control" id="gender" name="form[gender]">
-                                        <option <?= $content['gender'] == 'Pria' ? 'selected' : ''; ?>>Pria</option>
-                                        <option <?= $content['gender'] == 'Wanita' ? 'selected' : ''; ?>>Wanita</option>
+                                        <option <?= $content['gender'] == 'Pria' ? 'selected' : ''; ?> value="Pria">Pria</option>
+                                        <option <?= $content['gender'] == 'Wanita' ? 'selected' : ''; ?> value="Wanita">Wanita</option>
                                     </select>
                                 </div>
                             </div>
