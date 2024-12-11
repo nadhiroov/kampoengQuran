@@ -17,7 +17,7 @@ class TahunAkademik extends BaseController
     public function index(): string
     {
         $this->data['menu'] = 'Master data admin';
-        return view('master/tahunAKademik/index', $this->data);
+        return view('master/tahunAkademik/index', $this->data);
     }
 
     public function getData(): string
