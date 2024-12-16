@@ -182,8 +182,8 @@
                 {
                     data: 'id_santri',
                     render: function(data, type, row) {
-                        return `<a href="#add" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fa fa-clipboard-list"></i></a>
-                        <a href="#addTahsin" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-warning"><i class="fa fa-headset"></i></a>
+                        return `<a href="#add" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-btn btn-secondary"><i class="fa fa-clipboard-list"></i></a>
+                        <a href="#addTahsin" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-success"><i class="fa fa-headset"></i></a>
                         <a href="#detail" data-toggle="modal" data-id="${data}" class="btn btn-sm btn-round btn-primary"><i class="fas fa-external-link-alt"></i></a>`;
                     }
                 }
@@ -358,7 +358,7 @@
                                 },
                                 {
                                     data: 'halaman',
-                                    render: function(data, type){
+                                    render: function(data, type) {
                                         return data ?? '-';
                                     }
                                 },

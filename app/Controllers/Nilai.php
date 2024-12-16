@@ -197,7 +197,7 @@ class Nilai extends ResourceController
             ->join('kelas k', 'ks.id_kelas = k.id')
             ->where(['santri.id' => $id_santri, 'semester' => $semester])->first();
 
-        $tahfidz = $this->santri->select('surat, ayat, nilai')
+        $tahfidz = $this->santri->select('surat, halaman, ayat, nilai')
             ->join('kelas_santri ks',  'santri.id = ks.id_santri')
             ->join('kelas k', 'ks.id_kelas = k.id')
             ->join('nilai_quran nq', 'k.id = nq.id_kelas and santri.id = nq.id_santri', 'left')

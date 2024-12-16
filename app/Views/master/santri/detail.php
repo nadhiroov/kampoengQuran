@@ -132,25 +132,11 @@
                 </div>
                 <div class="card-body">
                     <div class="user-profile text-center">
+                        <a href="#edit" data-toggle="modal" data-id="<?= $content['id']; ?>" class="btn btn-sm btn-round btn-warning">Ganti Foto</a>
+                        <!-- <button class="btn btn-warning">Ganti Foto</button> -->
                         <div class="name"><?= $content['fullname']; ?></div>
                         <div class="job"><?= $content['nis']; ?></div>
                         <div class="desc"><?= $content['angkatan']; ?></div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="row user-stats text-center">
-                        <div class="col">
-                            <div class="number">125</div>
-                            <div class="title">Post</div>
-                        </div>
-                        <div class="col">
-                            <div class="number">25K</div>
-                            <div class="title">Followers</div>
-                        </div>
-                        <div class="col">
-                            <div class="number">134</div>
-                            <div class="title">Following</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -158,6 +144,26 @@
     </div>
 </div>
 
+<!-- Modal edit -->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addnewLabel">Edit foto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="formEdit" action="<?= base_url() ?>santri/process" method="POST">
+                <div class="modal-body edited-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <?= $this->endSection(); ?>
 
 <?= $this->section('js'); ?>
@@ -180,6 +186,29 @@
                 location.reload()
             }, 1000);
         })
+    })
+
+    $('#edit').on('show.bs.modal', function(e) {
+        let rowid = $(e.relatedTarget).data('id')
+        if (typeof rowid != 'undefined') {
+            $.ajax({
+                type: 'get',
+                url: `<?= base_url() ?>/santri/foto/${rowid}`,
+                success: function(data) {
+                    $('.edited-body').html(data)
+                    $('#uploadImg').on('change', function(e) {
+                        var input = this;
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader()
+                            reader.onload = function(e) {
+                                $('#imgPreview').attr('src', e.target.result); // Update image preview
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    })
+                }
+            })
+        }
     })
 </script>
 
